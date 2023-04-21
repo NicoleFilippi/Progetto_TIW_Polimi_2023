@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>HOME</title>
+</head>
+<body>
+	<h1>HOME</h1>
+	<p th:text="${'Welcome back, ' + session.user.name + ' ' + session.user.surname + '!'}" > </p>
+	
+	<form action="Products" method="get">
+		Search product: 
+		<input type="text" name="keyword" required >
+		<input type="submit" value="Search">
+	</form>
+	<br>
+	
+	<table>
+		<tr th:each="prod : ${productList}">
+			<td th:text="${prod.id}" >0</td>
+			<td> <img th:src="${prod.photoPath}"></td>
+			<td th:text="${prod.name}" >Name</td>
+			<td th:text="${prod.minPrice}+' $'" >10 $</td>
+		</tr>
+	</table>
+	<p th:text="${error}"></p>
+</body>
+</html>

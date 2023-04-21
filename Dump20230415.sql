@@ -55,9 +55,9 @@ CREATE TABLE `product` (
   `Name` varchar(255) NOT NULL,
   `Description` varchar(1023) DEFAULT NULL,
   `Category` varchar(255) NOT NULL,
-  `Picture` mediumblob NOT NULL,
+  `PhotoPath` varchar(255) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,6 +66,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` VALUES (1,'MAC Eyeshadows','A palette of neutral tones eyeshadows branded MAC','Makeup','eyeshadow1.jpg'),(2,'Essence Sparkling Pink Eyeshadow','A sparkling pink eyeshadow branded Essence','Makeup','eyeshadow2.jpg'),(3,'MAC Red Lipstick','A red lipstick branded MAC','Makeup','lipstick1.jpg'),(4,'MAC Pink Lipstick','A pink lipstick branded MAC','Makeup','lipstick2.jpg'),(5,'Nike Sports Shoes','A pair of black, white and grey unisex sports shoes branded Nike','Clothing','shoes1.jpg'),(6,'Armani Exchange Sports Shoes','A pair of white, grey and pink sports shoes for women branded Armani Exchange','Clothing','shoes2.jpg'),(7,'Black Coat','A black coat for men','Clothing','coat1.jpg'),(8,'Black Heels','A pair of black elegant heels','Clothing','shoes3.jpg'),(9,'Brown Coat','An elegant brown coat for women','Clothing','coat2.jpg'),(10,'Brown Lamp','A brown lamp','House','lamp1.jpg'),(11,'Desk Lamp','A white desk lamp','House','lamp2.jpg'),(12,'Design Lamp','A white decorated lamp','House','lamp3.jpg'),(13,'Crystal Vase','A colorful hand decorated vase from Murano','House','vase1.jpg'),(14,'Design Blue Vase','A design blue glass vase','House','vase2.jpg');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,6 +92,7 @@ CREATE TABLE `product_supplier` (
 
 LOCK TABLES `product_supplier` WRITE;
 /*!40000 ALTER TABLE `product_supplier` DISABLE KEYS */;
+INSERT INTO `product_supplier` VALUES (1,1,15),(1,2,20),(2,1,3),(2,2,5),(3,1,10),(3,2,12),(4,1,10),(4,2,12),(5,3,110),(5,4,100),(6,3,130),(6,4,140),(6,5,110),(7,6,130),(7,7,90),(8,5,50),(8,6,45),(9,6,130),(9,7,90),(10,8,70),(10,9,50),(11,9,30),(11,10,40),(12,8,100),(12,10,110),(13,8,180),(13,9,120),(14,8,140),(14,9,110),(14,10,150);
 /*!40000 ALTER TABLE `product_supplier` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,7 +188,7 @@ CREATE TABLE `supplier` (
   PRIMARY KEY (`Id`),
   CONSTRAINT `supplier_chk_1` CHECK ((((`Rating` >= 1) and (`Rating` <= 5)) or (`Rating` is null))),
   CONSTRAINT `supplier_chk_2` CHECK (((`FreeShippingThreshold` >= 0) or (`FreeShippingThreshold` is null)))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,6 +197,7 @@ CREATE TABLE `supplier` (
 
 LOCK TABLES `supplier` WRITE;
 /*!40000 ALTER TABLE `supplier` DISABLE KEYS */;
+INSERT INTO `supplier` VALUES (1,'Makeup Forever',4,30),(2,'Sephora',5,50),(3,'AW Lab',3,150),(4,'FootLocker',4,170),(5,'PittaRed',4,120),(6,'Zalando',5,200),(7,'Clothes For Everyone',2,100),(8,'IKEA',5,300),(9,'FeelAtHome',3,150),(10,'Maisons Du Monde',4,200);
 /*!40000 ALTER TABLE `supplier` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,6 +232,31 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES ('alessandro.annechini@mail.polimi.it','Alessandro','Annechini','ITA','Milano','Via Mario Rossi','1C',_binary 'À¼’@nÀ\n$O8ð^P#ë¹œ°(\ä6E\çWü\ë[U',649),('nicole.filippi@mail.polimi.it','Nicole','Filippi','ITA','Milano','Via Luigi Verdi','23',_binary '\éÁ9§L„=\nŠ>^)$]\èx´D·c\ç«Jh0œY\Ü~',137);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `user_product`
+--
+
+DROP TABLE IF EXISTS `user_product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_product` (
+  `UserEmail` varchar(255) NOT NULL,
+  `ProductId` int NOT NULL,
+  `TimeStamp` timestamp NOT NULL,
+  PRIMARY KEY (`UserEmail`,`ProductId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_product`
+--
+
+LOCK TABLES `user_product` WRITE;
+/*!40000 ALTER TABLE `user_product` DISABLE KEYS */;
+INSERT INTO `user_product` VALUES ('alessandro.annechini@mail.polimi.it',1,'2023-04-21 15:49:43'),('alessandro.annechini@mail.polimi.it',2,'2023-04-21 15:49:44');
+/*!40000 ALTER TABLE `user_product` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -239,4 +267,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-21  9:47:28
+-- Dump completed on 2023-04-21 17:50:59

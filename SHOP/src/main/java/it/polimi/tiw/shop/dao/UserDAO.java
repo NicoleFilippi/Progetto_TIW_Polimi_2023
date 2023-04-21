@@ -20,7 +20,7 @@ public class UserDAO {
 	public User checkCredentials(String email, String password) throws SQLException {
 		User user = new User();
 		
-		String pwQuery = "SELECT Email,Name,Surname,State,City,Street,CivicNumber,PasswordHash,Salt FROM User WHERE Email = ?";
+		String pwQuery = "SELECT * FROM User WHERE Email = ?";
 		
 		ResultSet result=null;
 		
@@ -36,15 +36,15 @@ public class UserDAO {
 			
 		else {
 			result.next();
-			MessageDigest digest;
+			MessageDigest algorithm;
 			try {
-				digest = MessageDigest.getInstance("SHA-256");
+				algorithm = MessageDigest.getInstance("SHA-256");
 			} catch (NoSuchAlgorithmException e) {
-				return null;
+				throw new SQLException(e.getMessage());
 			}
 			
 			byte[] toDigest = password.concat(Integer.toString(result.getInt("salt"))).getBytes(StandardCharsets.UTF_8);
-			byte[] newHash = digest.digest(toDigest);
+			byte[] newHash = algorithm.digest(toDigest);
 			
 			byte[] dbHash = result.getBytes("passwordHash");
 			
@@ -58,11 +58,10 @@ public class UserDAO {
 				return null;
 			}
 			
-			user = new User();
 			user.setEmail(result.getString("email"));
 			user.setName(result.getString("name"));
 			user.setSurname(result.getString("surname"));
-			user.setState(result.getString("state"));
+			user.setState(result.getString("stateIso3"));
 			user.setCity(result.getString("city"));
 			user.setStreet(result.getString("street"));
 			user.setCivicNumber(result.getString("civicNumber"));

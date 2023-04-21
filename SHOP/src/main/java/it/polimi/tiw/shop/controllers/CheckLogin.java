@@ -24,6 +24,7 @@ import it.polimi.tiw.shop.utils.ConnectionHandler;
 @WebServlet("/CheckLogin")
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
 
@@ -64,11 +65,18 @@ public class CheckLogin extends HttpServlet {
 		} catch (SQLException e) {
 			//TODO HANDLE EXCEPTION
 			
+			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
+			context.setVariable("errorMex", "Server error, try again later ");
+			context.setVariable("prevEmail", email);
+			context.setVariable("prevPassword", password);
+			templateEngine.process("/index.html", context, response.getWriter());
+			return;
 			
 		}
 		
 		if(user == null) {
 			// LOGIN ERRATO
+			
 			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
 			context.setVariable("errorMex", "Incorrect credentials ");
 			context.setVariable("prevEmail", email);
@@ -82,11 +90,8 @@ public class CheckLogin extends HttpServlet {
 			
 			//TODO GESTIONE LOGIN CORRETTO
 
-			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
-			context.setVariable("errorMex", user.getName() + " " + user.getSurname() + ": " + user.getStreet() + " " + user.getCivicNumber()  + ", " + user.getCity() + ", " + user.getState());
-			
-			templateEngine.process("/index.html", context, response.getWriter());
-			return;
+			String path = getServletContext().getContextPath() + "/Home";
+			response.sendRedirect(path);
 		}
 	}
 	
