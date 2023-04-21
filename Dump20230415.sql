@@ -18,217 +18,216 @@ USE `shop`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `fasciaprezzo`
+-- Table structure for table `pricerange`
 --
 
-DROP TABLE IF EXISTS `fasciaprezzo`;
+DROP TABLE IF EXISTS `pricerange`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `fasciaprezzo` (
-  `CodiceFornitore` int NOT NULL,
-  `MinimoPezzi` int NOT NULL,
-  `PrezzoSpedizione` double NOT NULL,
-  PRIMARY KEY (`CodiceFornitore`,`MinimoPezzi`),
-  CONSTRAINT `fasciaprezzo_chk_1` CHECK ((`MinimoPezzi` >= 0)),
-  CONSTRAINT `fasciaprezzo_chk_2` CHECK ((`PrezzoSpedizione` >= 0))
+CREATE TABLE `pricerange` (
+  `SupplierId` int NOT NULL,
+  `MinQuantity` int NOT NULL,
+  `ShippingPrice` double NOT NULL,
+  PRIMARY KEY (`SupplierId`,`MinQuantity`),
+  CONSTRAINT `pricerange_chk_1` CHECK ((`MinQuantity` >= 0)),
+  CONSTRAINT `pricerange_chk_2` CHECK ((`ShippingPrice` >= 0))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `fasciaprezzo`
+-- Dumping data for table `pricerange`
 --
 
-LOCK TABLES `fasciaprezzo` WRITE;
-/*!40000 ALTER TABLE `fasciaprezzo` DISABLE KEYS */;
-/*!40000 ALTER TABLE `fasciaprezzo` ENABLE KEYS */;
+LOCK TABLES `pricerange` WRITE;
+/*!40000 ALTER TABLE `pricerange` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pricerange` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `fornitore`
+-- Table structure for table `product`
 --
 
-DROP TABLE IF EXISTS `fornitore`;
+DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `fornitore` (
-  `Codice` int NOT NULL AUTO_INCREMENT,
-  `Nome` varchar(255) NOT NULL,
-  `Valutazione` int DEFAULT NULL,
-  `SogliaSpedizioneGratuita` double DEFAULT NULL,
-  PRIMARY KEY (`Codice`),
-  CONSTRAINT `fornitore_chk_1` CHECK ((((`Valutazione` >= 1) and (`Valutazione` <= 5)) or (`Valutazione` is null))),
-  CONSTRAINT `fornitore_chk_2` CHECK (((`SogliaSpedizioneGratuita` >= 0) or (`SogliaSpedizioneGratuita` is null)))
+CREATE TABLE `product` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  `Description` varchar(1023) DEFAULT NULL,
+  `Category` varchar(255) NOT NULL,
+  `Picture` mediumblob NOT NULL,
+  PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `fornitore`
+-- Dumping data for table `product`
 --
 
-LOCK TABLES `fornitore` WRITE;
-/*!40000 ALTER TABLE `fornitore` DISABLE KEYS */;
-/*!40000 ALTER TABLE `fornitore` ENABLE KEYS */;
+LOCK TABLES `product` WRITE;
+/*!40000 ALTER TABLE `product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ordine`
+-- Table structure for table `product_supplier`
 --
 
-DROP TABLE IF EXISTS `ordine`;
+DROP TABLE IF EXISTS `product_supplier`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `ordine` (
-  `Codice` int NOT NULL AUTO_INCREMENT,
-  `Importo` double NOT NULL,
-  `Data` date NOT NULL,
-  `CodiceFornitore` int DEFAULT NULL,
-  `EmailUtente` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`Codice`),
-  CONSTRAINT `ordine_chk_1` CHECK ((`Importo` >= 0))
+CREATE TABLE `product_supplier` (
+  `ProductId` int NOT NULL,
+  `SupplierId` int NOT NULL,
+  `Price` double NOT NULL,
+  PRIMARY KEY (`ProductId`,`SupplierId`),
+  CONSTRAINT `product_supplier_chk_1` CHECK ((`Price` >= 0))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ordine`
+-- Dumping data for table `product_supplier`
 --
 
-LOCK TABLES `ordine` WRITE;
-/*!40000 ALTER TABLE `ordine` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ordine` ENABLE KEYS */;
+LOCK TABLES `product_supplier` WRITE;
+/*!40000 ALTER TABLE `product_supplier` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product_supplier` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ordine_prodotto`
+-- Table structure for table `purchase`
 --
 
-DROP TABLE IF EXISTS `ordine_prodotto`;
+DROP TABLE IF EXISTS `purchase`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `ordine_prodotto` (
-  `CodiceProdotto` int NOT NULL,
-  `CodiceOrdine` int NOT NULL,
-  `Quantita` int DEFAULT '1',
-  PRIMARY KEY (`CodiceProdotto`,`CodiceOrdine`),
-  CONSTRAINT `ordine_prodotto_chk_1` CHECK ((`Quantita` > 0))
+CREATE TABLE `purchase` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Total` double NOT NULL,
+  `Date` date NOT NULL,
+  `SupplierId` int DEFAULT NULL,
+  `UserEmail` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  CONSTRAINT `purchase_chk_1` CHECK ((`Total` >= 0))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ordine_prodotto`
+-- Dumping data for table `purchase`
 --
 
-LOCK TABLES `ordine_prodotto` WRITE;
-/*!40000 ALTER TABLE `ordine_prodotto` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ordine_prodotto` ENABLE KEYS */;
+LOCK TABLES `purchase` WRITE;
+/*!40000 ALTER TABLE `purchase` DISABLE KEYS */;
+/*!40000 ALTER TABLE `purchase` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `prodotto`
+-- Table structure for table `purchase_product`
 --
 
-DROP TABLE IF EXISTS `prodotto`;
+DROP TABLE IF EXISTS `purchase_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `prodotto` (
-  `Codice` int NOT NULL AUTO_INCREMENT,
-  `Nome` varchar(255) NOT NULL,
-  `Descrizione` varchar(1023) DEFAULT NULL,
-  `Categoria` varchar(255) NOT NULL,
-  `Foto` mediumblob NOT NULL,
-  PRIMARY KEY (`Codice`)
+CREATE TABLE `purchase_product` (
+  `ProductId` int NOT NULL,
+  `PurchaseId` int NOT NULL,
+  `Quantity` int DEFAULT '1',
+  PRIMARY KEY (`ProductId`,`PurchaseId`),
+  CONSTRAINT `purchase_product_chk_1` CHECK ((`Quantity` > 0))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `prodotto`
+-- Dumping data for table `purchase_product`
 --
 
-LOCK TABLES `prodotto` WRITE;
-/*!40000 ALTER TABLE `prodotto` DISABLE KEYS */;
-/*!40000 ALTER TABLE `prodotto` ENABLE KEYS */;
+LOCK TABLES `purchase_product` WRITE;
+/*!40000 ALTER TABLE `purchase_product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `purchase_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `prodotto_fornitore`
+-- Table structure for table `state`
 --
 
-DROP TABLE IF EXISTS `prodotto_fornitore`;
+DROP TABLE IF EXISTS `state`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `prodotto_fornitore` (
-  `CodiceProdotto` int NOT NULL,
-  `CodiceFornitore` int NOT NULL,
-  `Prezzo` double NOT NULL,
-  PRIMARY KEY (`CodiceProdotto`,`CodiceFornitore`),
-  CONSTRAINT `prodotto_fornitore_chk_1` CHECK ((`Prezzo` >= 0))
+CREATE TABLE `state` (
+  `Iso2` char(2) NOT NULL,
+  `Name` varchar(128) NOT NULL,
+  `Iso3` char(3) NOT NULL,
+  PRIMARY KEY (`Iso3`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `prodotto_fornitore`
+-- Dumping data for table `state`
 --
 
-LOCK TABLES `prodotto_fornitore` WRITE;
-/*!40000 ALTER TABLE `prodotto_fornitore` DISABLE KEYS */;
-/*!40000 ALTER TABLE `prodotto_fornitore` ENABLE KEYS */;
+LOCK TABLES `state` WRITE;
+/*!40000 ALTER TABLE `state` DISABLE KEYS */;
+INSERT INTO `state` VALUES ('AW','Aruba','ABW'),('AF','Afghanistan','AFG'),('AO','Angola','AGO'),('AI','Anguilla','AIA'),('AX','Aland Islands','ALA'),('AL','Albania','ALB'),('AD','Andorra','AND'),('AN','Netherlands Antilles','ANT'),('AE','United Arab Emirates','ARE'),('AR','Argentina','ARG'),('AM','Armenia','ARM'),('AS','American Samoa','ASM'),('AQ','Antarctica','ATA'),('TF','French Southern Territories','ATF'),('AG','Antigua and Barbuda','ATG'),('AU','Australia','AUS'),('AT','Austria','AUT'),('AZ','Azerbaijan','AZE'),('BI','Burundi','BDI'),('BE','Belgium','BEL'),('BJ','Benin','BEN'),('BQ','Bonaire, Sint Eustatius and Saba','BES'),('BF','Burkina Faso','BFA'),('BD','Bangladesh','BGD'),('BG','Bulgaria','BGR'),('BH','Bahrain','BHR'),('BS','Bahamas','BHS'),('BA','Bosnia and Herzegovina','BIH'),('BL','Saint Barthelemy','BLM'),('BY','Belarus','BLR'),('BZ','Belize','BLZ'),('BM','Bermuda','BMU'),('BO','Bolivia','BOL'),('BR','Brazil','BRA'),('BB','Barbados','BRB'),('BN','Brunei Darussalam','BRN'),('BT','Bhutan','BTN'),('BV','Bouvet Island','BVT'),('BW','Botswana','BWA'),('CF','Central African Republic','CAF'),('CA','Canada','CAN'),('CC','Cocos Islands','CCK'),('CH','Switzerland','CHE'),('CL','Chile','CHL'),('CN','China','CHN'),('CI','Cote D\'Ivoire','CIV'),('CM','Cameroon','CMR'),('CD','Democratic Republic of the Congo','COD'),('CG','Congo','COG'),('CK','Cook Islands','COK'),('CO','Colombia','COL'),('KM','Comoros','COM'),('CV','Cape Verde','CPV'),('CR','Costa Rica','CRI'),('CU','Cuba','CUB'),('CW','Curacao','CUW'),('CX','Christmas Island','CXR'),('KY','Cayman Islands','CYM'),('CY','Cyprus','CYP'),('CZ','Czech Republic','CZE'),('DE','Germany','DEU'),('DJ','Djibouti','DJI'),('DM','Dominica','DMA'),('DK','Denmark','DNK'),('DO','Dominican Republic','DOM'),('DZ','Algeria','DZA'),('EC','Ecuador','ECU'),('EG','Egypt','EGY'),('ER','Eritrea','ERI'),('EH','Western Sahara','ESH'),('ES','Spain','ESP'),('EE','Estonia','EST'),('ET','Ethiopia','ETH'),('FI','Finland','FIN'),('FJ','Fiji','FJI'),('FK','Falkland Islands','FLK'),('FR','France','FRA'),('FO','Faroe Islands','FRO'),('FM','Micronesia','FSM'),('GA','Gabon','GAB'),('GB','United Kingdom','GBR'),('GE','Georgia','GEO'),('GG','Guernsey','GGY'),('GH','Ghana','GHA'),('GI','Gibraltar','GIB'),('GN','Guinea','GIN'),('GP','Guadeloupe','GLP'),('GM','Gambia','GMB'),('GW','Guinea-Bissau','GNB'),('GQ','Equatorial Guinea','GNQ'),('GR','Greece','GRC'),('GD','Grenada','GRD'),('GL','Greenland','GRL'),('GT','Guatemala','GTM'),('GF','French Guiana','GUF'),('GU','Guam','GUM'),('GY','Guyana','GUY'),('HK','Hong Kong','HKG'),('HM','Heard Island and Mcdonald Islands','HMD'),('HN','Honduras','HND'),('HR','Croatia','HRV'),('HT','Haiti','HTI'),('HU','Hungary','HUN'),('ID','Indonesia','IDN'),('IM','Isle of Man','IMN'),('IN','India','IND'),('IO','British Indian Ocean Territory','IOT'),('IE','Ireland','IRL'),('IR','Iran','IRN'),('IQ','Iraq','IRQ'),('IS','Iceland','ISL'),('IL','Israel','ISR'),('IT','Italy','ITA'),('JM','Jamaica','JAM'),('JE','Jersey','JEY'),('JO','Jordan','JOR'),('JP','Japan','JPN'),('KZ','Kazakhstan','KAZ'),('KE','Kenya','KEN'),('KG','Kyrgyzstan','KGZ'),('KH','Cambodia','KHM'),('KI','Kiribati','KIR'),('KN','Saint Kitts and Nevis','KNA'),('KR','South Korea','KOR'),('KW','Kuwait','KWT'),('LA','Lao People\'s Democratic Republic','LAO'),('LB','Lebanon','LBN'),('LR','Liberia','LBR'),('LY','Libyan Arab Jamahiriya','LBY'),('LC','Saint Lucia','LCA'),('LI','Liechtenstein','LIE'),('LK','Sri Lanka','LKA'),('LS','Lesotho','LSO'),('LT','Lithuania','LTU'),('LU','Luxembourg','LUX'),('LV','Latvia','LVA'),('MO','Macao','MAC'),('MF','Saint Martin','MAF'),('MA','Morocco','MAR'),('MC','Monaco','MCO'),('MD','Moldova, Republic of','MDA'),('MG','Madagascar','MDG'),('MV','Maldives','MDV'),('MX','Mexico','MEX'),('MH','Marshall Islands','MHL'),('MK','Macedonia','MKD'),('ML','Mali','MLI'),('MT','Malta','MLT'),('MM','Myanmar','MMR'),('ME','Montenegro','MNE'),('MN','Mongolia','MNG'),('MP','Northern Mariana Islands','MNP'),('MZ','Mozambique','MOZ'),('MR','Mauritania','MRT'),('MS','Montserrat','MSR'),('MQ','Martinique','MTQ'),('MU','Mauritius','MUS'),('MW','Malawi','MWI'),('MY','Malaysia','MYS'),('YT','Mayotte','MYT'),('NA','Namibia','NAM'),('NC','New Caledonia','NCL'),('NE','Niger','NER'),('NF','Norfolk Island','NFK'),('NG','Nigeria','NGA'),('NI','Nicaragua','NIC'),('NU','Niue','NIU'),('NL','Netherlands','NLD'),('NO','Norway','NOR'),('NP','Nepal','NPL'),('NR','Nauru','NRU'),('NZ','New Zealand','NZL'),('OM','Oman','OMN'),('PK','Pakistan','PAK'),('PA','Panama','PAN'),('PN','Pitcairn','PCN'),('PE','Peru','PER'),('PH','Philippines','PHL'),('PW','Palau','PLW'),('PG','Papua New Guinea','PNG'),('PL','Poland','POL'),('PR','Puerto Rico','PRI'),('KP','Norht Korea','PRK'),('PT','Portugal','PRT'),('PY','Paraguay','PRY'),('PS','Palestina','PSE'),('PF','French Polynesia','PYF'),('QA','Qatar','QAT'),('RE','Reunion','REU'),('RO','Romania','ROM'),('RU','Russia','RUS'),('RW','Rwanda','RWA'),('SA','Saudi Arabia','SAU'),('CS','Serbia and Montenegro','SCG'),('SD','Sudan','SDN'),('SN','Senegal','SEN'),('SG','Singapore','SGP'),('GS','South Georgia and the South Sandwich Islands','SGS'),('SH','Saint Helena','SHN'),('SJ','Svalbard and Jan Mayen','SJM'),('SB','Solomon Islands','SLB'),('SL','Sierra Leone','SLE'),('SV','El Salvador','SLV'),('SM','San Marino','SMR'),('SO','Somalia','SOM'),('PM','Saint Pierre and Miquelon','SPM'),('RS','Serbia','SRB'),('SS','South Sudan','SSD'),('ST','Sao Tome and Principe','STP'),('SR','Suriname','SUR'),('SK','Slovakia','SVK'),('SI','Slovenia','SVN'),('SE','Sweden','SWE'),('SZ','Swaziland','SWZ'),('SX','Sint Maarten','SXM'),('SC','Seychelles','SYC'),('SY','Syrian Arab Republic','SYR'),('TC','Turks and Caicos Islands','TCA'),('TD','Chad','TCD'),('TG','Togo','TGO'),('TH','Thailand','THA'),('TJ','Tajikistan','TJK'),('TK','Tokelau','TKL'),('TM','Turkmenistan','TKM'),('TL','Timor-Leste','TLS'),('TO','Tonga','TON'),('TT','Trinidad and Tobago','TTO'),('TN','Tunisia','TUN'),('TR','Turkey','TUR'),('TV','Tuvalu','TUV'),('TW','Taiwan','TWN'),('TZ','Tanzania','TZA'),('UG','Uganda','UGA'),('UA','Ukraine','UKR'),('UM','United States Minor Outlying Islands','UMI'),('UY','Uruguay','URY'),('US','United States','USA'),('UZ','Uzbekistan','UZB'),('VA','Vatican City','VAT'),('VC','Saint Vincent and the Grenadines','VCT'),('VE','Venezuela','VEN'),('VG','Virgin Islands, British','VGB'),('VI','Virgin Islands, U.S.','VIR'),('VN','Viet Nam','VNM'),('VU','Vanuatu','VUT'),('WF','Wallis and Futuna','WLF'),('WS','Samoa','WSM'),('XK','Kosovo','XKX'),('YE','Yemen','YEM'),('ZA','South Africa','ZAF'),('ZM','Zambia','ZMB'),('ZW','Zimbabwe','ZWE');
+/*!40000 ALTER TABLE `state` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `stati`
+-- Table structure for table `supplier`
 --
 
-DROP TABLE IF EXISTS `stati`;
+DROP TABLE IF EXISTS `supplier`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `stati` (
-  `ID` int NOT NULL,
-  `Nome` varchar(128) NOT NULL,
-  `SiglaNumerica` char(3) NOT NULL,
-  `Sigla3` char(3) NOT NULL,
-  `Sigla2` char(2) NOT NULL,
-  PRIMARY KEY (`ID`)
+CREATE TABLE `supplier` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  `Rating` int DEFAULT NULL,
+  `FreeShippingThreshold` double DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  CONSTRAINT `supplier_chk_1` CHECK ((((`Rating` >= 1) and (`Rating` <= 5)) or (`Rating` is null))),
+  CONSTRAINT `supplier_chk_2` CHECK (((`FreeShippingThreshold` >= 0) or (`FreeShippingThreshold` is null)))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `stati`
+-- Dumping data for table `supplier`
 --
 
-LOCK TABLES `stati` WRITE;
-/*!40000 ALTER TABLE `stati` DISABLE KEYS */;
-INSERT INTO `stati` VALUES (1,'Afghanistan','004','AFG','AF'),(2,'Albania','008','ALB','AL'),(3,'Algeria','012','DZA','DZ'),(4,'Andorra','020','AND','AD'),(5,'Angola','024','AGO','AO'),(6,'Anguilla','660','AIA','AI'),(7,'Antartide','010','ATA','AQ'),(8,'Antigua e Barbuda','028','ATG','AG'),(9,'Arabia Saudita','682','SAU','SA'),(10,'Argentina','032','ARG','AR'),(11,'Armenia','051','ARM','AM'),(12,'Aruba','533','ABW','AW'),(13,'Australia','036','AUS','AU'),(14,'Austria','040','AUT','AT'),(15,'Azerbaigian','031','AZE','AZ'),(16,'Bahamas','044','BHS','BS'),(17,'Bahrein','048','BHR','BH'),(18,'Bangladesh','050','BGD','BD'),(19,'Barbados','052','BRB','BB'),(20,'Belgio','056','BEL','BE'),(21,'Belize','084','BLZ','BZ'),(22,'Benin','204','BEN','BJ'),(23,'Bermuda','060','BMU','BM'),(24,'Bhutan','064','BTN','BT'),(25,'Bielorussia','112','BLR','BY'),(26,'Birmania','104','MMR','MM'),(27,'Bolivia','068','BOL','BO'),(28,'Bosnia ed Erzegovina','070','BIH','BA'),(29,'Botswana','072','BWA','BW'),(30,'Brasile','076','BRA','BR'),(31,'Brunei','096','BRN','BN'),(32,'Bulgaria','100','BGR','BG'),(33,'Burkina Faso','854','BFA','BF'),(34,'Burundi','108','BDI','BI'),(35,'Cambogia','116','KHM','KH'),(36,'Camerun','120','CMR','CM'),(37,'Canada','124','CAN','CA'),(38,'Capo Verde','132','CPV','CV'),(39,'Ciad','148','TCD','TD'),(40,'Cile','152','CHL','CL'),(41,'Cina','156','CHN','CN'),(42,'Cipro','196','CYP','CY'),(43,'Citt','336','VAT','VA'),(44,'Colombia','170','COL','CO'),(45,'Comore','174','COM','KM'),(46,'Corea del Nord','408','PRK','KP'),(47,'Corea del Sud','410','KOR','KR'),(48,'Costa d\'Avorio','384','CIV','CI'),(49,'Costa Rica','188','CRI','CR'),(50,'Croazia','191','HRV','HR'),(51,'Cuba','192','CUB','CU'),(52,'Cura','531','CUW','CW'),(53,'Danimarca','208','DNK','DK'),(54,'Dominica','212','DMA','DM'),(55,'Ecuador','218','ECU','EC'),(56,'Egitto','818','EGY','EG'),(57,'El Salvador','222','SLV','SV'),(58,'Emirati Arabi Uniti','784','ARE','AE'),(59,'Eritrea','232','ERI','ER'),(60,'Estonia','233','EST','EE'),(61,'Etiopia','231','ETH','ET'),(62,'Figi','242','FJI','FJ'),(63,'Filippine','608','PHL','PH'),(64,'Finlandia','246','FIN','FI'),(65,'Francia','250','FRA','FR'),(66,'Gabon','266','GAB','GA'),(67,'Gambia','270','GMB','GM'),(68,'Georgia','268','GEO','GE'),(69,'Georgia del Sud e isole Sandwich meridionali','239','SGS','GS'),(70,'Germania','276','DEU','DE'),(71,'Ghana','288','GHA','GH'),(72,'Giamaica','388','JAM','JM'),(73,'Giappone','392','JPN','JP'),(74,'Gibilterra','292','GIB','GI'),(75,'Gibuti','262','DJI','DJ'),(76,'Giordania','400','JOR','JO'),(77,'Grecia','300','GRC','GR'),(78,'Grenada','308','GRD','GD'),(79,'Groenlandia','304','GRL','GL'),(80,'Guadalupa','312','GLP','GP'),(81,'Guam','316','GUM','GU'),(82,'Guatemala','320','GTM','GT'),(83,'Guernsey','831','GGY','GG'),(84,'Guinea','324','GIN','GN'),(85,'Guinea-Bissau','624','GNB','GW'),(86,'Guinea Equatoriale','226','GNQ','GQ'),(87,'Guyana','328','GUY','GY'),(88,'Guyana francese','254','GUF','GF'),(89,'Haiti','332','HTI','HT'),(90,'Honduras','340','HND','HN'),(91,'Hong Kong','344','HKG','HK'),(92,'India','356','IND','IN'),(93,'Indonesia','360','IDN','ID'),(94,'Iran','364','IRN','IR'),(95,'Iraq','368','IRQ','IQ'),(96,'Irlanda','372','IRL','IE'),(97,'Islanda','352','ISL','IS'),(98,'Isola Bouvet','074','BVT','BV'),(99,'Isola di Man','833','IMN','IM'),(100,'Isola di Natale','162','CXR','CX'),(101,'Isola Norfolk','574','NFK','NF'),(102,'Isole ','248','ALA','AX'),(103,'Isole BES','535','BES','BQ'),(104,'Isole Cayman','136','CYM','KY'),(105,'Isole Cocos (Keeling)','166','CCK','CC'),(106,'Isole Cook','184','COK','CK'),(107,'Isole Faer Oer','234','FRO','FO'),(108,'Isole Falkland','238','FLK','FK'),(109,'Isole Heard e McDonald','334','HMD','HM'),(110,'Isole Marianne Settentrionali','580','MNP','MP'),(111,'Isole Marshall','584','MHL','MH'),(112,'Isole minori esterne degli Stati Uniti','581','UMI','UM'),(113,'Isole Pitcairn','612','PCN','PN'),(114,'Isole Salomone','090','SLB','SB'),(115,'Isole Vergini britanniche','092','VGB','VG'),(116,'Isole Vergini americane','850','VIR','VI'),(117,'Israele','376','ISR','IL'),(118,'Italia','380','ITA','IT'),(119,'Jersey','832','JEY','JE'),(120,'Kazakistan','398','KAZ','KZ'),(121,'Kenya','404','KEN','KE'),(122,'Kirghizistan','417','KGZ','KG'),(123,'Kiribati','296','KIR','KI'),(124,'Kuwait','414','KWT','KW'),(125,'Laos','418','LAO','LA'),(126,'Lesotho','426','LSO','LS'),(127,'Lettonia','428','LVA','LV'),(128,'Libano','422','LBN','LB'),(129,'Liberia','430','LBR','LR'),(130,'Libia','434','LBY','LY'),(131,'Liechtenstein','438','LIE','LI'),(132,'Lituania','440','LTU','LT'),(133,'Lussemburgo','442','LUX','LU'),(134,'Macao','446','MAC','MO'),(135,'Macedonia','807','MKD','MK'),(136,'Madagascar','450','MDG','MG'),(137,'Malawi','454','MWI','MW'),(138,'Malesia','458','MYS','MY'),(139,'Maldive','462','MDV','MV'),(140,'Mali','466','MLI','ML'),(141,'Malta','470','MLT','MT'),(142,'Marocco','504','MAR','MA'),(143,'Martinica','474','MTQ','MQ'),(144,'Mauritania','478','MRT','MR'),(145,'Mauritius','480','MUS','MU'),(146,'Mayotte','175','MYT','YT'),(147,'Messico','484','MEX','MX'),(148,'Micronesia','583','FSM','FM'),(149,'Moldavia','498','MDA','MD'),(150,'Mongolia','496','MNG','MN'),(151,'Montenegro','499','MNE','ME'),(152,'Montserrat','500','MSR','MS'),(153,'Mozambico','508','MOZ','MZ'),(154,'Namibia','516','NAM','NA'),(155,'Nauru','520','NRU','NR'),(156,'Nepal','524','NPL','NP'),(157,'Nicaragua','558','NIC','NI'),(158,'Niger','562','NER','NE'),(159,'Nigeria','566','NGA','NG'),(160,'Niue','570','NIU','NU'),(161,'Norvegia','578','NOR','NO'),(162,'Nuova Caledonia','540','NCL','NC'),(163,'Nuova Zelanda','554','NZL','NZ'),(164,'Oman','512','OMN','OM'),(165,'Paesi Bassi','528','NLD','NL'),(166,'Pakistan','586','PAK','PK'),(167,'Palau','585','PLW','PW'),(168,'Palestina','275','PSE','PS'),(169,'Panam','591','PAN','PA'),(170,'Papua Nuova Guinea','598','PNG','PG'),(171,'Paraguay','600','PRY','PY'),(172,'Per','604','PER','PE'),(173,'Polinesia Francese','258','PYF','PF'),(174,'Polonia','616','POL','PL'),(175,'Porto Rico','630','PRI','PR'),(176,'Portogallo','620','PRT','PT'),(177,'Monaco','492','MCO','MC'),(178,'Qatar','634','QAT','QA'),(179,'Regno Unito','826','GBR','GB'),(180,'RD del Congo','180','COD','CD'),(181,'Rep. Ceca','203','CZE','CZ'),(182,'Rep. Centrafricana','140','CAF','CF'),(183,'Rep. del Congo','178','COG','CG'),(184,'Rep. Dominicana','214','DOM','DO'),(185,'Riunione','638','REU','RE'),(186,'Romania','642','ROU','RO'),(187,'Ruanda','646','RWA','RW'),(188,'Russia','643','RUS','RU'),(189,'Sahara Occidentale','732','ESH','EH'),(190,'Saint Kitts e Nevis','659','KNA','KN'),(191,'Santa Lucia','662','LCA','LC'),(192,'Sant\'Elena, Ascensione e Tristan da Cunha','654','SHN','SH'),(193,'Saint Vincent e Grenadine','670','VCT','VC'),(194,'Saint-Barth','652','BLM','BL'),(195,'Saint-Martin','663','MAF','MF'),(196,'Saint-Pierre e Miquelon','666','SPM','PM'),(197,'Samoa','882','WSM','WS'),(198,'Samoa Americane','016','ASM','AS'),(199,'San Marino','674','SMR','SM'),(200,'S','678','STP','ST'),(201,'Senegal','686','SEN','SN'),(202,'Serbia','688','SRB','RS'),(203,'Seychelles','690','SYC','SC'),(204,'Sierra Leone','694','SLE','SL'),(205,'Singapore','702','SGP','SG'),(206,'Sint Maarten','534','SXM','SX'),(207,'Siria','760','SYR','SY'),(208,'Slovacchia','703','SVK','SK'),(209,'Slovenia','705','SVN','SI'),(210,'Somalia','706','SOM','SO'),(211,'Spagna','724','ESP','ES'),(212,'Sri Lanka','144','LKA','LK'),(213,'Stati Uniti','840','USA','US'),(214,'Sudafrica','710','ZAF','ZA'),(215,'Sudan','729','SDN','SD'),(216,'Sudan del Sud','728','SSD','SS'),(217,'Suriname','740','SUR','SR'),(218,'Svalbard e Jan Mayen','744','SJM','SJ'),(219,'Svezia','752','SWE','SE'),(220,'Svizzera','756','CHE','CH'),(221,'Swaziland','748','SWZ','SZ'),(222,'Taiwan','158','TWN','TW'),(223,'Tagikistan','762','TJK','TJ'),(224,'Tanzania','834','TZA','TZ'),(225,'Terre australi e antartiche francesi','260','ATF','TF'),(226,'Territorio britannico dell\'oceano Indiano','086','IOT','IO'),(227,'Thailandia','764','THA','TH'),(228,'Timor Est','626','TLS','TL'),(229,'Togo','768','TGO','TG'),(230,'Tokelau','772','TKL','TK'),(231,'Tonga','776','TON','TO'),(232,'Trinidad e Tobago','780','TTO','TT'),(233,'Tunisia','788','TUN','TN'),(234,'Turchia','792','TUR','TR'),(235,'Turkmenistan','795','TKM','TM'),(236,'Turks e Caicos','796','TCA','TC'),(237,'Tuvalu','798','TUV','TV'),(238,'Ucraina','804','UKR','UA'),(239,'Uganda','800','UGA','UG'),(240,'Ungheria','348','HUN','HU'),(241,'Uruguay','858','URY','UY'),(242,'Uzbekistan','860','UZB','UZ'),(243,'Vanuatu','548','VUT','VU'),(244,'Venezuela','862','VEN','VE'),(245,'Vietnam','704','VNM','VN'),(246,'Wallis e Futuna','876','WLF','WF'),(247,'Yemen','887','YEM','YE'),(248,'Zambia','894','ZMB','ZM'),(249,'Zimbabwe','716','ZWE','ZW');
-/*!40000 ALTER TABLE `stati` ENABLE KEYS */;
+LOCK TABLES `supplier` WRITE;
+/*!40000 ALTER TABLE `supplier` DISABLE KEYS */;
+/*!40000 ALTER TABLE `supplier` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `utente`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `utente`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `utente` (
+CREATE TABLE `user` (
   `Email` varchar(255) NOT NULL,
-  `Nome` varchar(255) NOT NULL,
-  `Cognome` varchar(255) NOT NULL,
-  `Stato` char(3) NOT NULL,
-  `Citta` varchar(255) NOT NULL,
-  `Via` varchar(255) NOT NULL,
-  `Civico` varchar(7) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Surname` varchar(255) NOT NULL,
+  `StateIso3` char(3) DEFAULT NULL,
+  `City` varchar(255) NOT NULL,
+  `Street` varchar(255) NOT NULL,
+  `CivicNumber` varchar(7) NOT NULL,
   `PasswordHash` binary(32) NOT NULL,
   `Salt` int NOT NULL,
   PRIMARY KEY (`Email`),
-  CONSTRAINT `utente_chk_1` CHECK ((`Email` like _utf8mb4'%@%.%'))
+  CONSTRAINT `user_chk_1` CHECK ((`Email` like _utf8mb4'%@%.%'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `utente`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `utente` WRITE;
-/*!40000 ALTER TABLE `utente` DISABLE KEYS */;
-/*!40000 ALTER TABLE `utente` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES ('alessandro.annechini@mail.polimi.it','Alessandro','Annechini','ITA','Milano','Via Mario Rossi','1C',_binary 'À¼’@nÀ\n$O8ð^P#ë¹œ°(\ä6E\çWü\ë[U',649),('nicole.filippi@mail.polimi.it','Nicole','Filippi','ITA','Milano','Via Luigi Verdi','23',_binary '\éÁ9§L„=\nŠ>^)$]\èx´D·c\ç«Jh0œY\Ü~',137);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -240,4 +239,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-15 18:34:49
+-- Dump completed on 2023-04-21  9:47:28
