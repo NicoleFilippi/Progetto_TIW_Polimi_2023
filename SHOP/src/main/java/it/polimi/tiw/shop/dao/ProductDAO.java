@@ -75,4 +75,47 @@ private Connection con;
 		
 		return prodList;
 	}
+	
+	public List<Product> keywordSearch(String keyword) throws SQLException{
+		List<Product> prodList = new ArrayList<>();
+		
+		String query = " SELECT id,name,photopath,description,MIN(price) FROM product JOIN product_supplier ON id = productid WHERE name LIKE ? OR description LIKE ? GROUP BY id,name,photopath ORDER BY MIN(price) ";
+		PreparedStatement pstatement = con.prepareStatement(query);
+		
+		pstatement.setString(1, "%" + keyword + "%");
+		pstatement.setString(2, "%" + keyword + "%");
+		
+		ResultSet result = pstatement.executeQuery();
+		
+		while(result.next()) {
+			Product tmp = new Product();
+			tmp.setId(result.getInt("id"));
+			tmp.setName(result.getString("name"));
+			tmp.setPhotoPath(result.getString("photopath"));
+			tmp.setMinPrice(result.getDouble("MIN(price)"));
+			tmp.setDescription(result.getString("description"));
+			prodList.add(tmp);
+		}
+		return prodList;	
+	}
+	
+	public Product getById(int id)  throws SQLException {
+		
+		String query = " SELECT id,name,photopath,description,MIN(price) FROM product JOIN product_supplier ON id = productid WHERE id = ? GROUP BY id,name,photopath,description ";
+		PreparedStatement pstatement = con.prepareStatement(query);
+		pstatement.setInt(1, id);
+		
+		ResultSet result = pstatement.executeQuery();
+		Product tmp = null;
+		
+		if(result.next()) {
+			tmp = new Product();
+			tmp.setId(result.getInt("id"));
+			tmp.setName(result.getString("name"));
+			tmp.setPhotoPath(result.getString("photopath"));
+			tmp.setMinPrice(result.getDouble("MIN(price)"));
+			tmp.setDescription(result.getString("description"));
+		}
+		return tmp;	
+	}
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>SIGN UP</title>
+</head>
+<body>
+	<h1>SIGN UP</h1>
+	<p> Sign up:</p>
+	
+	<form action="AddUser" method="POST"><table>
+		<tr>
+			<td>Name: </td>
+			<td><input type="text" name="name" size=40 th:value=" ${prevName}" required></td>
+		</tr>
+		<tr>
+			<td>Surname: </td>
+			<td> <input type="text" name="surname" size=40 th:value=" ${prevSurname}" required> </td>
+		</tr>
+		<tr>
+			<td>Email: </td>
+			<td><input type="email" name="email" size=40 th:value=" ${prevEmail}" required> </td>
+		</tr>
+		<tr>
+			<td>Password: </td>
+			<td><input type="password" name="password" th:value=" ${prevPassword}" required></td>
+		</tr>
+		<tr>
+			<td>Confirm password: </td>
+			<td><input type="password" name="confpwd" th:value=" ${prevConfpwd}" required></td>
+		</tr>
+		<tr>
+			<td>Street: </td>
+			<td><input type="text" name="street" size=40 th:value=" ${prevStreet}" required></td>
+		</tr>
+		<tr>
+			<td>Civic Number: </td>
+			<td><input type="text" name="civicNumber" th:value=" ${prevCivicNumber}" required> </td>
+		</tr>
+		<tr>
+			<td>City: </td>
+			<td><input type="text" name="city" size=40 th:value=" ${prevCity}" required></td>
+		</tr>
+		<tr>
+			<td>State: </td>
+			<td><select name="state" id="state">
+				    <option th:each="state : ${states}" th:value="${state.iso3}" th:text="${state.name}" th:selected="${state.iso3==prevState}"></option>
+				    <option th:value="${prevState}" th:text="${prevState}"></option>
+				</select> </td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" value="Sign Up"></td>
+		</tr>
+	</table></form>
+	
+	<p th:text=" ${error}"></p>
+	
+</body>
+</html>

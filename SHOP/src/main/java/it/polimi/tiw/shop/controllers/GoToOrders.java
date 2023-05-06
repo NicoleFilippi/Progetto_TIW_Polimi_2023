@@ -18,22 +18,22 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.tiw.shop.beans.Product;
+import it.polimi.tiw.shop.beans.Order;
 import it.polimi.tiw.shop.beans.User;
-import it.polimi.tiw.shop.dao.ProductDAO;
+import it.polimi.tiw.shop.dao.PurchaseDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
 
-@WebServlet("/Home")
-public class GoToHome extends HttpServlet {
+@WebServlet("/Orders")
+public class GoToOrders extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	private Connection connection = null;
-
-	public GoToHome() {
-		super();
-	}
-
-	public void init() throws ServletException {
+       
+    public GoToOrders() {
+        super();
+    }
+    
+    public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -43,42 +43,34 @@ public class GoToHome extends HttpServlet {
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
 		
-		//Load last seen products
-		ServletContext servletContext = getServletContext();
-		User user = (User) session.getAttribute("user");
-		ProductDAO pdao = new ProductDAO(connection);
-		List<Product> prodList = null;
+		final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
+		
+		PurchaseDAO puDAO = new PurchaseDAO(connection);
+		List<Order> orders;
 		try {
-			prodList = pdao.lastVisualized(user.getEmail(), servletContext.getInitParameter("defaultCategory"));
-		} catch(Exception e) {
-			// TODO handle exception
-			final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
-			context.setVariable("error", "SQL error: " + e.getMessage());
-			templateEngine.process("/home.html", context, response.getWriter());
+			orders=puDAO.getByUser((User)session.getAttribute("user"));
+		}catch(Exception e) {
+			//TODO handle exception
+			final WebContext errcontext = new WebContext(request, response, getServletContext(), request.getLocale());
+			errcontext.setVariable("error", "SQL error: " + e.getMessage());
+			templateEngine.process("/orders.html", errcontext, response.getWriter());
 			return;
 		}
 		
-		// Load the Home page
+		context.setVariable("orders", orders);
+		templateEngine.process("/orders.html", context, response.getWriter());
+		return;
 		
-		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
-		
-		context.setVariable("productList", prodList);
-		
-		//context.setVariable("prod1", servletContext.getInitParameter("defaultCategory"));
-		
-		templateEngine.process("/home.html", context, response.getWriter());
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
+	
 	public void destroy() {
 		try {
 			ConnectionHandler.closeConnection(connection);

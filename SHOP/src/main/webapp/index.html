@@ -9,12 +9,14 @@
 	<p> Welcome to our shop! Insert email and password:</p>
 	
 	<form action="CheckLogin" method="POST">
-		Email: <input type="text" name="email" size=40 th:value=" ${prevEmail}" required> <br><br>
+		Email: <input type="email" name="email" size=40 th:value=" ${prevEmail}" required> <br><br>
 		Password: <input type="password" name="password" th:value=" ${prevPassword}" required><br><br>
 		<input type="submit" value="Login">
-	</form>
+	</form> <br><br>
 	
-	<p th:text=" ${errorMex}"></p>
+	If you don't have any account: <a href="SignUp"><button>Sign Up</button></a>
+	
+	<p th:text=" ${error}"></p>
 	
 </body>
 </html>

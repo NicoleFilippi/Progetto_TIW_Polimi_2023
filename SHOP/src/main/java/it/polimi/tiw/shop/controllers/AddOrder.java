@@ -3,7 +3,6 @@ package it.polimi.tiw.shop.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,26 +13,26 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.tiw.shop.beans.Product;
+import it.polimi.tiw.shop.beans.Cart;
 import it.polimi.tiw.shop.beans.User;
-import it.polimi.tiw.shop.dao.ProductDAO;
+import it.polimi.tiw.shop.dao.PurchaseDAO;
+import it.polimi.tiw.shop.dao.SupplierDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
 
-@WebServlet("/Home")
-public class GoToHome extends HttpServlet {
+@WebServlet("/AddOrder")
+public class AddOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	private Connection connection = null;
-
-	public GoToHome() {
-		super();
-	}
-
-	public void init() throws ServletException {
+       
+    public AddOrder() {
+        super();
+    }
+    
+    public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -43,42 +42,46 @@ public class GoToHome extends HttpServlet {
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
 		
-		//Load last seen products
-		ServletContext servletContext = getServletContext();
-		User user = (User) session.getAttribute("user");
-		ProductDAO pdao = new ProductDAO(connection);
-		List<Product> prodList = null;
+		int supplierId=0;
+		
 		try {
-			prodList = pdao.lastVisualized(user.getEmail(), servletContext.getInitParameter("defaultCategory"));
-		} catch(Exception e) {
-			// TODO handle exception
-			final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
-			context.setVariable("error", "SQL error: " + e.getMessage());
-			templateEngine.process("/home.html", context, response.getWriter());
+			supplierId = Integer.parseInt(request.getParameter("supplierId"));
+		}catch(Exception e) {
+			//TODO handle error
 			return;
 		}
 		
-		// Load the Home page
+		if(supplierId<=0) {
+			//TODO handle error
+			return;
+		}
 		
-		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
+		if(((Cart)session.getAttribute("cart")).getItems().get(supplierId)==null) {
+			//TODO handle error
+			return;
+		}
 		
-		context.setVariable("productList", prodList);
-		
-		//context.setVariable("prod1", servletContext.getInitParameter("defaultCategory"));
-		
-		templateEngine.process("/home.html", context, response.getWriter());
+		PurchaseDAO puDAO = new PurchaseDAO(connection);
+		try {
+			puDAO.addPurchase(new SupplierDAO(connection).getById(supplierId), (Cart)session.getAttribute("cart"), (User)session.getAttribute("user"));
+		} catch (SQLException e) {
+			//TODO handle error
+			return;
+		}
+				
+		String path = getServletContext().getContextPath() + "/Orders";
+		response.sendRedirect(path);
+		return;	
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
+	
 	public void destroy() {
 		try {
 			ConnectionHandler.closeConnection(connection);
@@ -86,4 +89,5 @@ public class GoToHome extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+
 }

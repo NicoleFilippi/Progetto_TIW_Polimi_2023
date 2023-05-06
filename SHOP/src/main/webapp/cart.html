@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>CART</title>
+</head>
+<body>
+	<a href="Home"><button>Home</button></a>
+	<a href="Orders"><button>Orders</button></a>
+	
+	<h1>CART</h1>
+	<p> Your cart: </p>
+	
+	<div th:each="supp : ${session.cart.suppliers}">		
+		<table border=1>
+			<tr>
+				<td colspan="4" th:text="${supp.name}">Supplier Name</td>
+			</tr>
+			<tr th:each="prod : ${session.cart.items[supp.id]}">
+				<td th:text="${prod.product.name}">Product Name</td>
+				<td th:text="${prod.price + ' $'}">0 $</td>
+				<td th:text="${session.cart.quantities[prod.id]}">0</td>
+				<td th:text="${session.cart.quantities[prod.id]*prod.price + ' $'}">0 $</td>
+			</tr>
+			<tr>
+				<td colspan="2">Shipping cost: </td>
+				<td colspan="2" th:text="${supp.shippingCost + ' $'}">0 $</td>
+			</tr>
+			<tr>
+				<td colspan="2">Total cost: </td>
+				<td colspan="2" th:text="${supp.totalCost + ' $'}">0 $</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<form action="AddOrder" method="get">
+				 		<input type="hidden" name="supplierId" th:value="${supp.id}">
+				 		<input type="submit" value="Order">
+			 		</form>
+		 		</td>
+			</tr>
+		</table>
+		<br>
+	</div>
+	
+	<p th:text=" ${error}"></p>
+	
+</body>
+</html>

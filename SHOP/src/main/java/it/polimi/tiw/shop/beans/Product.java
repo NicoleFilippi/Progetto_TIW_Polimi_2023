@@ -44,4 +44,7 @@ public class Product {
 	public void setMinPrice(double minPrice) {
 		this.minPrice = minPrice;
 	}
+	public boolean equals(Product p) {
+		return (p.getId()==id);
+	}
 }

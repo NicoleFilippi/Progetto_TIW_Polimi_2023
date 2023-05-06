@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
@@ -17,6 +18,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.tiw.shop.beans.Cart;
 import it.polimi.tiw.shop.beans.User;
 import it.polimi.tiw.shop.dao.UserDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
@@ -43,6 +45,14 @@ public class CheckLogin extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	HttpSession session = request.getSession();
+    	String homepath = request.getServletContext().getContextPath() + "/Home";
+    	if(session.getAttribute("user")!=null) {
+    		response.sendRedirect(homepath);
+    		return;
+    	}
+    	
 		String email = StringEscapeUtils.escapeJava(request.getParameter("email"));
 		String password = StringEscapeUtils.escapeJava(request.getParameter("password"));
 		
@@ -50,7 +60,7 @@ public class CheckLogin extends HttpServlet {
 			//TODO GESTIONE ERRORE DI LOGIN
 			
 			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
-			context.setVariable("errorMex", "Insert email and password");
+			context.setVariable("error", "Insert email and password");
 			context.setVariable("prevEmail", email);
 			context.setVariable("prevPassword", password);
 			templateEngine.process("/index.html", context, response.getWriter());
@@ -66,7 +76,7 @@ public class CheckLogin extends HttpServlet {
 			//TODO HANDLE EXCEPTION
 			
 			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
-			context.setVariable("errorMex", "Server error, try again later ");
+			context.setVariable("error", "Server error, try again later ");
 			context.setVariable("prevEmail", email);
 			context.setVariable("prevPassword", password);
 			templateEngine.process("/index.html", context, response.getWriter());
@@ -78,7 +88,7 @@ public class CheckLogin extends HttpServlet {
 			// LOGIN ERRATO
 			
 			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
-			context.setVariable("errorMex", "Incorrect credentials ");
+			context.setVariable("error", "Incorrect credentials ");
 			context.setVariable("prevEmail", email);
 			context.setVariable("prevPassword", password);
 			templateEngine.process("/index.html", context, response.getWriter());
@@ -86,7 +96,9 @@ public class CheckLogin extends HttpServlet {
 			
 		}
 		else {
-			request.getSession().setAttribute("user", user);
+			session.setAttribute("user", user);
+			if(session.getAttribute("cart")==null)
+				session.setAttribute("cart", new Cart());
 			
 			//TODO GESTIONE LOGIN CORRETTO
 
