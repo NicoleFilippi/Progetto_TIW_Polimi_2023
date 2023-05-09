@@ -58,61 +58,131 @@ public class AddUser extends HttpServlet {
 		String state = StringEscapeUtils.escapeJava(request.getParameter("state"));
 		
 		if(name == null || name.equals("")) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "Name required");
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
 		if(surname == null || surname.equals("")) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "Surname required");
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
 		if(email == null || email.equals("")) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "Email required");
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
 		if(password == null || password.equals("")) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "Password required");
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
 		if(confpwd == null || confpwd.equals("")) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "Confirm password required");
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
 		if(street == null || street.equals("")) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "Street required");
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
 		if(civicNumber == null || civicNumber.equals("")) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "Civic number required");
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
 		if(city == null || city.equals("")) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "City required");
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
 		if(state == null || state.equals("")) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "State required");
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
 		if(!password.equals(confpwd)) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "Passwords are different");
 			context.setVariable("prevPassword", "");
 			context.setVariable("prevConfpwd", "");
@@ -124,7 +194,14 @@ public class AddUser extends HttpServlet {
 		StateDAO sdao = new StateDAO(connection);
 		
 		if(!udao.isValidEmail(email)) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "Invalid email");
 			context.setVariable("prevEmail", "");
 			templateEngine.process("/signup.html", context, response.getWriter());
@@ -138,20 +215,34 @@ public class AddUser extends HttpServlet {
 			validState = sdao.isValid(state);
 			freeEmail = udao.isFreeEmail(email);
 		}catch(SQLException e) {
-			setErrorParameters(request,context);
-			context.setVariable("error", "SQL Error: " + e.getMessage());
-			templateEngine.process("/signup.html", context, response.getWriter());
+			request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		if(!validState) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "Invalid email");
 			context.setVariable("prevState", sdao.getClientState(request));
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
 		if(!freeEmail) {
-			setErrorParameters(request,context);
+			try {
+				setErrorParameters(request,context);
+			} catch (SQLException e) {
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
+				return;
+			}
 			context.setVariable("error", "An account with this email already exists");
 			context.setVariable("prevEmail", "");
 			templateEngine.process("/signup.html", context, response.getWriter());
@@ -161,9 +252,9 @@ public class AddUser extends HttpServlet {
 		try {
 			udao.addUser(email, name, surname, state, city, street, civicNumber, password);
 		}catch(SQLException e) {
-			setErrorParameters(request,context);
-			context.setVariable("error", "SQL Error: " + e.getMessage());
-			templateEngine.process("/signup.html", context, response.getWriter());
+			request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		
@@ -173,7 +264,7 @@ public class AddUser extends HttpServlet {
 		
 	}
 	
-	private void setErrorParameters(HttpServletRequest request, WebContext context) {
+	private void setErrorParameters(HttpServletRequest request, WebContext context) throws SQLException {
 		context.setVariable("prevName", StringEscapeUtils.escapeJava(request.getParameter("name")));
 		context.setVariable("prevSurname", StringEscapeUtils.escapeJava(request.getParameter("surname")));
 		context.setVariable("prevEmail", StringEscapeUtils.escapeJava(request.getParameter("email")));
@@ -183,15 +274,7 @@ public class AddUser extends HttpServlet {
 		context.setVariable("prevCivicNumber", StringEscapeUtils.escapeJava(request.getParameter("civicNumber")));
 		context.setVariable("prevCity", StringEscapeUtils.escapeJava(request.getParameter("city")));
 		context.setVariable("prevState", StringEscapeUtils.escapeJava(request.getParameter("state")));
-		
-		List<State> states;
-		try {
-			states=new StateDAO(connection).getStates();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
-		}
-				
+		List<State> states = new StateDAO(connection).getStates();
 		context.setVariable("states", states);
 		
 	}

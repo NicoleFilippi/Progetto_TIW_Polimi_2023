@@ -56,10 +56,9 @@ public class GoToHome extends HttpServlet {
 		try {
 			prodList = pdao.lastVisualized(user.getEmail(), servletContext.getInitParameter("defaultCategory"));
 		} catch(Exception e) {
-			// TODO handle exception
-			final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
-			context.setVariable("error", "SQL error: " + e.getMessage());
-			templateEngine.process("/home.html", context, response.getWriter());
+			request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		

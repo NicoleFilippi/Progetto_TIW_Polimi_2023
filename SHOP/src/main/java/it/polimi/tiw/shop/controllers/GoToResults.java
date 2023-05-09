@@ -64,7 +64,7 @@ public class GoToResults extends HttpServlet {
 		if(keyword==null || keyword.equals("")) keyword=null;
 		
 		if(keyword==null && productId < 0) {
-			//TODO handle exception
+			
 			final WebContext errcontext = new WebContext(request, response, getServletContext(), request.getLocale());
 			errcontext.setVariable("error", "Invalid Parameters");
 			templateEngine.process("/results.html", errcontext, response.getWriter());
@@ -78,10 +78,9 @@ public class GoToResults extends HttpServlet {
 			try{
 				prodList = pdao.keywordSearch(keyword);
 			} catch(SQLException e) {
-				//TODO handle exception
-				final WebContext errcontext = new WebContext(request, response, getServletContext(), request.getLocale());
-				errcontext.setVariable("error", "SQL error: " + e.getMessage());
-				templateEngine.process("/results.html", errcontext, response.getWriter());
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
 				return;
 			}
 			context.setVariable("keyword", keyword);
@@ -96,10 +95,9 @@ public class GoToResults extends HttpServlet {
 			try{
 				prodDet = pdao.getById(productId);
 			} catch(SQLException e) {
-				//TODO handle exception
-				final WebContext errcontext = new WebContext(request, response, getServletContext(), request.getLocale());
-				errcontext.setVariable("error", "SQL error: " + e.getMessage());
-				templateEngine.process("/results.html", errcontext, response.getWriter());
+				request.setAttribute("logout",true);
+				request.setAttribute("error",null);
+				request.getRequestDispatcher("Error").forward(request, response);
 				return;
 			}
 			

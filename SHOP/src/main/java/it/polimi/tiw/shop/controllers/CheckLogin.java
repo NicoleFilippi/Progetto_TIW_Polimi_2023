@@ -35,7 +35,11 @@ public class CheckLogin extends HttpServlet {
     }
     
     public void init() throws ServletException {
-    	connection = ConnectionHandler.getConnection(getServletContext());
+    	try {
+    		connection = ConnectionHandler.getConnection(getServletContext());
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -45,6 +49,13 @@ public class CheckLogin extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	if(connection==null) {
+    		request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
+			return;
+    	}
     	
     	HttpSession session = request.getSession();
     	String homepath = request.getServletContext().getContextPath() + "/Home";
@@ -58,7 +69,6 @@ public class CheckLogin extends HttpServlet {
 		
 		if(email == null || password == null || email.isEmpty() || password.isEmpty()) {
 			//TODO GESTIONE ERRORE DI LOGIN
-			
 			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
 			context.setVariable("error", "Insert email and password");
 			context.setVariable("prevEmail", email);
@@ -73,20 +83,15 @@ public class CheckLogin extends HttpServlet {
 		try {
 			user = userDao.checkCredentials(email, password);
 		} catch (SQLException e) {
-			//TODO HANDLE EXCEPTION
-			
-			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
-			context.setVariable("error", "Server error, try again later ");
-			context.setVariable("prevEmail", email);
-			context.setVariable("prevPassword", password);
-			templateEngine.process("/index.html", context, response.getWriter());
+			request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 			
 		}
 		
 		if(user == null) {
 			// LOGIN ERRATO
-			
 			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
 			context.setVariable("error", "Incorrect credentials ");
 			context.setVariable("prevEmail", email);

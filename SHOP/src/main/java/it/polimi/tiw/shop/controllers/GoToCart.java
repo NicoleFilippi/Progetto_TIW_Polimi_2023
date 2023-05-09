@@ -37,7 +37,6 @@ public class GoToCart extends HttpServlet {
 		final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
 		templateEngine.process("/cart.html", context, response.getWriter());
 		return;
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

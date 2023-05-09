@@ -51,17 +51,23 @@ public class AddOrder extends HttpServlet {
 		try {
 			supplierId = Integer.parseInt(request.getParameter("supplierId"));
 		}catch(Exception e) {
-			//TODO handle error
+			request.setAttribute("logout",false);
+			request.setAttribute("error","Invalid supplier ID");
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		
 		if(supplierId<=0) {
-			//TODO handle error
+			request.setAttribute("logout",false);
+			request.setAttribute("error","Invalid supplier ID");
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		
 		if(((Cart)session.getAttribute("cart")).getItems().get(supplierId)==null) {
-			//TODO handle error
+			request.setAttribute("logout",false);
+			request.setAttribute("error","There are no products by this supplier in your cart");
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		
@@ -69,7 +75,9 @@ public class AddOrder extends HttpServlet {
 		try {
 			puDAO.addPurchase(new SupplierDAO(connection).getById(supplierId), (Cart)session.getAttribute("cart"), (User)session.getAttribute("user"));
 		} catch (SQLException e) {
-			//TODO handle error
+			request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 				

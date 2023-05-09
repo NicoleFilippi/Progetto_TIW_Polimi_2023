@@ -2,14 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>ORDERS</title>
+<title>SHOP</title>
 </head>
 <body>
 	<a href="Home"><button>Home</button></a>
 	<a href="Cart"><button>Cart</button></a>
 	
 	<h1>ORDERS</h1>
-	<p> Your orders: </p>
+	<div th:if="${orders == null or orders.isEmpty()}"> You have not ordered anything yet  </div>
+	<div th:if="${!orders.isEmpty()}"> Your orders: </div>
 	
 	<div th:each="ord : ${orders}">		
 		<table border=1>

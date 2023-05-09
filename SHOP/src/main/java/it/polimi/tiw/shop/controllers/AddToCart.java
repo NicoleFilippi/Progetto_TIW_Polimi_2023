@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
@@ -58,10 +57,9 @@ public class AddToCart extends HttpServlet {
 				throw new Exception();
 			
 		}catch(Exception e) {
-			//TODO handle exception
-			final WebContext errcontext = new WebContext(request, response, getServletContext(), request.getLocale());
-			errcontext.setVariable("error", "Invalid Parameters");
-			templateEngine.process("/results.html", errcontext, response.getWriter());
+			request.setAttribute("logout",false);
+			request.setAttribute("error","Your request has invalid or missing parameters");
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		
@@ -70,18 +68,16 @@ public class AddToCart extends HttpServlet {
 			ps = new ProductSupplierDAO(connection).getByIds(productId, supplierId);
 
 		} catch (SQLException e) {
-			//TODO handle exception
-			final WebContext errcontext = new WebContext(request, response, getServletContext(), request.getLocale());
-			errcontext.setVariable("error", "SQL error: "+e.getMessage());
-			templateEngine.process("/results.html", errcontext, response.getWriter());
+			request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}	
 		
 		if(ps==null) {
-			//TODO handle exception
-			final WebContext errcontext = new WebContext(request, response, getServletContext(), request.getLocale());
-			errcontext.setVariable("error", "Invalid Parameters");
-			templateEngine.process("/results.html", errcontext, response.getWriter());
+			request.setAttribute("logout",false);
+			request.setAttribute("error","Your request has invalid or missing parameters");
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		

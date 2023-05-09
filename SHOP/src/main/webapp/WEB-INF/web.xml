@@ -11,7 +11,7 @@
   </context-param>
   <context-param>
     <param-name>dbPassword</param-name>
-    <param-value>alessandro</param-value>
+    <param-value>alessandr</param-value>
   </context-param>
   <context-param>
     <param-name>dbDriver</param-name>
@@ -44,7 +44,7 @@
     <url-pattern>/Cart</url-pattern>
     <url-pattern>/AddOrder</url-pattern>
     <url-pattern>/Orders</url-pattern>
-    <url-pattern>/UpdateAccount</url-pattern>
+    <url-pattern>/UpdateUser</url-pattern>
     <url-pattern>/Account</url-pattern>
     <url-pattern>/Logout</url-pattern>
  </filter-mapping>

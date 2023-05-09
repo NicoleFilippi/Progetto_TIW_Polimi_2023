@@ -53,8 +53,9 @@ public class UpdateUser extends HttpServlet {
 		try {
 			states=new StateDAO(connection).getStates();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		
@@ -105,9 +106,9 @@ public class UpdateUser extends HttpServlet {
 		try {
 			udao.updateUser(name, surname, state, city, street, civicNumber, session);
 		}catch(SQLException e) {
-			context.setVariable("states", states);
-			context.setVariable("error", "SQL Error: " + e.getMessage());
-			templateEngine.process("/account.html", context, response.getWriter());
+			request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		

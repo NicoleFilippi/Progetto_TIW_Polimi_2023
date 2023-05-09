@@ -2,14 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>CART</title>
+<title>SHOP</title>
 </head>
 <body>
 	<a href="Home"><button>Home</button></a>
 	<a href="Orders"><button>Orders</button></a>
 	
 	<h1>CART</h1>
-	<p> Your cart: </p>
+	<div th:if="${#session.getAttribute('cart.suppliers') == null or #session.getAttribute('cart.suppliers').isEmpty()}"> Your cart is empty </div>
+	<div th:if="${!#session.getAttribute('cart.suppliers').isEmpty()}"> Your cart: </div>
 	
 	<div th:each="supp : ${session.cart.suppliers}">		
 		<table border=1>

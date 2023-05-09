@@ -49,8 +49,9 @@ public class GoToAccount extends HttpServlet {
 		try {
 			states=new StateDAO(connection).getStates();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
 		
