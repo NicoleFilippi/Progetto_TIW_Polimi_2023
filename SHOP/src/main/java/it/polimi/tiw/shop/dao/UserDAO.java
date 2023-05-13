@@ -14,27 +14,34 @@ import javax.servlet.http.HttpSession;
 import it.polimi.tiw.shop.beans.User;
 
 public class UserDAO {
+	
 	private Connection con;
 	
 	public UserDAO(Connection connection) {
 		this.con = connection;
 	}
 	
-	public User checkCredentials(String email, String password) throws SQLException {
-		
+	/**
+	 * metodo che controlla le credenziali
+	 * @param email inserita dall'utente
+	 * @param password inserita dall'utente
+	 * @return oggetto utente corrispondente
+	 */
+	
+	public User checkCredentials(String email, String password) throws SQLException {		
 		User user = new User();
-		
-		String pwQuery = "SELECT * FROM User WHERE Email = ?";
-		
+		String pwQuery = "SELECT * FROM User WHERE Email = ?";		
 		PreparedStatement pstatement = con.prepareStatement(pwQuery);
 		pstatement.setString(1, email);
-		ResultSet result = pstatement.executeQuery();
+		ResultSet result = pstatement.executeQuery();		
 		
+		// non ci sono user con questa email
 		
 		if (!result.isBeforeFirst()) {
-			// no user has this email
 			return null;
 		}
+		
+		//controllo della password, salvata nel DB con funzione hash SHA-256 di password concatenata al salt
 			
 		else {
 			result.next();
@@ -52,13 +59,17 @@ public class UserDAO {
 			
 			boolean check = true;
 			
-			for(int i=0; i<newHash.length && check; i++) {
+			for(int i = 0; i < newHash.length && check; i++) {
 				check = ( newHash[i] == dbHash[i] );
 			}
+			
+			//se gli hash non corrispondono ritorna null
 			
 			if( !check ) {
 				return null;
 			}
+			
+			//altrimenti setta i parametri utente			
 			
 			user.setEmail(result.getString("email"));
 			user.setName(result.getString("name"));
@@ -71,12 +82,24 @@ public class UserDAO {
 		}
 	}
 	
+	/**
+	 * metodo che controlla se una mail è sintatticamente corretta
+	 * @param email da controllare
+	 * @return true se sì, altrimenti false
+	 */
+	
 	public boolean isValidEmail(String email) {
 		if (email == null)
 			return false;
 		Pattern pat = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
 		return pat.matcher(email).matches();
 	}
+	
+	/**
+	 * metodo che controlla se una mail è già in uso
+	 * @param email da controllare
+	 * @return true se non è utilizzata, false altrimenti
+	 */
 	
 	public boolean isFreeEmail(String email) throws SQLException {
 		if (email == null)
@@ -87,6 +110,18 @@ public class UserDAO {
 		ResultSet result = pstatement.executeQuery();
 		return !result.next();
 	}
+	
+	/**
+	 * metodo che aggiunge un utente al db
+	 * @param email
+	 * @param name
+	 * @param surname
+	 * @param iso3
+	 * @param city
+	 * @param street
+	 * @param civicNumber
+	 * @param password
+	 */
 	
 	public void addUser(String email, String name, String surname, String iso3, String city, String street, String civicNumber, String password) throws SQLException {
 		
@@ -99,6 +134,8 @@ public class UserDAO {
 		pstatement.setString(5, city);
 		pstatement.setString(6, street);
 		pstatement.setString(7, civicNumber);
+		
+		//calcola il salt come numero casuale tra 100 e 999
 		
 		int salt = (int)(Math.random()*900) + 100;
 		
@@ -113,13 +150,23 @@ public class UserDAO {
 		pstatement.setBytes(8, newHash);
 		pstatement.setInt(9, salt);
 		
-		pstatement.executeUpdate();
-		
+		pstatement.executeUpdate();		
 	}
+	
+	/**
+	 * metodo che modifica i parametri di un utente
+	 * @param name
+	 * @param surname
+	 * @param iso3
+	 * @param city
+	 * @param street
+	 * @param civicNumber
+	 * @param session è l'oggetto sessione passato dalla servlet
+	 */
 	
 	public void updateUser(String name, String surname, String iso3, String city, String street, String civicNumber, HttpSession session) throws SQLException {
 		
-		User u =(User)session.getAttribute("user");
+		User u = (User)session.getAttribute("user");
 		
 		String query = "UPDATE user SET name=?, surname=?, stateiso3=?, city=?, street=?, civicnumber=? WHERE email=?";
 		PreparedStatement pstatement = con.prepareStatement(query);
@@ -133,12 +180,13 @@ public class UserDAO {
 		
 		pstatement.executeUpdate();
 		
+		//modifica anche i parametri nella sessione
+		
 		u.setName(name);
 		u.setSurname(surname);
 		u.setState(iso3);
 		u.setCity(city);
 		u.setStreet(street);
-		u.setCivicNumber(civicNumber);
-				
+		u.setCivicNumber(civicNumber);				
 	}
 }

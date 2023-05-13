@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 
 public class NotLoggedFilter implements Filter {
 	
+	//filtro che controlla se l'utente che vuole uscire dall'area riservata non sia loggato 
+	
 	public NotLoggedFilter() {
 		
 	}
@@ -25,19 +27,19 @@ public class NotLoggedFilter implements Filter {
 		
 	}
 	
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{
-		
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{		
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
+		
+		//manda alla home
+		
 		String homepath = req.getServletContext().getContextPath() + "/Home";
-
 		HttpSession s = req.getSession();
 		if (!s.isNew() && s.getAttribute("user") != null) {
 			res.sendRedirect(homepath);
 			return;
 		}
 		
-		chain.doFilter(request, response);
-		
+		chain.doFilter(request, response);		
 	}
 }

@@ -2,32 +2,40 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>SHOP</title>
+		<title> SHOP </title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="css/homeStyle.css">
 	</head>
-	<body>
-		<a href="Cart"><button>Cart</button></a>
-		<a href="Orders"><button>Orders</button></a>
-		<a href="Account"><button>Account</button></a>
+	<body>		
+		<div class="menu">
+			<a href="Cart"><button class="menu-button"> Cart </button></a>
+			<a href="Orders"><button class="menu-button"> Orders </button></a>
+			<a href="Account"><button class="menu-button"> Account </button></a>
+		</div>	
+		
+		<div class="container">
+			<h1 class="title"> HOME </h1>			
+			<p class="text" th:text="${'Welcome back, ' + session.user.name + ' ' + session.user.surname + '!'}" > </p>
+		</div>
+		
+		<div class="search">		
+			<form action="Results" method="get">
+				<label class="label-search" for="keyword"> Search product: </label>
+				<input class="input-search" id="keyword" placeholder="What are you searching?" type="text" name="keyword" required >
+				<input class="button-search" type="submit" value="Search">
+			</form>
+		</div>
+		
+		<p th:if="${error!=null}" th:class="${'error'}" th:text="${error}"></p>
 	
-		<h1>HOME</h1>
-		<p th:text="${'Welcome back, ' + session.user.name + ' ' + session.user.surname + '!'}" > </p>
-		
-		<form action="Results" method="get">
-			Search product: 
-			<input type="text" name="keyword" required >
-			<input type="submit" value="Search">
-		</form>
-		<br>
-		
-		<table>
+		<table class="table">
 			<tr th:each="prod : ${productList}">
-				<td th:text="${prod.id}" >0</td>
-				<td> <img th:src="${prod.photoPath}" width=80 height=80></td>
-				<td th:text="${prod.name}" >Name</td>
-				<td th:text="${prod.minPrice}+' $'" >10 $</td>
+				<td th:text="${prod.id}"> 0 </td>
+				<td> <img th:src="${prod.photoPath}" width=80 height=80> </td>
+				<td th:text="${prod.name}" > Name </td>
+				<td th:text="${prod.minPrice}+' $'" > 10 $ </td>
 				<td> <a th:href="${'Results?id=' + prod.id}"> Details </a> </td>
 			</tr>
 		</table>
-		<p th:text="${error}"></p>
 	</body>
 </html>

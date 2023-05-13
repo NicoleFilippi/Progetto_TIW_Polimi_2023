@@ -1,6 +1,9 @@
 package it.polimi.tiw.shop.beans;
 
 public class ProductSupplier {
+	
+	//Bean prodotto-fornitore
+	
 	private Product product;
 	private Supplier supplier;
 	private double price;
@@ -26,6 +29,9 @@ public class ProductSupplier {
 	public boolean equals(ProductSupplier ps) {
 		return (ps.getSupplier().equals(supplier) && ps.getProduct().equals(product));
 	}
+	
+	//metodo che associa un id univoco ad ogni coppia prodotto-fornitore utilizzando la funzione di accoppiamento di Cantor
+	
 	public int getId() {
 		return (product.getId() + supplier.getId()) * (product.getId() + supplier.getId() + 1) / 2 + supplier.getId();
 	}

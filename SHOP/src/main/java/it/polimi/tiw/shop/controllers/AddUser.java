@@ -24,7 +24,11 @@ import it.polimi.tiw.shop.dao.UserDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
 
 @WebServlet("/AddUser")
+
 public class AddUser extends HttpServlet {
+	
+	//Servlet per creare un account
+	
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	private Connection connection = null;
@@ -34,28 +38,67 @@ public class AddUser extends HttpServlet {
     }
     
     public void init() throws ServletException {
+    	try {
+    		connection = ConnectionHandler.getConnection(getServletContext());
+    	}catch(Exception e) {
+    		connection = null;
+    		e.printStackTrace();
+    	}
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {				
+		if(connection == null) {
+    		request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
+			return;
+    	}		
+		
 		final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
 		
-		String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
-		String surname = StringEscapeUtils.escapeJava(request.getParameter("surname"));
-		String email = StringEscapeUtils.escapeJava(request.getParameter("email"));
-		String password = StringEscapeUtils.escapeJava(request.getParameter("password"));
-		String confpwd = StringEscapeUtils.escapeJava(request.getParameter("confpwd"));
-		String street = StringEscapeUtils.escapeJava(request.getParameter("street"));
-		String civicNumber = StringEscapeUtils.escapeJava(request.getParameter("civicNumber"));
-		String city = StringEscapeUtils.escapeJava(request.getParameter("city"));
-		String state = StringEscapeUtils.escapeJava(request.getParameter("state"));
+		String name = request.getParameter("name");	
+		if(name != null)									//solo se non è null per evitare NullPointerException
+			name = StringEscapeUtils.escapeJava(name);		//metodo che "rende sicuro" il parametro di una richiesta HTTP
+		
+		String surname = request.getParameter("surname");
+		if(surname != null)
+			surname = StringEscapeUtils.escapeJava(surname);
+		
+		String email = request.getParameter("email");
+		if(email != null)
+			email = StringEscapeUtils.escapeJava(email);
+		
+		String password = request.getParameter("password");
+		if(password != null)
+			password = StringEscapeUtils.escapeJava(password);
+		
+		String confpwd = request.getParameter("confpwd");
+		if(confpwd != null)
+			confpwd = StringEscapeUtils.escapeJava(confpwd);
+		
+		String street = request.getParameter("street");
+		if(street != null)
+			street = StringEscapeUtils.escapeJava(street);
+		
+		String civicNumber = request.getParameter("civicNumber");
+		if(civicNumber != null)
+			civicNumber = StringEscapeUtils.escapeJava(civicNumber);
+		
+		String city = request.getParameter("city");
+		if(city != null)
+			city = StringEscapeUtils.escapeJava(city);
+		
+		String state = request.getParameter("state");
+		if(state != null)
+			state = StringEscapeUtils.escapeJava(state);
+		
+		//controllo che ogni parametro sia presente, altrimenti setto l'errore
 		
 		if(name == null || name.equals("")) {
 			try {
@@ -70,6 +113,7 @@ public class AddUser extends HttpServlet {
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
 		if(surname == null || surname.equals("")) {
 			try {
 				setErrorParameters(request,context);
@@ -83,6 +127,7 @@ public class AddUser extends HttpServlet {
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
 		if(email == null || email.equals("")) {
 			try {
 				setErrorParameters(request,context);
@@ -96,6 +141,7 @@ public class AddUser extends HttpServlet {
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
 		if(password == null || password.equals("")) {
 			try {
 				setErrorParameters(request,context);
@@ -109,6 +155,7 @@ public class AddUser extends HttpServlet {
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
 		if(confpwd == null || confpwd.equals("")) {
 			try {
 				setErrorParameters(request,context);
@@ -122,6 +169,7 @@ public class AddUser extends HttpServlet {
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
 		if(street == null || street.equals("")) {
 			try {
 				setErrorParameters(request,context);
@@ -135,6 +183,7 @@ public class AddUser extends HttpServlet {
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
 		if(civicNumber == null || civicNumber.equals("")) {
 			try {
 				setErrorParameters(request,context);
@@ -148,6 +197,7 @@ public class AddUser extends HttpServlet {
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
 		if(city == null || city.equals("")) {
 			try {
 				setErrorParameters(request,context);
@@ -161,6 +211,7 @@ public class AddUser extends HttpServlet {
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
 		if(state == null || state.equals("")) {
 			try {
 				setErrorParameters(request,context);
@@ -174,6 +225,7 @@ public class AddUser extends HttpServlet {
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
 		if(!password.equals(confpwd)) {
 			try {
 				setErrorParameters(request,context);
@@ -183,12 +235,14 @@ public class AddUser extends HttpServlet {
 				request.getRequestDispatcher("Error").forward(request, response);
 				return;
 			}
-			context.setVariable("error", "Passwords are different");
+			context.setVariable("error", "Wrong confirmed password");
 			context.setVariable("prevPassword", "");
 			context.setVariable("prevConfpwd", "");
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
+		//controllo che la mail sia sintatticamente valida
 		
 		UserDAO udao = new UserDAO(connection);
 		StateDAO sdao = new StateDAO(connection);
@@ -208,9 +262,11 @@ public class AddUser extends HttpServlet {
 			return;
 		}
 		
+		//controllo che lo stato sia valido e che la mail non sia già presente nel DB
+		 
 		boolean validState = false;
 		boolean freeEmail = false;
-		
+				
 		try {
 			validState = sdao.isValid(state);
 			freeEmail = udao.isFreeEmail(email);
@@ -220,6 +276,7 @@ public class AddUser extends HttpServlet {
 			request.getRequestDispatcher("Error").forward(request, response);
 			return;
 		}
+		
 		if(!validState) {
 			try {
 				setErrorParameters(request,context);
@@ -229,11 +286,12 @@ public class AddUser extends HttpServlet {
 				request.getRequestDispatcher("Error").forward(request, response);
 				return;
 			}
-			context.setVariable("error", "Invalid email");
+			context.setVariable("error", "Invalid state");
 			context.setVariable("prevState", sdao.getClientState(request));
 			templateEngine.process("/signup.html", context, response.getWriter());
 			return;
 		}
+		
 		if(!freeEmail) {
 			try {
 				setErrorParameters(request,context);
@@ -249,6 +307,8 @@ public class AddUser extends HttpServlet {
 			return;
 		}
 		
+		//inserisco l'utente nuovo
+		
 		try {
 			udao.addUser(email, name, surname, state, city, street, civicNumber, password);
 		}catch(SQLException e) {
@@ -261,22 +321,22 @@ public class AddUser extends HttpServlet {
 		context.setVariable("error", "New account created");
 		templateEngine.process("/index.html", context, response.getWriter());
 		return;
-		
 	}
 	
+	//metodo per mantenere i parametri precedenti inseriti dall'utente in caso di errore
+	
 	private void setErrorParameters(HttpServletRequest request, WebContext context) throws SQLException {
-		context.setVariable("prevName", StringEscapeUtils.escapeJava(request.getParameter("name")));
-		context.setVariable("prevSurname", StringEscapeUtils.escapeJava(request.getParameter("surname")));
-		context.setVariable("prevEmail", StringEscapeUtils.escapeJava(request.getParameter("email")));
-		context.setVariable("prevPassword", StringEscapeUtils.escapeJava(request.getParameter("password")));
-		context.setVariable("prevConfpwd", StringEscapeUtils.escapeJava(request.getParameter("confpwd")));
-		context.setVariable("prevStreet", StringEscapeUtils.escapeJava(request.getParameter("street")));
-		context.setVariable("prevCivicNumber", StringEscapeUtils.escapeJava(request.getParameter("civicNumber")));
-		context.setVariable("prevCity", StringEscapeUtils.escapeJava(request.getParameter("city")));
-		context.setVariable("prevState", StringEscapeUtils.escapeJava(request.getParameter("state")));
+		context.setVariable("prevName", request.getParameter("name"));
+		context.setVariable("prevSurname", request.getParameter("surname"));
+		context.setVariable("prevEmail", request.getParameter("email"));
+		context.setVariable("prevPassword", request.getParameter("password"));
+		context.setVariable("prevConfpwd", request.getParameter("confpwd"));
+		context.setVariable("prevStreet", request.getParameter("street"));
+		context.setVariable("prevCivicNumber", request.getParameter("civicNumber"));
+		context.setVariable("prevCity", request.getParameter("city"));
+		context.setVariable("prevState", request.getParameter("state"));
 		List<State> states = new StateDAO(connection).getStates();
-		context.setVariable("states", states);
-		
+		context.setVariable("states", states);		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

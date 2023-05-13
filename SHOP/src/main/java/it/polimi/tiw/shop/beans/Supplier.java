@@ -4,12 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 public class Supplier {
+	
+	//Bean fornitore
+	
 	private int id;
 	private String name;
 	private int rating;
 	private double freeShippingThreshold;
-	private List<Integer> minQuantities;
-	private Map<Integer,Double> shippingPrices;
+	
+	private List<Integer> minQuantities;			//lista contenente il minimo numero di prodotti per ogni fascia
+	private Map<Integer, Double> shippingPrices;    //mappa da minimo numero di prodotti a prezzo per ogni fascia (per poter iterare su thymeleaf)
+	
 	private int productsInCartNum;
 	private double productsInCartCost;
 	private double totalCost;
@@ -45,10 +50,10 @@ public class Supplier {
 	public void setMinQuantities(List<Integer> minQuantities) {
 		this.minQuantities = minQuantities;
 	}
-	public Map<Integer,Double> getShippingPrices() {
+	public Map<Integer, Double> getShippingPrices() {
 		return shippingPrices;
 	}
-	public void setShippingPrices(Map<Integer,Double> shippingPrices) {
+	public void setShippingPrices(Map<Integer, Double> shippingPrices) {
 		this.shippingPrices = shippingPrices;
 	}
 	public int getProductsInCartNum() {
@@ -77,6 +82,6 @@ public class Supplier {
 	}
 	
 	public boolean equals(Supplier s) {
-		return (s.getId()==id);
+		return (s.getId() == id);
 	}
 }

@@ -6,18 +6,23 @@ import java.util.Map;
 
 public class Order {
 	
-	private int id;
+	//Bean Ordine
+	
+	private int id;					//informazioni ordine
 	private double total;
 	private Date date;
-	private Supplier supplier;
 	private double shippingPrice;
-	private String userEmail;
+	
+	private Supplier supplier;		//informazione fornitore	
+	
+	private String userEmail;		//informazioni utente
 	private String stateIso3;
 	private String city;
 	private String street;
 	private String civicNumber;
-	private List<ProductSupplier> products;
-	private Map<Integer,Integer> quantities;
+	
+	private List<ProductSupplier> products;		//prodotti contenuti (associati al fornitore per avere il prezzo)
+	private Map<Integer, Integer> quantities;	//quantità corrispondenti
 	
 	public int getId() {
 		return id;

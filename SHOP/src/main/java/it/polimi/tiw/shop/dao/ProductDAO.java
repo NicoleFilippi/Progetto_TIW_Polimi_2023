@@ -10,11 +10,19 @@ import java.util.List;
 import it.polimi.tiw.shop.beans.Product;
 
 public class ProductDAO {
-private Connection con;
+	
+	private Connection con;
 	
 	public ProductDAO(Connection connection) {
 		this.con = connection;
 	}
+	
+	/**
+	 * metodo che ritorna gli ultimi prodotti visualizzati
+	 * @param email mail utente
+	 * @param defaultCategory è la categoria di default impostata nell'xml
+	 * @return ritorna la lista di prodotti da stampare
+	 */
 	
 	public List<Product> lastVisualized(String email, String defaultCategory) throws SQLException {
 		List<Product> prodList = new ArrayList<>();
@@ -29,8 +37,10 @@ private Connection con;
 		ResultSet result = pstatement.executeQuery();
 		ResultSet minPrice;
 		
+		//aggiungo un massimo di 5 prodotti visualizzati alla lista
+		
 		while(result.next() && prodList.size() < 5) {
-			minpstatement.setInt(1, result.getInt("id"));
+			minpstatement.setInt(1, result.getInt("id"));		//prelevo il prezzo minore per ogni prodotto visualizzato
 			minPrice = minpstatement.executeQuery();
 			minPrice.next();
 			
@@ -39,12 +49,14 @@ private Connection con;
 			tmp.setName(result.getString("name"));
 			tmp.setDescription(result.getString("description"));
 			tmp.setCategory(result.getString("category"));
-			tmp.setPhotoPath(result.getString("PhotoPath"));
+			tmp.setPhotoPath("images/" + result.getString("PhotoPath"));
 			tmp.setMinPrice(minPrice.getDouble("MIN(price)"));
-			prodList.add(tmp);
+			prodList.add(tmp);									
 		}
 		
-		if( prodList.size() < 5 && defaultCategory!= null) {
+		//se l'utente non ha visualizzato abbastanza prodotti prendo i rimanenti dalla categoria di default
+		
+		if(prodList.size() < 5 && defaultCategory != null) {	
 			
 			String defQuery = "SELECT * FROM Product WHERE category = ?";
 			PreparedStatement defpstatement = con.prepareStatement(defQuery);
@@ -53,7 +65,14 @@ private Connection con;
 		
 			while(defResult.next() && prodList.size() < 5) {
 				boolean found = false;
-				for(int i = 0; i < prodList.size() && !found; i++) found = (defResult.getInt("id") == prodList.get(i).getId());
+				
+				//evito il prodotto se già presenti
+				
+				for(int i = 0; i < prodList.size() && !found; i++)
+					found = (defResult.getInt("id") == prodList.get(i).getId());
+				
+				//inserimento in lista
+				
 				if(!found) {
 					minpstatement.setInt(1, defResult.getInt("id"));
 					minPrice = minpstatement.executeQuery();
@@ -64,20 +83,28 @@ private Connection con;
 					tmp.setName(defResult.getString("name"));
 					tmp.setDescription(defResult.getString("description"));
 					tmp.setCategory(defResult.getString("category"));
-					tmp.setPhotoPath(defResult.getString("PhotoPath"));
+					tmp.setPhotoPath("images/" + defResult.getString("PhotoPath"));
 					tmp.setMinPrice(minPrice.getDouble("MIN(price)"));
 					prodList.add(tmp);
 				}
 			}
 		}
 		
-		if(prodList.size()==0) throw new SQLException("Empty");
-		
 		return prodList;
 	}
 	
+	/**
+	 * Metodo che cerca nel db i prodotti contenenti, nel nome o nella descrizione, la parola chiave
+	 * @param keyword parola chiave da cercare
+	 * @return ritorna la lista di prodotti contenenti la parola chiave nel nome o nella descrizione
+	 */
+	
 	public List<Product> keywordSearch(String keyword) throws SQLException{
 		List<Product> prodList = new ArrayList<>();
+		
+		if(keyword == null || keyword.equals("")) {
+			return prodList;
+		}
 		
 		String query = " SELECT id,name,photopath,description,MIN(price) FROM product JOIN product_supplier ON id = productid WHERE name LIKE ? OR description LIKE ? GROUP BY id,name,photopath ORDER BY MIN(price) ";
 		PreparedStatement pstatement = con.prepareStatement(query);
@@ -91,7 +118,7 @@ private Connection con;
 			Product tmp = new Product();
 			tmp.setId(result.getInt("id"));
 			tmp.setName(result.getString("name"));
-			tmp.setPhotoPath(result.getString("photopath"));
+			tmp.setPhotoPath("images/" + result.getString("photopath"));
 			tmp.setMinPrice(result.getDouble("MIN(price)"));
 			tmp.setDescription(result.getString("description"));
 			prodList.add(tmp);
@@ -99,9 +126,14 @@ private Connection con;
 		return prodList;	
 	}
 	
-	public Product getById(int id)  throws SQLException {
-		
-		String query = " SELECT id,name,photopath,description,MIN(price) FROM product JOIN product_supplier ON id = productid WHERE id = ? GROUP BY id,name,photopath,description ";
+	/**
+	 * Metodo che crea l'oggetto prodotto di un certo id prendendo i dati dal DB
+	 * @param id interessato
+	 * @return ritorna il prodotto richiesto
+	 */
+	
+	public Product getById(int id)  throws SQLException {		
+		String query = " SELECT id,name,category,photopath,description,MIN(price) FROM product JOIN product_supplier ON id = productid WHERE id = ? GROUP BY id,name,category,photopath,description ";
 		PreparedStatement pstatement = con.prepareStatement(query);
 		pstatement.setInt(1, id);
 		
@@ -112,7 +144,8 @@ private Connection con;
 			tmp = new Product();
 			tmp.setId(result.getInt("id"));
 			tmp.setName(result.getString("name"));
-			tmp.setPhotoPath(result.getString("photopath"));
+			tmp.setCategory(result.getString("category"));
+			tmp.setPhotoPath("images/" + result.getString("photopath"));
 			tmp.setMinPrice(result.getDouble("MIN(price)"));
 			tmp.setDescription(result.getString("description"));
 		}

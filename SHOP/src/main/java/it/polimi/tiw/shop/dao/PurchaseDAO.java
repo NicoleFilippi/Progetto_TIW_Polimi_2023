@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import it.polimi.tiw.shop.beans.Cart;
 import it.polimi.tiw.shop.beans.Order;
 import it.polimi.tiw.shop.beans.Product;
@@ -26,19 +28,31 @@ public class PurchaseDAO {
 		this.con = connection;
 	}
 	
-	public void addPurchase(Supplier supplier, Cart cart, User user) throws SQLException {
+	/**
+	 * metodo per aggiungere un ordine
+	 * @param supplier
+	 * @param session oggetto sessione passato dalla servlet
+	 */
+	
+	public void addPurchase(Supplier supplier, HttpSession session) throws SQLException {
+		Cart cart = (Cart)session.getAttribute("cart");
+		User user = (User)session.getAttribute("user");
+		
+		//necessità di un'unica transazione in cui si inserisce sia l'ordine che tutti i prodotti contenuti (in due tabelle diverse)
 		
 		con.setAutoCommit(false);
 		try{
 			String query = " INSERT INTO Purchase(total, date, supplierId, shippingPrice, userEmail, StateIso3, City, Street, CivicNumber) VALUES (?,?,?,?,?,?,?,?,?)";
 			PreparedStatement pstatement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		
+			//controllo ridondante, già presente nella servlet, nel caso in cui il fornitore non abbia prodotti nel carrello
+			
 			Supplier cartSupplier=null;
-			for(int i=0; i<cart.getSuppliers().size(); i++) {
+			for(int i = 0; i < cart.getSuppliers().size(); i++) {
 				if(cart.getSuppliers().get(i).equals(supplier))
 					cartSupplier=cart.getSuppliers().get(i);
-			}
-			if(cartSupplier==null)
+			}			
+			if(cartSupplier == null)
 				return;
 			
 			pstatement.setDouble(1, cartSupplier.getTotalCost());
@@ -52,8 +66,8 @@ public class PurchaseDAO {
 			pstatement.setString(9, user.getCivicNumber());
 			
 			pstatement.executeUpdate();
-			
-			ResultSet rs = pstatement.getGeneratedKeys();
+						
+			ResultSet rs = pstatement.getGeneratedKeys();		//preleva la chiave auto-increment generata automaticamente dal DB
 			rs.next();
 			int purchaseId = rs.getInt(1);
 			
@@ -62,6 +76,8 @@ public class PurchaseDAO {
 			query="INSERT INTO Purchase_product VALUES (?, ?, ?, ?)";
 			pstatement = con.prepareStatement(query);
 			pstatement.setInt(2, purchaseId);
+			
+			//inserisco tutti i prodotti
 			
 			for(int i=0; i<cart.getItems().get(cartSupplier.getId()).size(); i++) {
 				pstatement.setInt(1, cart.getItems().get(cartSupplier.getId()).get(i).getProduct().getId());
@@ -72,6 +88,8 @@ public class PurchaseDAO {
 			
 			con.commit();
 			
+			//rimuovo dal carrello
+			
 			cart.removeSupplier(cartSupplier);
 			
 		}catch(Exception e) {
@@ -80,18 +98,21 @@ public class PurchaseDAO {
 		}
 
 		con.setAutoCommit(true);		
-		
 	}
+	
+	/**
+	 * metodo che, dato l'utente, ritorna la lista ordini con data decrescente
+	 * @param user utente
+	 * @return lista di ordini
+	 */
 	
 	public List<Order> getByUser(User user) throws SQLException{
 		List<Order> orders = new ArrayList<>();
 		
-		String query = " SELECT * FROM Purchase WHERE userEmail = ? ORDER BY date DESC";
-		
+		String query = " SELECT * FROM Purchase WHERE userEmail = ? ORDER BY date DESC";		
 		PreparedStatement pstatement = con.prepareStatement(query);
 		
-		pstatement.setString(1, user.getEmail());
-		
+		pstatement.setString(1, user.getEmail());		
 		ResultSet result = pstatement.executeQuery();
 				
 		String query2="SELECT * FROM purchase_product WHERE Purchaseid = ? ";
@@ -100,8 +121,9 @@ public class PurchaseDAO {
 		SupplierDAO sDAO = new SupplierDAO(con);
 		ProductDAO pDAO = new ProductDAO(con);
 		
-		while(result.next()){
-			
+		//per ogni ordine creo un oggetto e prelevo dal db i prodotti acquistati
+		
+		while(result.next()){			
 			Order o = new Order();
 			Supplier s;
 			o.setId(result.getInt("id"));
@@ -129,15 +151,13 @@ public class PurchaseDAO {
 				ps.setProduct(p);
 				ps.setPrice(result2.getDouble("price"));
 				psList.add(ps);
-				
 				qList.put(result2.getInt("ProductID"), result2.getInt("quantity"));
-				
 			}
+			
 			o.setProducts(psList);
 			o.setQuantities(qList);
 			
-			orders.add(o);
-			
+			orders.add(o);			
 		}
 		
 		return orders;

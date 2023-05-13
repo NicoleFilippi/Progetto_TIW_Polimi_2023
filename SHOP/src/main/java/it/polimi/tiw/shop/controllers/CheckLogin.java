@@ -24,9 +24,12 @@ import it.polimi.tiw.shop.dao.UserDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
 
 @WebServlet("/CheckLogin")
+
 public class CheckLogin extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 	
+	//Servlet che verifica se i dati del login sono corretti
+	
+	private static final long serialVersionUID = 1L;	
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
 
@@ -38,6 +41,7 @@ public class CheckLogin extends HttpServlet {
     	try {
     		connection = ConnectionHandler.getConnection(getServletContext());
     	}catch(Exception e) {
+    		connection = null;
     		e.printStackTrace();
     	}
 		ServletContext servletContext = getServletContext();
@@ -48,9 +52,8 @@ public class CheckLogin extends HttpServlet {
 		templateResolver.setSuffix(".html");
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	
-    	if(connection==null) {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {    	
+    	if(connection == null) {
     		request.setAttribute("logout",true);
 			request.setAttribute("error",null);
 			request.getRequestDispatcher("Error").forward(request, response);
@@ -58,17 +61,17 @@ public class CheckLogin extends HttpServlet {
     	}
     	
     	HttpSession session = request.getSession();
-    	String homepath = request.getServletContext().getContextPath() + "/Home";
-    	if(session.getAttribute("user")!=null) {
-    		response.sendRedirect(homepath);
-    		return;
-    	}
-    	
-		String email = StringEscapeUtils.escapeJava(request.getParameter("email"));
-		String password = StringEscapeUtils.escapeJava(request.getParameter("password"));
+		String email = request.getParameter("email");
+		if(email != null)
+			email = StringEscapeUtils.escapeJava(email);
+		
+		String password = request.getParameter("password");
+		if(password != null)
+			password = StringEscapeUtils.escapeJava(password);
+		
+		//se un parametro è nullo o vuoto -> errore
 		
 		if(email == null || password == null || email.isEmpty() || password.isEmpty()) {
-			//TODO GESTIONE ERRORE DI LOGIN
 			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
 			context.setVariable("error", "Insert email and password");
 			context.setVariable("prevEmail", email);
@@ -76,6 +79,8 @@ public class CheckLogin extends HttpServlet {
 			templateEngine.process("/index.html", context, response.getWriter());
 			return;
 		}
+		
+		//Controllo credenziali
 		
 		UserDAO userDao = new UserDAO(connection);
 		User user=null;
@@ -87,11 +92,11 @@ public class CheckLogin extends HttpServlet {
 			request.setAttribute("error",null);
 			request.getRequestDispatcher("Error").forward(request, response);
 			return;
-			
 		}
 		
+		//errore login errato
+		
 		if(user == null) {
-			// LOGIN ERRATO
 			final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
 			context.setVariable("error", "Incorrect credentials ");
 			context.setVariable("prevEmail", email);
@@ -102,10 +107,8 @@ public class CheckLogin extends HttpServlet {
 		}
 		else {
 			session.setAttribute("user", user);
-			if(session.getAttribute("cart")==null)
+			if(session.getAttribute("cart") == null)
 				session.setAttribute("cart", new Cart());
-			
-			//TODO GESTIONE LOGIN CORRETTO
 
 			String path = getServletContext().getContextPath() + "/Home";
 			response.sendRedirect(path);
@@ -119,5 +122,4 @@ public class CheckLogin extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
 }

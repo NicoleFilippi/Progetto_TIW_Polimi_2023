@@ -11,7 +11,7 @@
   </context-param>
   <context-param>
     <param-name>dbPassword</param-name>
-    <param-value>alessandr</param-value>
+    <param-value>nicole</param-value>
   </context-param>
   <context-param>
     <param-name>dbDriver</param-name>
@@ -47,6 +47,7 @@
     <url-pattern>/UpdateUser</url-pattern>
     <url-pattern>/Account</url-pattern>
     <url-pattern>/Logout</url-pattern>
+     <url-pattern>/Error</url-pattern>
  </filter-mapping>
  
  <filter-mapping> 
@@ -57,6 +58,7 @@
     <url-pattern>/CheckLogin</url-pattern>
     <url-pattern>/SignUp</url-pattern>
     <url-pattern>/AddUser</url-pattern>
+     <url-pattern>/Error</url-pattern>
  </filter-mapping>
   
   <welcome-file-list>

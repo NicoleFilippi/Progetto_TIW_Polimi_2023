@@ -26,7 +26,11 @@ import it.polimi.tiw.shop.dao.UserDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
 
 @WebServlet("/UpdateUser")
+
 public class UpdateUser extends HttpServlet {
+	
+	//Servlet che modifica i parametri richiesti dall'utente
+	
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	private Connection connection = null;
@@ -36,18 +40,31 @@ public class UpdateUser extends HttpServlet {
     }
     
     public void init() throws ServletException {
+    	try {
+    		connection = ConnectionHandler.getConnection(getServletContext());
+    	}catch(Exception e) {
+    		connection = null;
+    		e.printStackTrace();
+    	}
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				
+		if(connection == null) {
+    		request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
+			return;
+    	}		
+		
 		final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
+		
+		//prendo gli stati dal DB
 		
 		List<State> states;
 		try {
@@ -59,34 +76,60 @@ public class UpdateUser extends HttpServlet {
 			return;
 		}
 		
-		String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
-		String surname = StringEscapeUtils.escapeJava(request.getParameter("surname"));
-		String street = StringEscapeUtils.escapeJava(request.getParameter("street"));
-		String civicNumber = StringEscapeUtils.escapeJava(request.getParameter("civicNumber"));
-		String city = StringEscapeUtils.escapeJava(request.getParameter("city"));
-		String state = StringEscapeUtils.escapeJava(request.getParameter("state"));
+		String name = request.getParameter("name");
+		if(name != null)
+			name = StringEscapeUtils.escapeJava(name);
+		
+		String surname = request.getParameter("surname");
+		if(surname != null)
+			surname = StringEscapeUtils.escapeJava(surname);
+		
+		String street = request.getParameter("street");
+		if(street != null)
+			street = StringEscapeUtils.escapeJava(street);
+		
+		String civicNumber = request.getParameter("civicNumber");
+		if(civicNumber != null)
+			civicNumber = StringEscapeUtils.escapeJava(civicNumber);
+		
+		String city = request.getParameter("city");
+		if(city != null)
+			city = StringEscapeUtils.escapeJava(city);
+		
+		String state = request.getParameter("state");
+		if(state != null)
+			state = StringEscapeUtils.escapeJava(state);
 		
 		HttpSession session = request.getSession();
-		User user=(User)session.getAttribute("user");
+		User user = (User)session.getAttribute("user");
+		
+		//se uno dei parametri che l'utente può modificare è vuoto o nullo viene sostituito con quello già presente
 		
 		if(name == null || name.equals("")) {
 			name=user.getName();
 		}
+		
 		if(surname == null || surname.equals("")) {
 			surname=user.getSurname();
 		}
+		
 		if(street == null || street.equals("")) {
 			street=user.getStreet();
 		}
+		
 		if(civicNumber == null || civicNumber.equals("")) {
 			civicNumber=user.getCivicNumber();
 		}
+		
 		if(city == null || city.equals("")) {
 			city=user.getCity();
 		}
+		
 		if(state == null || state.equals("")) {
 			state=user.getState();
 		}
+		
+		//se nessun parametro è variato rispetto agli originali avvisiamo l'utente senza accedere al DB inutilmente
 		
 		if(name.equals(user.getName()) &&
 			surname.equals(user.getSurname()) &&
@@ -101,8 +144,9 @@ public class UpdateUser extends HttpServlet {
 			return;
 		}
 		
-		UserDAO udao = new UserDAO(connection);
-	
+		//modifica parametri
+		
+		UserDAO udao = new UserDAO(connection);	
 		try {
 			udao.updateUser(name, surname, state, city, street, civicNumber, session);
 		}catch(SQLException e) {
@@ -113,8 +157,7 @@ public class UpdateUser extends HttpServlet {
 		}
 		
 		response.sendRedirect("Home");
-		return;
-		
+		return;		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

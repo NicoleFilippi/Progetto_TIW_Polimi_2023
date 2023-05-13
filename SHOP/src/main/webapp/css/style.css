@@ -1,1 +1,74 @@
 @charset "ISO-8859-1";
+
+body {
+  background-color: #edd2e9;		/*colore sfondo*/
+  font-family: Arial, sans-serif;	/*font*/
+}
+
+.container {
+  background-color: #FFF;			/*colore sfondo*/
+  border-radius: 10px;				/*bordo angoli arrotondati*/
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);	/*posizione orizzontale, posizione verticale, dimensione ombra, colore ombra + trasparenza*/
+  margin: 50px auto;				/*distanza dall'alto e centrato*/
+  max-width: 400px;					/*larghezza massima*/
+  padding: 40px;					/*bordi interni*/
+}
+
+
+.title {
+  color: #333;					/*colore*/
+  font-size: 28px;					/*dimensione font*/
+  font-weight: bold;				/*font grassetto*/
+  text-align: center;				/*centrato*/
+}
+
+
+.label {
+  color: #666;					/*colore*/
+  display: block;					/*occupa un'intera riga*/
+  font-size: 14px;					/*dimensione font*/
+  font-weight: bold;				/*font grassetto*/
+  margin-bottom: 5px;				/*distanza dall'input sottostante*/
+}
+
+.input {
+  border: 1px solid #CCC;			/*bordo: spessore, continuo, colore*/
+  border-radius: 5px;				/*bordo angoli arrotondati*/
+  font-size: 14px;					/*dimensione font*/
+  margin-bottom: 15px;				/*distanza dall'elemento sottostante*/
+  padding: 10px;					/*altezza della casella*/
+  max-width: 379px;					/*larghezza massima (perché -21px???)*/
+  width: 100%;						/*tutta la larghezza possibile fino alla massima*/
+}
+
+.button {
+  background-color: #df3fca;		/*colore bottone*/
+  border-radius: 5px;				/*angoli arrotondati*/
+  color: #FFF;					/*colore font*/
+  cursor: pointer;					/*appare manina al passaggio*/
+  font-size: 16px;					/*dimensione font*/
+  padding: 10px;					/*altezza bottone*/
+  width: 100%;						/*tutta la larghezza possibile dal contenitore*/
+  max-width: 400px;					/*larghezza massima*/
+  border: none;						/*nessun bordo*/
+}
+
+.button:hover {
+  background-color: #e977e1;		/*colore al passaggio con mouse*/
+}
+
+.text {
+  color: #666;					/*colore font*/
+  font-size: 16px;					/*dimensione font*/
+  text-align: center;				/*testo centrato*/
+}
+
+.error {
+  background-color: #f2dede;		/*colore sfondo area*/
+  border: 1px solid #ebccd1;		/*bordo: spessore, continuo, colore*/
+  border-radius: 5px;				/*bordo con angoli arrotondati*/
+  color: #a94442;					/*colore font*/
+  font-size: 14px;					/*dimensione font*/
+  text-align: center;				/*testo centrato nell'area*/
+  padding: 10px;					/*altezza area*/
+}

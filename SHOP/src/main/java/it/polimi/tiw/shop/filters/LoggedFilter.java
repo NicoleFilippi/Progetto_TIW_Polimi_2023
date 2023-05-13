@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 
 public class LoggedFilter implements Filter {
 	
+	//filtro che controlla se l'utente che vuole entrare nell'area riservata è loggato 
+	
 	public LoggedFilter() {
 		
 	}
@@ -25,10 +27,12 @@ public class LoggedFilter implements Filter {
 		
 	}
 	
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{
-		
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{		
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
+		
+		//manda a pagina di login
+		
 		String loginpath = req.getServletContext().getContextPath() + "/index.html";
 
 		HttpSession s = req.getSession();
@@ -36,7 +40,7 @@ public class LoggedFilter implements Filter {
 			res.sendRedirect(loginpath);
 			return;
 		}
-		chain.doFilter(request, response);
 		
+		chain.doFilter(request, response);		
 	}
 }

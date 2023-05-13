@@ -60,8 +60,8 @@
 		
 		<div th:if="${keyword!=null}">
 			<h1>RESULTS</h1>
-			<p th:text="${'Here are the results containing: ' + keyword}" > </p>
-			
+			<div th:if="${productList == null or productList.isEmpty()}" th:text="${'There are no products matching the keyword ' + keyword}"> </div>
+			<div th:if="${!productList.isEmpty()}" th:text="${'Here are the results containing: ' + keyword}"> </div>
 			<table>
 				<tr th:each="prod : ${productList}">
 						<td th:text="${prod.id}" >0</td>

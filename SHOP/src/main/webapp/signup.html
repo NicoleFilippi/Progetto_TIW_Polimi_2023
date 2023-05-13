@@ -1,59 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>SHOP</title>
-</head>
-<body>
-	<h1>SIGN UP</h1>
-	<p> Sign up:</p>
-	
-	<form action="AddUser" method="POST"><table>
-		<tr>
-			<td>Name: </td>
-			<td><input type="text" name="name" size=40 th:value=" ${prevName}" required></td>
-		</tr>
-		<tr>
-			<td>Surname: </td>
-			<td> <input type="text" name="surname" size=40 th:value=" ${prevSurname}" required> </td>
-		</tr>
-		<tr>
-			<td>Email: </td>
-			<td><input type="email" name="email" size=40 th:value=" ${prevEmail}" required> </td>
-		</tr>
-		<tr>
-			<td>Password: </td>
-			<td><input type="password" name="password" th:value=" ${prevPassword}" required></td>
-		</tr>
-		<tr>
-			<td>Confirm password: </td>
-			<td><input type="password" name="confpwd" th:value=" ${prevConfpwd}" required></td>
-		</tr>
-		<tr>
-			<td>Street: </td>
-			<td><input type="text" name="street" size=40 th:value=" ${prevStreet}" required></td>
-		</tr>
-		<tr>
-			<td>Civic Number: </td>
-			<td><input type="text" name="civicNumber" th:value=" ${prevCivicNumber}" required> </td>
-		</tr>
-		<tr>
-			<td>City: </td>
-			<td><input type="text" name="city" size=40 th:value=" ${prevCity}" required></td>
-		</tr>
-		<tr>
-			<td>State: </td>
-			<td><select name="state" id="state">
-				    <option th:each="state : ${states}" th:value="${state.iso3}" th:text="${state.name}" th:selected="${state.iso3==prevState}"></option>
-				    <option th:value="${prevState}" th:text="${prevState}"></option>
-				</select> </td>
-		</tr>
-		<tr>
-			<td colspan="2"><input type="submit" value="Sign Up"></td>
-		</tr>
-	</table></form>
-	
-	<p th:text=" ${error}"></p>
-	
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<title> SHOP </title>
+	</head>
+	<body>	
+		<div class="container">
+		
+			<h1 class="title"> SIGN UP </h1>
+						
+			<p class="text"> Insert all the required information: </p>
+			
+			<br>
+			
+			<div>
+				<form action="AddUser" method="POST">
+					<label class="label" for="name"> *Name: </label><input class="input" id="name" type="text" name="name" th:value=" ${prevName}" required><br>
+					
+					<label class="label" for="surname"> *Surname: </label><input class="input" id="surname" type="text" name="surname" th:value=" ${prevSurname}" required><br>
+					
+					<label class="label" for="email"> *Email: </label><input class="input" id="email" type="email" name="email" th:value=" ${prevEmail}" required><br>
+					
+					<label class="label" for="password"> *Password: </label><input class="input" id="password" type="password" name="password" th:value=" ${prevPassword}" required><br>
+					
+					<label class="label" for="confpwd"> *Confirm Password: </label><input class="input" id="confpwd" type="password" name="confpwd" th:value=" ${prevConfpwd}" required><br>
+					
+					<label class="label" for="street"> *Street: </label><input class="input" id="street" type="text" name="street" th:value=" ${prevStreet}" required><br>
+					
+					<label class="label" for="civicNumber"> *Civic Number: </label><input class="input" id="civicNumber" type="text" name="civicNumber" th:value=" ${prevCivicNumber}" required><br>
+					
+					<label class="label" for="city"> *City: </label><input class="input" id="city" type="text" name="city" th:value=" ${prevCity}" required><br>
+					
+					<label class="label" for="state"> *State: </label>				
+					<select name="state" id="state" class="input">
+					    <option th:each="state : ${states}" th:value="${state.iso3}" th:text="${state.name}" th:selected="${state.iso3==prevState}"></option>
+					    <option th:value="${prevState}" th:text="${prevState}"></option>
+					</select><br>
+					<input class="button" type="submit" value="Sign Up">
+				</form>
+			</div>
+			
+			<p th:if="${error!=null}" th:class="${'error'}" th:text="${error}"></p>
+			
+			<br>
+			
+			<div>
+				<p class="text"> Already have an account? </p>
+				<a href="index.html"><button class="button"> Login </button></a>
+			</div>
+			
+		</div>
+	</body>
 </html>

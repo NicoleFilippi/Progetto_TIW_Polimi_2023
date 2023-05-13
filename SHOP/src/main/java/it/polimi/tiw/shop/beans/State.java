@@ -1,9 +1,13 @@
 package it.polimi.tiw.shop.beans;
 
 public class State {
+	
+	//Bean stato
+	
 	private String name;
 	private String iso3;
 	private String iso2;
+	
 	public String getName() {
 		return name;
 	}
@@ -21,6 +25,5 @@ public class State {
 	}
 	public void setIso2(String iso2) {
 		this.iso2 = iso2;
-	}
-	
+	}	
 }

@@ -16,7 +16,11 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @WebServlet("/Error")
+
 public class GoToError extends HttpServlet {
+	
+	//Servlet che manda alla pagina di errore
+	
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
        
@@ -34,11 +38,10 @@ public class GoToError extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		HttpSession session = request.getSession();
 		WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
 		
-		if(request.getAttribute("logout")==null)
+		if(request.getAttribute("logout") == null)
 			request.setAttribute("logout", true);
 		if((Boolean)request.getAttribute("logout")) {
 			session.invalidate();
@@ -55,5 +58,4 @@ public class GoToError extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

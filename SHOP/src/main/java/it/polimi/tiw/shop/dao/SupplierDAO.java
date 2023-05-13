@@ -19,6 +19,12 @@ public class SupplierDAO {
 		this.con = connection;
 	}
 	
+	/**
+	 * metodo che dato un id ritorna il fornitore
+	 * @param id del fornitore
+	 * @return oggetto fornitore
+	 */
+	
 	public Supplier getById(int id) throws SQLException {
 		Supplier supp = new Supplier();
 		String query = " SELECT * FROM supplier JOIN pricerange on id=supplierid WHERE id = ? ORDER BY minquantity";
@@ -31,7 +37,8 @@ public class SupplierDAO {
 		if(!result.next())
 			return null;
 		
-		//SE PRESENTE
+		//se presente creo l'oggetto
+		
 		supp.setId(id);
 		supp.setName(result.getString("name"));
 		supp.setRating(result.getInt("rating"));
@@ -40,13 +47,12 @@ public class SupplierDAO {
 		List<Integer> qts = new ArrayList<>();
 		Map<Integer,Double> prs = new HashMap<>();
 		
-		qts.add(result.getInt("minQuantity"));
-		prs.put(result.getInt("minQuantity"),result.getDouble("shippingPrice"));
+		//aggiungo tutte le fasce di spesa
 		
-		while(result.next()) {
+		do{
 			qts.add(result.getInt("minQuantity"));
 			prs.put(result.getInt("minQuantity"),result.getDouble("shippingPrice"));
-		}
+		}while(result.next());
 		
 		supp.setMinQuantities(qts);
 		supp.setShippingPrices(prs);

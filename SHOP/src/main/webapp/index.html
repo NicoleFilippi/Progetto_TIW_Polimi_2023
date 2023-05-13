@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>SHOP</title>
-</head>
-<body>
-	<h1>SHOP</h1>
-	<p> Welcome to our shop! Insert email and password:</p>
-	
-	<form action="CheckLogin" method="POST">
-		Email: <input type="email" name="email" size=40 th:value=" ${prevEmail}" required> <br><br>
-		Password: <input type="password" name="password" th:value=" ${prevPassword}" required><br><br>
-		<input type="submit" value="Login">
-	</form> <br><br>
-	
-	If you don't have any account: <a href="SignUp"><button>Sign Up</button></a>
-	
-	<p th:text=" ${error}"></p>
-	
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<title> SHOP </title>
+	</head>
+	<body>
+		<div class="container">
+			<h1 class="title"> SHOP </h1>
+			
+			<p class="text"> Welcome to our shop! Insert email and password: </p>
+			
+			<br>
+			
+			<div>
+				<form action="CheckLogin" method="POST">
+					<label class="label" for="email"> Email: </label><input class="input" placeholder="Insert here your email" id="email" type="email" name="email" size=40 th:value=" ${prevEmail}" required><br><br>
+					<label class="label" for="password"> Password: </label><input class="input" placeholder="Insert here your password" id="password" type="password" name="password" th:value=" ${prevPassword}" required><br><br>
+					<input class="button" type="submit" value="Login">
+				</form>
+			</div>
+			
+			<p th:if="${error!=null}" th:class="${'error'}" th:text="${error}"></p>
+			
+			<br>
+				
+			<div>
+				<p class="text"> You don't have an account yet? </p>
+				<a href="SignUp"><button class="button"> Sign Up </button></a>
+			</div>
+			
+		</div>	
+	</body>
 </html>

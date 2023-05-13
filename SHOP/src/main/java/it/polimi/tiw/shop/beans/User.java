@@ -1,6 +1,9 @@
 package it.polimi.tiw.shop.beans;
 
 public class User {
+	
+	//Bean utente
+	
 	private String email;
 	private String name;
 	private String surname;
@@ -50,6 +53,5 @@ public class User {
 	}
 	public void setCivicNumber(String civicNumber) {
 		this.civicNumber = civicNumber;
-	}
-	
+	}	
 }

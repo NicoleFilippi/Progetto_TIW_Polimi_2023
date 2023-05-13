@@ -1,6 +1,9 @@
 package it.polimi.tiw.shop.beans;
 
 public class Product {
+	
+	//Bean Prodotto
+	
 	private int id;
 	private String name;
 	private String description;
@@ -36,7 +39,7 @@ public class Product {
 		return photoPath;
 	}
 	public void setPhotoPath(String photoPath) {
-		this.photoPath = "images/" + photoPath;
+		this.photoPath = photoPath;
 	}
 	public double getMinPrice() {
 		return minPrice;
@@ -44,6 +47,8 @@ public class Product {
 	public void setMinPrice(double minPrice) {
 		this.minPrice = minPrice;
 	}
+	
+
 	public boolean equals(Product p) {
 		return (p.getId()==id);
 	}

@@ -14,9 +14,12 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-
 @WebServlet("/Cart")
+
 public class GoToCart extends HttpServlet {
+	
+	//Servlet che porta alla pagina Carrello
+	
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
        
@@ -28,7 +31,7 @@ public class GoToCart extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
+		this.templateEngine = new TemplateEngine();		//servlet necessaria per caricare il template
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
 	}
@@ -42,9 +45,4 @@ public class GoToCart extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-	
-	public void destroy() {
-		
-	}
-
 }
