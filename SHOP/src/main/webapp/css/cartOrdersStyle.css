@@ -10,7 +10,7 @@
 .menu-button {
   background-color: #8000ff;		/*colore bottone*/
   border-radius: 5px;				/*angoli arrotondati*/
-  color: #FFF;					/*colore font*/
+  color: #FFF;						/*colore font*/
   cursor: pointer;					/*appare manina al passaggio*/
   font-size: 16px;					/*dimensione font*/
   padding: 10px;					/*altezza bottone*/
@@ -23,6 +23,7 @@
 }
 
 .table{
+  border: solid;
   background-color: #FFF;			/*colore sfondo*/
   border-radius: 10px;				/*bordo angoli arrotondati*/
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);	/*posizione orizzontale, posizione verticale, dimensione ombra, colore ombra + trasparenza*/
@@ -31,4 +32,8 @@
   margin: 50px auto;				/*distanza dall'elemento inferiore e centrato*/
   width: 60%;						/*larghezza*/
   padding: 40px;					/*margini interni*/
+}
+
+td {
+  border: 1px solid #666;
 }

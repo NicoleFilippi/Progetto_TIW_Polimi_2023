@@ -4,12 +4,12 @@
 		<meta charset="UTF-8">
 		<title>SHOP</title>
 		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="stylesheet" type="text/css" href="css/cartStyle.css">
+		<link rel="stylesheet" type="text/css" href="css/cartOrdersStyle.css">
 	</head>
 	<body>	
 		<div class="menu">
-			<a href="Home"><button class="menu-button">Home</button></a>
-			<a href="Orders"><button class="menu-button">Orders</button></a>
+			<a href="Home"><button class="menu-button"> Home </button></a>
+			<a href="Orders"><button class="menu-button"> Orders </button></a>
 		</div>		
 		
 		<div class="container">
@@ -49,7 +49,7 @@
 			<br>
 		</div>
 		
-		<p th:text=" ${error}"></p>
+		<p th:if="${error!=null}" th:class="${'error'}" th:text="${error}"></p>
 		
 	</body>
 </html>
