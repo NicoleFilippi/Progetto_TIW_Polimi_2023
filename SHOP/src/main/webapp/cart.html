@@ -10,10 +10,12 @@
 		<div class="menu">
 			<a href="Home"><button class="menu-button"> Home </button></a>
 			<a href="Orders"><button class="menu-button"> Orders </button></a>
-		</div>		
+		</div>	
+		
+		<br>	
 		
 		<div class="container">
-			<h1 class="title">CART</h1>
+			<h1 class="title"> CART </h1>
 			<div class="text" th:if="${session.cart.suppliers == null or session.cart.suppliers.isEmpty()}"> Your cart is empty </div>
 			<div class="text" th:if="${!session.cart.suppliers.isEmpty()}"> Your cart: </div>
 		</div>

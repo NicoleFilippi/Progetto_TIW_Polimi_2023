@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<title> SHOP </title>
 		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="stylesheet" type="text/css" href="css/homeAccountStyle.css">
+		<link rel="stylesheet" type="text/css" href="css/homeAccountResultsStyle.css">
 	</head>
 	<body>		
 		<div class="menu">
@@ -13,10 +13,14 @@
 			<a href="Account"><button class="menu-button"> Account </button></a>
 		</div>	
 		
+		<br>
+		
 		<div class="container">
 			<h1 class="title"> HOME </h1>			
 			<p class="text" th:text="${'Welcome back, ' + session.user.name + ' ' + session.user.surname + '!'}" > </p>
 		</div>
+		
+		<br>
 		
 		<div class="search">		
 			<form action="Results" method="get">
@@ -27,7 +31,9 @@
 		</div>
 		
 		<p th:if="${error!=null}" th:class="${'error'}" th:text="${error}"></p>
-	
+		
+		<br>
+		
 		<table class="table">
 			<tr th:each="prod : ${productList}">
 				<td th:text="${prod.id}"> 0 </td>

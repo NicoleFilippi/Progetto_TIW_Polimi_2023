@@ -2,77 +2,89 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>SHOP</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="css/homeAccountResultsStyle.css">
+		<title> SHOP </title>
 	</head>
 	<body>
-		<a href="Home"><button>Home</button></a>
-		<a href="Cart"><button>Cart</button></a>
-		<a href="Orders"><button>Orders</button></a>
+		<div class="menu">	
+			<a href="Home"><button class="menu-button"> Home </button></a>
+			<a href="Cart"><button class="menu-button"> Cart </button></a>
+			<a href="Orders"><button class="menu-button"> Orders </button></a>
+		</div>		
 		
-		
+		<br>
 		
 		<div th:if="${detailedProduct!=null}">
-			<h1>DETAILS</h1>
-			
-			<table border=1>
+			<div class="container">
+				<h1 class="title"> DETAILS </h1>
+			</div>			
+			<table class="table">
 				<tr>
-						<td th:text="${detailedProduct.id}" >0</td>
-						<td> <img th:src="${detailedProduct.photoPath}" width=80 height=80></td>
-						<td th:text="${detailedProduct.name}"> Name </td>
-						<td th:text="${detailedProduct.description}"> Description </td>
+					<td th:text="${detailedProduct.id}" > 0 </td>
+					<td> <img th:src="${detailedProduct.photoPath}" width=80 height=80></td>
+					<td th:text="${detailedProduct.name}"> Name </td>
+					<td th:text="${detailedProduct.category}"> Category </td>
+					<td th:text="${detailedProduct.description}"> Description </td>
 				</tr>
 			</table>
-			<br>
-			<table border=1>
+			<table class="table">
 				<tr>
-					<td> Seller </td>
-					<td> Price </td>
-					<td> Rating </td>
-					<td> Free Shipping Threshold </td>
-					<td> Shipping Price Ranges </td>
-					<td> # items in Cart </td>
-					<td> $ items in Cart </td>
+					<td class="column"> Seller </td>
+					<td class="column"> Price </td>
+					<td class="column"> Rating </td>
+					<td class="column"> Free Shipping Threshold </td>
+					<td class="column"> Shipping Price Ranges </td>
+					<td class="column"> # items in Cart </td>
+					<td class="column"> $ items in Cart </td>
 				</tr>
 				<tr th:each="supp : ${supplierList}">
-						<td th:text="${supp.supplier.name}"> Name </td>
-						<td th:text="${supp.price+ ' $'}"> 0 </td>
-						<td th:text="${supp.supplier.rating +'/5 stars'}"> rating </td>
-						<td th:text="${supp.supplier.freeShippingThreshold}+' $'" >0 $</td>
-						<td>
-							<ul>
-								<li th:each="minq : ${supp.supplier.minQuantities}"
-									th:text="${minq + ' products: ' + supp.supplier.shippingPrices[minq]+' $'}"></li>
-							</ul>
-						</td>
-						<td th:text="${supp.supplier.productsInCartNum}"></td>
-						<td th:text="${supp.supplier.productsInCartCost}"></td>
-						<td> <form action="AddToCart" method="get">
-						 		Quantity: <input type="number" name="quantity" min="1" value="1" required><br>
-						 		<input type="hidden" name="productId" th:value="${supp.product.id}">
-						 		<input type="hidden" name="supplierId" th:value="${supp.supplier.id}">
-						 		<input type="submit" value="Add to cart">
-						</form> </td>
+					<td class="column" th:text="${supp.supplier.name}"> Name </td>
+					<td class="column" th:text="${supp.price+ ' $'}"> 0 </td>
+					<td class="column" th:text="${supp.supplier.rating +'/5 stars'}"> rating </td>
+					<td class="column" th:text="${supp.supplier.freeShippingThreshold}+' $'" > 0 $ </td>
+					<td class="column">
+						<ul>
+							<li th:each="minq : ${supp.supplier.minQuantities}"
+								th:text="${minq + ' products: ' + supp.supplier.shippingPrices[minq]+' $'}"></li>
+						</ul>
+					</td>
+					<td class="column" th:text="${supp.supplier.productsInCartNum}"></td>
+					<td class="column" th:text="${supp.supplier.productsInCartCost}"></td>
+					<td class="column"> 
+						<form action="AddToCart" method="get">
+					 		<label class="label" for="number"> Quantity: </label><input class="input" id="number" type="number" name="quantity" min="1" value="1" required><br>
+					 		<input type="hidden" name="productId" th:value="${supp.product.id}">
+					 		<input type="hidden" name="supplierId" th:value="${supp.supplier.id}">
+					 		<input class="button" type="submit" value="Add to cart">
+						</form>
+					</td>
 				</tr>
 			</table>
+			
 			<br>
-			<br>
+			
 		</div>
-		
+				
 		<div th:if="${keyword!=null}">
-			<h1>RESULTS</h1>
-			<div th:if="${productList == null or productList.isEmpty()}" th:text="${'There are no products matching the keyword ' + keyword}"> </div>
-			<div th:if="${!productList.isEmpty()}" th:text="${'Here are the results containing: ' + keyword}"> </div>
-			<table>
+			<div class="container">
+				<h1 class="title">RESULTS</h1>			
+				<p class="text" th:if="${productList == null or productList.isEmpty()}" th:text="${'There are no products matching the keyword ' + keyword}"> </p>
+				<p class="text" th:if="${!productList.isEmpty()}" th:text="${'Here are the results containing: ' + keyword}"> </p>
+			</div>	
+			
+			<table class="table" th:if="${!productList.isEmpty()}">
 				<tr th:each="prod : ${productList}">
-						<td th:text="${prod.id}" >0</td>
-						<td> <img th:src="${prod.photoPath}" width=80 height=80></td>
-						<td th:text="${prod.name}"> Name </td>
-						<td th:text="${prod.minPrice}+' $'" >0 $</td>
-						<td> <a th:href="${'Results?keyword=' + keyword + '&id=' + prod.id}"> Details </a> </td>
+					<td th:text="${prod.id}" > 0 </td>
+					<td> <img th:src="${prod.photoPath}" width=80 height=80></td>
+					<td th:text="${prod.name}"> Name </td>
+					<td th:text="${prod.minPrice}+' $'" > 0 $ </td>
+					<td> <a th:href="${'Results?keyword=' + keyword + '&id=' + prod.id}"> Details </a> </td>
 				</tr>
 			</table>
 		</div>
 		
-		<p th:text="${error}"></p>
+		<p th:if="${error!=null}" th:class="${'error'}" th:text="${error}"></p>
+		
 	</body>
 </html>

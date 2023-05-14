@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>SHOP</title>
-</head>
-<body>
-	<h1>ERROR</h1>
-	<p> Sorry, there was an error while handling your request. </p>
-	<p th:if="${error!=null}" th:text="${'Error: ' + error}"></p>
-	<p th:if="${error==null}" th:text="${'Please try again later'}"></p>
-	
-	<div th:if="${logout}">
-		<a href="index.html"><button>Login page</button></a>
-	</div>
-	<div th:if="${!logout}">
-		<a href="Home"><button>Home page</button></a>
-	</div>
-	
-	
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/errorStyle.css">
+		<title>SHOP</title>
+	</head>
+	<body>
+		<div class="container">
+			<h1 class="title"> ERROR </h1>
+			<p class="text"> Sorry, there was an error while handling your request. </p>
+			<p class="text" th:if="${error!=null}" th:text="${'Error: ' + error}"></p>
+			<p class="text" th:if="${error==nul}" th:text="${'Please try again later'}"></p>
+			
+			<div th:if="${logout}">
+				<a href="index.html"><button class="button"> Login page </button></a>
+			</div>
+			<div th:if="${!logout}">
+				<a href="Home"><button class="button"> Home page </button></a>
+			</div>
+		</div>	
+	</body>
 </html>

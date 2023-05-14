@@ -1,0 +1,46 @@
+@charset "ISO-8859-1";
+
+body {
+  background-color: #ebccd1;		/*colore sfondo*/
+  font-family: Arial, sans-serif;	/*font*/
+}
+
+.container {
+  background-color: #f2dede;		/*colore sfondo*/
+  border-radius: 10px;				/*bordo angoli arrotondati*/
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);	/*posizione orizzontale, posizione verticale, dimensione ombra, colore ombra + trasparenza*/
+  margin: 50px auto;				/*distanza dall'alto e centrato*/
+  max-width: 400px;					/*larghezza massima*/
+  padding: 40px;					/*bordi interni*/
+}
+
+
+.title {
+  color: #a94442;					/*colore*/
+  font-size: 28px;					/*dimensione font*/
+  font-weight: bold;				/*font grassetto*/
+  text-align: center;				/*centrato*/
+}
+
+.text {
+  color: #a94442;					/*colore font*/
+  font-size: 16px;					/*dimensione font*/
+  text-align: center;				/*testo centrato*/
+}
+
+.button {
+  background-color: #a94442;		/*colore bottone*/
+  border-radius: 5px;				/*angoli arrotondati*/
+  color: #FFF;						/*colore font*/
+  cursor: pointer;					/*appare manina al passaggio*/
+  font-size: 16px;					/*dimensione font*/
+  padding: 10px;					/*altezza bottone*/
+  width: 100%;						/*tutta la larghezza possibile dal contenitore*/
+  max-width: 400px;					/*larghezza massima*/
+  border: none;						/*nessun bordo*/
+  box-sizing: border-box;			/*dimensione box*/
+}
+
+.button:hover {
+  background-color: #d18b89;		/*colore al passaggio con mouse*/
+}

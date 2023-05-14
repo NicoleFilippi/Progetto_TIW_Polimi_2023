@@ -9,7 +9,7 @@ body {
   background-color: #FFF;			/*colore sfondo*/
   border-radius: 10px;				/*bordo angoli arrotondati*/
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);	/*posizione orizzontale, posizione verticale, dimensione ombra, colore ombra + trasparenza*/
-  margin: 50px auto;				/*distanza dall'alto e centrato*/
+  margin: 20px auto;				/*distanza dall'alto e centrato*/
   max-width: 400px;					/*larghezza massima*/
   padding: 40px;					/*bordi interni*/
 }
@@ -37,8 +37,9 @@ body {
   font-size: 14px;					/*dimensione font*/
   margin-bottom: 15px;				/*distanza dall'elemento sottostante*/
   padding: 10px;					/*altezza della casella*/
-  max-width: 379px;					/*larghezza massima (perché -21px???)*/
+  max-width: 400px;					/*larghezza massima*/
   width: 100%;						/*tutta la larghezza possibile fino alla massima*/
+  box-sizing: border-box;			/*dimensione box*/
 }
 
 .button {
@@ -51,6 +52,7 @@ body {
   width: 100%;						/*tutta la larghezza possibile dal contenitore*/
   max-width: 400px;					/*larghezza massima*/
   border: none;						/*nessun bordo*/
+  box-sizing: border-box;			/*dimensione box*/
 }
 
 .button:hover {
