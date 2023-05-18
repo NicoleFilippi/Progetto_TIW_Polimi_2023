@@ -50,7 +50,7 @@ public class AddOrder extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(connection == null) {
     		request.setAttribute("logout",true);
 			request.setAttribute("error",null);
@@ -105,8 +105,8 @@ public class AddOrder extends HttpServlet {
 		return;	
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
 	}
 	
 	public void destroy() {

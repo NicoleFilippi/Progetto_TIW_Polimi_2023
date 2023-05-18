@@ -24,7 +24,7 @@
 			<br>
 			
 			<div>
-				<form action="UpdateUser" method="GET">
+				<form action="UpdateUser" method="post">
 					<label class="label" for="name"> Name: </label> <input class="input" id="name" type="text" name="name" size=40 th:value="${session.user.name}" ><br>
 					<label class="label" for="surname"> Surname: </label><input class="input" id="surname" type="text" name="surname" size=40 th:value="${session.user.surname}" ><br>
 					<label class="label" for="street"> Street: </label><input class="input" id="street" type="text" name="street" size=40 th:value="${session.user.street}"><br>

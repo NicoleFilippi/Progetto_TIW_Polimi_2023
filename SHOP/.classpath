@@ -9,7 +9,7 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="/TIW-MissionExpensesManagement/src/main/webapp/WEB-INF/lib/thymeleaf-3.0.11.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Nicole/Desktop/TEC_WEB/Tomcat 9.0/apache-tomcat-9.0.73/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Nicole/Desktop/TEC_WEB/progetti/TIW-MissionExpensesManagement/TIW-MissionExpensesManagement/src/main/webapp/WEB-INF/lib/apache-commons-lang.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Apache Software Foundation/Tomcat 9.0/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/aless/Desktop/TIW/SHOP/src/main/webapp/WEB-INF/lib/apache-commons-lang.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

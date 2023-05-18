@@ -38,16 +38,16 @@
 					<td th:text="${session.cart.quantities[prod.id]*prod.price + ' $'}"> 0 $ </td>
 				</tr>
 				<tr>
-					<td colspan="1"> Shipping cost: </td>
+					<td colspan="1" class="bold"> Shipping cost: </td>
 					<td colspan="3" th:text="${supp.shippingCost + ' $'}"> 0 $ </td>
 				</tr>
 				<tr>
-					<td colspan="1">Total cost: </td>
+					<td colspan="1" class="bold">Total cost: </td>
 					<td colspan="3" th:text="${supp.totalCost + ' $'}"> 0 $ </td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<form action="AddOrder" method="get">
+						<form action="AddOrder" method="post">
 					 		<input type="hidden" name="supplierId" th:value="${supp.id}">
 					 		<input class="button" type="submit" value="Order">
 				 		</form>

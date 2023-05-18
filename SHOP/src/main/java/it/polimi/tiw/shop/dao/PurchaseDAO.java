@@ -109,7 +109,7 @@ public class PurchaseDAO {
 	public List<Order> getByUser(User user) throws SQLException{
 		List<Order> orders = new ArrayList<>();
 		
-		String query = " SELECT * FROM Purchase WHERE userEmail = ? ORDER BY date DESC";		
+		String query = " SELECT * FROM Purchase WHERE userEmail = ? ORDER BY date DESC,id DESC";		
 		PreparedStatement pstatement = con.prepareStatement(query);
 		
 		pstatement.setString(1, user.getEmail());		
