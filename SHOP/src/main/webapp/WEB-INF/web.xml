@@ -47,7 +47,8 @@
     <url-pattern>/UpdateUser</url-pattern>
     <url-pattern>/Account</url-pattern>
     <url-pattern>/Logout</url-pattern>
-     <url-pattern>/Error</url-pattern>
+    <url-pattern>/Error</url-pattern>
+    <url-pattern>/RemoveFromCart</url-pattern>
  </filter-mapping>
  
  <filter-mapping> 

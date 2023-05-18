@@ -31,8 +31,15 @@
   margin: 20px auto;				/*distanza dall'elemento inferiore e centrato*/
   width: 60%;						/*larghezza*/
   padding: 40px;					/*margini interni*/
+  text-align: center;				/*testo centrato*/  
+  table-layout: fixed;				
 }
 
 td {
   border: 1px solid #666;			/*bordi interni*/
+}
+
+.supplier {
+  font-size:20px;
+  font-weight: bold;
 }

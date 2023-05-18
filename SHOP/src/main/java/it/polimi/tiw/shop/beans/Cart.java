@@ -135,8 +135,10 @@ public class Cart {
 		items.remove(s.getId());										//rimuovo il prodotto
 		
 		for(Supplier supp:suppliers) {									
-			if(supp.getId()==s.getId())
+			if(supp.getId()==s.getId()) {
 				suppliers.remove(supp);									//rimuovo il fornitore
+				break;
+			}
 		}
 	}
 	

@@ -23,7 +23,13 @@
 		<div th:each="ord : ${orders}">		
 			<table class="table">
 				<tr>
-					<td colspan="4" th:text="${ord.supplier.name}"> Supplier Name </td>
+					<td class="supplier" colspan="4" th:text="${ord.supplier.name}"> Supplier Name </td>
+				</tr>
+				<tr>
+					<td class="bold"> Name: </td>
+					<td class="bold"> Price: </td>
+					<td class="bold"> Quantity: </td>
+					<td class="bold"> Total: </td>
 				</tr>				
 				<tr th:each="prod : ${ord.products}">
 					<td th:text="${prod.product.name}"> Product Name </td>
@@ -32,19 +38,19 @@
 					<td th:text="${ord.quantities[prod.product.id]*prod.price + ' $'}"> 0 $ </td>
 				</tr>
 				<tr>
-					<td colspan="2"> Shipping cost: </td>
-					<td colspan="2" th:text="${ord.shippingPrice + ' $'}"> 0 $ </td>
+					<td colspan="1"> Shipping cost: </td>
+					<td colspan="3" th:text="${ord.shippingPrice + ' $'}"> 0 $ </td>
 				</tr>
 				<tr>
-					<td colspan="2"> Total cost: </td>
-					<td colspan="2" th:text="${ord.total + ' $'}"> 0 $ </td>
+					<td colspan="1"> Total cost: </td>
+					<td colspan="3" th:text="${ord.total + ' $'}"> 0 $ </td>
 				</tr>
 				<tr>
-					<td>Date:</td>
+					<td colspan="1">Date:</td>
 					<td colspan="3" th:text="${ord.date}"></td>
 				</tr>
 				<tr>
-					<td> Shipping address: </td>
+					<td colspan="1"> Shipping address: </td>
 					<td colspan="3" th:text="${ord.street + ' ' + ord.civicNumber + ', ' + ord.city + ', ' + ord.stateIso3}"></td>
 				</tr>				
 			</table>

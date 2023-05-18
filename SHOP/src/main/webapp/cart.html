@@ -23,7 +23,13 @@
 		<div th:each="supp : ${session.cart.suppliers}">					
 			<table class="table">
 				<tr>
-					<td colspan="4" th:text="${supp.name}"> Supplier Name </td>
+					<td class="supplier" colspan="4" th:text="${supp.name}"> Supplier Name </td>
+				</tr>
+				<tr>
+					<td class="bold"> Name: </td>
+					<td class="bold"> Price: </td>
+					<td class="bold"> Quantity: </td>
+					<td class="bold"> Total: </td>
 				</tr>
 				<tr th:each="prod : ${session.cart.items[supp.id]}">
 					<td th:text="${prod.product.name}"> Product Name </td>
@@ -32,18 +38,24 @@
 					<td th:text="${session.cart.quantities[prod.id]*prod.price + ' $'}"> 0 $ </td>
 				</tr>
 				<tr>
-					<td colspan="2"> Shipping cost: </td>
-					<td colspan="2" th:text="${supp.shippingCost + ' $'}"> 0 $ </td>
+					<td colspan="1"> Shipping cost: </td>
+					<td colspan="3" th:text="${supp.shippingCost + ' $'}"> 0 $ </td>
 				</tr>
 				<tr>
-					<td colspan="2">Total cost: </td>
-					<td colspan="2" th:text="${supp.totalCost + ' $'}"> 0 $ </td>
+					<td colspan="1">Total cost: </td>
+					<td colspan="3" th:text="${supp.totalCost + ' $'}"> 0 $ </td>
 				</tr>
 				<tr>
-					<td colspan="4">
+					<td colspan="2">
 						<form action="AddOrder" method="get">
 					 		<input type="hidden" name="supplierId" th:value="${supp.id}">
 					 		<input class="button" type="submit" value="Order">
+				 		</form>
+			 		</td>
+			 		<td colspan="2">
+						<form action="RemoveFromCart" method="get">
+					 		<input type="hidden" name="supplierId" th:value="${supp.id}">
+					 		<input class="button" type="submit" value="Remove from cart">
 				 		</form>
 			 		</td>
 				</tr>

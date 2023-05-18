@@ -21,6 +21,13 @@
 			</div>			
 			<table class="table">
 				<tr>
+					<td class="bold"> Id: </td>
+					<td class="bold"> Image: </td>
+					<td class="bold"> Name: </td>
+					<td class="bold"> Category: </td>
+					<td class="bold"> Description: </td>
+				</tr>
+				<tr>
 					<td th:text="${detailedProduct.id}" > 0 </td>
 					<td> <img th:src="${detailedProduct.photoPath}" width=80 height=80></td>
 					<td th:text="${detailedProduct.name}"> Name </td>
@@ -28,15 +35,15 @@
 					<td th:text="${detailedProduct.description}"> Description </td>
 				</tr>
 			</table>
-			<table class="table">
+			<table class="table2">
 				<tr>
-					<td class="column"> Seller </td>
-					<td class="column"> Price </td>
-					<td class="column"> Rating </td>
-					<td class="column"> Free Shipping Threshold </td>
-					<td class="column"> Shipping Price Ranges </td>
-					<td class="column"> # items in Cart </td>
-					<td class="column"> $ items in Cart </td>
+					<td class="column bold"> Seller: </td>
+					<td class="column bold"> Price: </td>
+					<td class="column bold"> Rating: </td>
+					<td class="column bold"> Free Shipping Threshold: </td>
+					<td class="column bold"> Shipping Price Ranges: </td>
+					<td class="column bold"> # items in Cart: </td>
+					<td class="column bold"> $ items in Cart: </td>
 				</tr>
 				<tr th:each="supp : ${supplierList}">
 					<td class="column" th:text="${supp.supplier.name}"> Name </td>
@@ -78,7 +85,7 @@
 					<td th:text="${prod.id}" > 0 </td>
 					<td> <img th:src="${prod.photoPath}" width=80 height=80></td>
 					<td th:text="${prod.name}"> Name </td>
-					<td th:text="${prod.minPrice}+' $'" > 0 $ </td>
+					<td th:text="'from '+${prod.minPrice}+' $'" > 0 $ </td>
 					<td> <a th:href="${'Results?keyword=' + keyword + '&id=' + prod.id}"> Details </a> </td>
 				</tr>
 			</table>
