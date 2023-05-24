@@ -60,7 +60,7 @@
 					<td class="column" th:text="${supp.supplier.productsInCartCost}"></td>
 					<td class="column"> 
 						<form action="AddToCart" method="post">
-					 		<label class="label" for="number"> Quantity: </label><input class="input" id="number" type="number" name="quantity" min="1" value="1" required><br>
+					 		<label class="label"> Quantity: </label><input class="input" type="number" name="quantity" min="1" value="1" required><br>
 					 		<input type="hidden" name="productId" th:value="${supp.product.id}">
 					 		<input type="hidden" name="supplierId" th:value="${supp.supplier.id}">
 					 		<input class="button" type="submit" value="Add to cart">
