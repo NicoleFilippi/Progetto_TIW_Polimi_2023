@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="loginManager.js" charset="utf-8" defer></script>	
+		<script src="utils.js" charset="utf-8" defer></script>
+		<title> SHOP </title>
+	</head>
+	<body>
+		<div class="container">
+			<h1 class="title"> SHOP </h1>
+			
+			<p class="text"> Welcome to our shop! Insert email and password: </p>
+			
+			<br>
+			
+			<div>
+				<form id="login_form" action="#">
+					<label class="label" for="email"> Email: </label><input class="input" placeholder="Insert here your email" id="email" type="email" name="email" size=40 required><br><br>
+					<label class="label" for="password"> Password: </label><input class="input" placeholder="Insert here your password" id="password" type="password" name="password" required><br><br>
+					<input class="button" name="Submit" type="button" value="Login">
+				</form>
+			</div>
+			
+			<p id="alert"></p>
+			
+			<br>
+		</div>	
+	</body>
+</html>
