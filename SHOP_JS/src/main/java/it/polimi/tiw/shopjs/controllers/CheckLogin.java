@@ -24,8 +24,6 @@ import it.polimi.tiw.shopjs.utils.ConnectionHandler;
 
 public class CheckLogin extends HttpServlet {
 
-	// Servlet che verifica se i dati del login sono corretti
-
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 
@@ -46,7 +44,7 @@ public class CheckLogin extends HttpServlet {
 			throws ServletException, IOException {
 		if (connection == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("no db");
+			response.getWriter().println("Server error, please try again later");
 			return;
 		}
 
@@ -58,15 +56,11 @@ public class CheckLogin extends HttpServlet {
 		
 		if(psw != null)
 			psw = StringEscapeUtils.escapeJava(psw);
-		
-		// se un parametro è nullo o vuoto -> errore
 
 		if (email == null || psw == null || email.isEmpty() || psw.isEmpty()) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("no param");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Empty credentials");
 		}
-
-		// Controllo credenziali
 
 		UserDAO userDao = new UserDAO(connection);
 		User user = null;
@@ -75,15 +69,13 @@ public class CheckLogin extends HttpServlet {
 			user = userDao.checkCredentials(email, psw);
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("no db");
+			response.getWriter().println("Server error, please try again later");
 			return;
 		}
 
-		// errore login errato
-
 		if (user == null) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("no cred");
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.getWriter().println("Incorrect credentials");
 			return;
 
 		} else {

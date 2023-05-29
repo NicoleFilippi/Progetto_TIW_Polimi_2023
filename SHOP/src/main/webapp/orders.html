@@ -16,8 +16,8 @@
 		
 		<div class="container">
 			<h1 class="title"> ORDERS </h1>
-			<div class="text" th:if="${orders == null or orders.isEmpty()}"> You have not ordered anything yet  </div>
-			<div class="text" th:if="${!orders.isEmpty()}"> Your orders: </div>
+			<p class="text" th:if="${orders == null or orders.isEmpty()}"> You have not ordered anything yet </p>
+			<p class="text" th:if="${!orders.isEmpty()}"> Your orders: </p>
 		</div>
 		
 		<div th:each="ord : ${orders}">		

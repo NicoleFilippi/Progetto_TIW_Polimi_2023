@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<meta charset="UTF-8">
-		<title>SHOP</title>
+		<meta charset="UTF-8">		
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<link rel="stylesheet" type="text/css" href="css/cartOrdersStyle.css">
+		<title>SHOP</title>
 	</head>
 	<body>	
 		<div class="menu">
@@ -16,8 +16,8 @@
 		
 		<div class="container">
 			<h1 class="title"> CART </h1>
-			<div class="text" th:if="${session.cart.suppliers == null or session.cart.suppliers.isEmpty()}"> Your cart is empty </div>
-			<div class="text" th:if="${!session.cart.suppliers.isEmpty()}"> Your cart: </div>
+			<p class="text" th:if="${session.cart.suppliers == null or session.cart.suppliers.isEmpty()}"> Your cart is empty </p>
+			<p class="text" th:if="${!session.cart.suppliers.isEmpty()}"> Your cart: </p>
 		</div>
 		
 		<div th:each="supp : ${session.cart.suppliers}">					
