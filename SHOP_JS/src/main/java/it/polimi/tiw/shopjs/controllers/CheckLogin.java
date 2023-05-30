@@ -14,7 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import it.polimi.tiw.shopjs.beans.Cart;
+import com.google.gson.GsonBuilder;
+
 import it.polimi.tiw.shopjs.beans.User;
 import it.polimi.tiw.shopjs.dao.UserDAO;
 import it.polimi.tiw.shopjs.utils.ConnectionHandler;
@@ -60,6 +61,7 @@ public class CheckLogin extends HttpServlet {
 		if (email == null || psw == null || email.isEmpty() || psw.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Empty credentials");
+			return;
 		}
 
 		UserDAO userDao = new UserDAO(connection);
@@ -81,8 +83,12 @@ public class CheckLogin extends HttpServlet {
 		} else {
 			response.setStatus(HttpServletResponse.SC_OK);
 			session.setAttribute("user", user);
-			if (session.getAttribute("cart") == null)
-				session.setAttribute("cart", new Cart());
+			String userJson = new GsonBuilder().create().toJson(user);
+			
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().println(userJson);
+			
 		}
 	}
 

@@ -2,7 +2,7 @@
  * AJAX call management
  */
 
-function makeCall(method, url, formElement, cback, reset = true) {
+function makeCall(method, url, formElement, cback, reset = false) {
 	let req = new XMLHttpRequest();
 	req.onreadystatechange = function() {
  		cback(req);

@@ -3,24 +3,27 @@
 	<head>
 		<meta charset="UTF-8">
 		<title> SHOP </title>
+		<script src="utils.js" charset="utf-8" defer></script>
+		<script src="cart.js" charset="utf-8" defer></script>
+		<script src="pageChange.js" charset="utf-8" defer></script>
+		<script src="search.js" charset="utf-8" defer></script>
 	</head>
 	<body>
 		<div class="menu">
 			<button class="menu-button" id="home_button"> Home </button>
 			<button class="menu-button" id="cart_button"> Cart </button>
 			<button class="menu-button" id="orders_button"> Orders </button>
-			<button class="menu-button" id="account_button"> Account </button>
 		</div>
 		
 		<!-- HOME PAGE ELEMENTS -->
-		<div id="home_elements" hidden="false">
+		<div id="home_elements">
 			<div class="container">
 				<h1 class="title"> HOME </h1>			
-				<p class="text" id="nome_nickname_text"> </p>
+				<p class="text" id="nickname_text"> </p>
 			</div>
 			<br>
 			<div class="search">		
-				<form action="#">
+				<form action="#" id="search_form">
 					<label class="label-search"> Search product: </label>
 					<input class="input-search" placeholder="What are you searching?" type="text" name="keyword" required >
 					<input class="button-search" type="button" value="Search" id="home_submit">
@@ -32,7 +35,7 @@
 		</div>
 		
 		<!-- DETAILS PAGE ELEMENTS -->
-		<div id="details_elements" hidden="true">
+		<div id="details_elements">
 			<div class="container">
 				<h1 class="title"> DETAILS </h1>
 			</div>
@@ -44,15 +47,8 @@
 					<td class="bold"> Category: </td>
 					<td class="bold"> Description: </td>
 				</tr>
-				<tr>
-					<td> 0 </td>
-					<td> <img src="" width=80 height=80></td>
-					<td> Name </td>
-					<td> Category </td>
-					<td> Description </td>
-				</tr>
 			</table>
-			<table class="table2">
+			<table class="table2" id="supplier_table">
 				<tr>
 					<td class="column bold"> Seller: </td>
 					<td class="column bold"> Price: </td>
@@ -66,96 +62,38 @@
 		</div>
 		
 		<!-- RESULTS PAGE ELEMENTS -->
-		<div id="results_elements" hidden="true">
+		<div id="results_elements">
 			<div class="container">
 				<h1 class="title">RESULTS</h1>			
 				<p class="text" id="results_text"> </p>
 			</div>				
-			<table class="table" id="retults_table">
+			<table class="table" id="results_table">
 			</table>
 		</div>
 		
 		<!-- CART PAGE ELEMENTS -->
-		<div id="cart_elements" hidden="true">
+		<div id="cart_elements">
 			<div class="container">
 				<h1 class="title"> CART </h1>
-				<p class="text" id="cart_text"> Your cart is empty </p>
+				<p class="text" id="cart_text"> </p>
 			</div>
 			
-			<div>					
-				<table class="table">
-					<tr>
-						<td class="supplier" colspan="4"> Supplier Name </td>
-					</tr>
-					<tr>
-						<td class="bold"> Name: </td>
-						<td class="bold"> Price: </td>
-						<td class="bold"> Quantity: </td>
-						<td class="bold"> Total: </td>
-					</tr>
+			<div id="cart_tables">	
 					
-					<tr>
-						<td colspan="1" class="bold"> Shipping cost: </td>
-						<td colspan="3"> 0 $ </td>
-					</tr>
-					<tr>
-						<td colspan="1" class="bold">Total cost: </td>
-						<td colspan="3"> 0 $ </td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<form action="#">
-						 		<input type="hidden" name="supplierId">
-						 		<input class="button" type="button" value="Order">
-					 		</form>
-				 		</td>
-					</tr>
-				</table>
 				<br>
 			</div>
 		</div>
 		
 		<!-- ORDERS PAGE ELEMENTS -->
 		
-		<div id="orders_elements" hidden="true">
+		<div id="orders_elements">
 			<div class="container">
 				<h1 class="title"> ORDERS </h1>
 				<p class="text" id="orders_text"></p>
 			</div>
 			
-			<div>		
-				<table class="table">
-					<tr>
-						<td colspan="1">
-							<span class="bold">Order id: </span>
-							<span></span>
-						</td>
-						<td class="supplier" colspan="3"> Supplier Name </td>
-					</tr>
-					<tr>
-						<td class="bold"> Name: </td>
-						<td class="bold"> Price: </td>
-						<td class="bold"> Quantity: </td>
-						<td class="bold"> Total: </td>
-					</tr>				
+			<div id="orders_tables">		
 				
-					<tr>
-						<td colspan="1" class="bold"> Shipping cost: </td>
-						<td colspan="3" ></td>
-					</tr>
-					<tr>
-						<td colspan="1" class="bold"> Total cost: </td>
-						<td colspan="3"></td>
-					</tr>
-					<tr>
-						<td colspan="1" class="bold">Date:</td>
-						<td colspan="3"></td>
-					</tr>
-					<tr>
-						<td colspan="1" class="bold"> Shipping address: </td>
-						<td colspan="3"></td>
-					</tr>				
-				</table>
 			</div>
 		</div>
 	</body>

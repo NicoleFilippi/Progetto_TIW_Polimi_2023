@@ -107,8 +107,7 @@ public class CheckLogin extends HttpServlet {
 		}
 		else {
 			session.setAttribute("user", user);
-			if(session.getAttribute("cart") == null)
-				session.setAttribute("cart", new Cart());
+			session.setAttribute("cart", new Cart());
 
 			String path = getServletContext().getContextPath() + "/Home";
 			response.sendRedirect(path);

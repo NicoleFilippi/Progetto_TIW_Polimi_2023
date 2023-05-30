@@ -1,23 +1,28 @@
+/**
+ * manda parametri login al server e gestisce la risposta
+ */
+
 {
-	let button = messageForm.querySelector("input[type='button']");
+	let loginForm = document.getElementById("login_form");
+	let button = loginForm.querySelector("input[type='button']");
 	let alertContainer = document.getElementById("alert");
  	window.addEventListener("load", function() {
 		button.addEventListener("click", function(e) {
-			let form = e.target.closest("form");
-			if (form.checkValidity()) {
+			if (loginForm.checkValidity()) {
 				e.preventDefault();
-				makeCall("POST", "CheckLogin", form, function(req) {
-	            	if (req.readyState === 4) {
-	            		let message = req.responseText;
-		        		if (req.status === 200) {
+				makeCall("POST", "CheckLogin", loginForm, function(req) {
+	            	if (req.readyState == XMLHttpRequest.DONE) {
+	            		let response = req.responseText;
+		        		if (req.status === 200) {							
+							sessionStorage.setItem("user", response);							
 		           			window.location.href="home.html";
 		        		} else {
-		           			alertContainer.textContent = message;
+		           			alertContainer.textContent = response;
 		          		}
 	      			}
 	      		});
     		} else {
-        		alertContainer.textContent = "not valid input";
+        		loginForm.reportValidity();
       		}
     	});
 	});
