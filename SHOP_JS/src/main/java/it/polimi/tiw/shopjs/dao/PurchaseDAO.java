@@ -1,4 +1,4 @@
-package it.polimi.tiw.shop.dao;
+package it.polimi.tiw.shopjs.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -11,14 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
 
-import it.polimi.tiw.shop.beans.Cart;
-import it.polimi.tiw.shop.beans.Order;
-import it.polimi.tiw.shop.beans.Product;
-import it.polimi.tiw.shop.beans.ProductSupplier;
-import it.polimi.tiw.shop.beans.Supplier;
-import it.polimi.tiw.shop.beans.User;
+import it.polimi.tiw.shopjs.beans.ClientOrder;
+import it.polimi.tiw.shopjs.beans.Order;
+import it.polimi.tiw.shopjs.beans.Product;
+import it.polimi.tiw.shopjs.beans.ProductSupplier;
+import it.polimi.tiw.shopjs.beans.Supplier;
 
 public class PurchaseDAO {
 	
@@ -29,43 +27,84 @@ public class PurchaseDAO {
 	}
 	
 	/**
+	 * metodo che costruisce un Ordine dai parametri inviati da client
+	 * @param order oggetto ClientOrder inviato da client
+	 */
+	
+	public Order generateOrder(ClientOrder order) throws SQLException{
+		
+		Order result = new Order();
+		SupplierDAO sDAO = new SupplierDAO(con);
+		ProductSupplierDAO psDAO = new ProductSupplierDAO(con);
+		
+		if(order.getQuantities().size()!=order.getProductIds().size() || order.getQuantities().size()==0);
+		
+		Supplier supp=null;
+		List<ProductSupplier> prodSuppList = new ArrayList<>();
+		Map<Integer,Integer> prodQuantities = new HashMap<>();
+		double prodCost = 0;
+		double shippingCost;
+		int prodNum = 0;
+		
+		supp = sDAO.getById(order.getSupplierId());
+		if(supp==null) return null;
+		
+		for(int i=0; i<order.getProductIds().size(); i++) {
+			ProductSupplier ps = psDAO.getByIds(order.getProductIds().get(i),supp.getId());
+			
+			if(ps==null) return null;
+			prodSuppList.add(ps);
+			
+			if(order.getQuantities().get(i)<=0) return null;
+			prodQuantities.put(ps.getProduct().getId(),order.getQuantities().get(i));
+			prodCost += order.getQuantities().get(i) * ps.getPrice();
+			prodNum += order.getQuantities().get(i);
+		}
+		
+		if(supp.getFreeShippingThreshold()>=0 && prodCost>=supp.getFreeShippingThreshold()) shippingCost = 0;
+		else {
+			int min = 1;
+			for(int i=0; i<supp.getMinQuantities().size(); i++) {
+				if(supp.getMinQuantities().get(i)>min && supp.getMinQuantities().get(i)<=prodNum)
+					min = supp.getMinQuantities().get(i);
+			}
+			shippingCost = supp.getShippingPrices().get(min);
+		}
+		
+		result.setSupplier(supp);
+		result.setProducts(prodSuppList);
+		result.setQuantities(prodQuantities);
+		result.setTotal(prodCost + shippingCost);
+		result.setShippingPrice(shippingCost);
+		
+		return result;
+	}
+	
+	/**
 	 * metodo per aggiungere un ordine
 	 * @param supplier
 	 * @param session oggetto sessione passato dalla servlet
 	 */
 	
-	public void addPurchase(Supplier supplier, HttpSession session) throws SQLException {
-		Cart cart = (Cart)session.getAttribute("cart");
-		User user = (User)session.getAttribute("user");
-		
-		cart.reloadDBPrices(con);
+	public void addPurchase(Order order, String user, String state, String city, String street, String civicNumber) throws SQLException {
 		
 		//necessità di un'unica transazione in cui si inserisce sia l'ordine che tutti i prodotti contenuti (in due tabelle diverse)
 		
 		con.setAutoCommit(false);
+		
 		try{
 			String query = " INSERT INTO Purchase(total, date, supplierId, shippingPrice, userEmail, StateIso3, City, Street, CivicNumber) VALUES (?,?,?,?,?,?,?,?,?)";
 			PreparedStatement pstatement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-		
-			//controllo ridondante, già presente nella servlet, nel caso in cui il fornitore non abbia prodotti nel carrello
 			
-			Supplier cartSupplier=null;
-			for(int i = 0; i < cart.getSuppliers().size(); i++) {
-				if(cart.getSuppliers().get(i).equals(supplier))
-					cartSupplier=cart.getSuppliers().get(i);
-			}
-			if(cartSupplier == null)
-				return;
-			
-			pstatement.setDouble(1, cartSupplier.getTotalCost());
+			pstatement.setDouble(1, order.getTotal());
 			pstatement.setDate(2, new Date(System.currentTimeMillis()));
-			pstatement.setInt(3, cartSupplier.getId());
-			pstatement.setDouble(4, cartSupplier.getShippingCost());
-			pstatement.setString(5, user.getEmail());
-			pstatement.setString(6, user.getState());
-			pstatement.setString(7, user.getCity());
-			pstatement.setString(8, user.getStreet());
-			pstatement.setString(9, user.getCivicNumber());
+			pstatement.setInt(3, order.getSupplier().getId());
+			pstatement.setDouble(4, order.getShippingPrice());
+			pstatement.setString(5, user);
+			pstatement.setString(6, state);
+			pstatement.setString(7, city);
+			pstatement.setString(8, street);
+			pstatement.setString(9, civicNumber);
 			
 			pstatement.executeUpdate();
 						
@@ -81,22 +120,20 @@ public class PurchaseDAO {
 			
 			//inserisco tutti i prodotti
 			
-			for(int i=0; i<cart.getItems().get(cartSupplier.getId()).size(); i++) {
-				pstatement.setInt(1, cart.getItems().get(cartSupplier.getId()).get(i).getProduct().getId());
-				pstatement.setInt(3, cart.getQuantities().get(cart.getItems().get(cartSupplier.getId()).get(i).getId()));
-				pstatement.setDouble(4, cart.getItems().get(cartSupplier.getId()).get(i).getPrice());
+			for(int i=0; i<order.getProducts().size(); i++) {
+				pstatement.setInt(1, order.getProducts().get(i).getProduct().getId());
+				pstatement.setInt(3, order.getQuantities().get(order.getProducts().get(i).getProduct().getId()));
+				pstatement.setDouble(4, order.getProducts().get(i).getPrice());
 				pstatement.executeUpdate();
 			}
 			
 			con.commit();
 			
-			//rimuovo dal carrello
-			
-			cart.removeSupplier(cartSupplier);
-			
 		}catch(Exception e) {
+			
 			con.rollback();
 			e.printStackTrace();
+			
 		}
 
 		con.setAutoCommit(true);		
@@ -108,13 +145,13 @@ public class PurchaseDAO {
 	 * @return lista di ordini
 	 */
 	
-	public List<Order> getByUser(User user) throws SQLException{
+	public List<Order> getByUser(String user) throws SQLException{
 		List<Order> orders = new ArrayList<>();
 		
 		String query = " SELECT * FROM Purchase WHERE userEmail = ? ORDER BY date DESC,id DESC";		
 		PreparedStatement pstatement = con.prepareStatement(query);
 		
-		pstatement.setString(1, user.getEmail());		
+		pstatement.setString(1, user);		
 		ResultSet result = pstatement.executeQuery();
 				
 		String query2="SELECT * FROM purchase_product WHERE Purchaseid = ? ";

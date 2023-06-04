@@ -15,17 +15,11 @@ public class NotLoggedFilter implements Filter {
 	
 	//filtro che controlla se l'utente che vuole uscire dall'area riservata non sia loggato 
 	
-	public NotLoggedFilter() {
-		
-	}
+	public NotLoggedFilter() {}
 	
-	public void init(FilterConfig config) throws ServletException {
-		
-	}
+	public void init(FilterConfig config) throws ServletException {}
 
-	public void destroy() {
-		
-	}
+	public void destroy() {}
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{		
 		HttpServletRequest req = (HttpServletRequest) request;

@@ -5,14 +5,15 @@
 		<title> SHOP </title>
 		<script src="utils.js" charset="utf-8" defer></script>
 		<script src="cart.js" charset="utf-8" defer></script>
-		<script src="pageChange.js" charset="utf-8" defer></script>
-		<script src="search.js" charset="utf-8" defer></script>
+		<script src="homeManager.js" charset="utf-8" defer></script>
+		<link rel="stylesheet" type="text/css" href="css/homeStyle.css">
 	</head>
 	<body>
-		<div class="menu">
+		<div class="menu" id="menu_buttons">
 			<button class="menu-button" id="home_button"> Home </button>
 			<button class="menu-button" id="cart_button"> Cart </button>
 			<button class="menu-button" id="orders_button"> Orders </button>
+			<button class="menu-button" id="account_button"> Account </button>
 		</div>
 		
 		<!-- HOME PAGE ELEMENTS -->
@@ -26,12 +27,42 @@
 				<form action="#" id="search_form">
 					<label class="label-search"> Search product: </label>
 					<input class="input-search" placeholder="What are you searching?" type="text" name="keyword" required >
-					<input class="button-search" type="button" value="Search" id="home_submit">
+					<input class="button-search" type="submit" value="Search" id="home_submit">
 				</form>
 			</div>
 			<br>
 			<table class="table" id="home_table">
 			</table>
+		</div>
+		
+		<!-- ACCOUNT PAGE ELEMENTS -->
+		<div id="account_elements">
+			<div class="container">		
+				<h1 class="title"> ACCOUNT </h1>
+				<p class="text" id="account_text"></p>
+				<br>
+				<p class="text"> Here you can modify your data, empty fields will not change. </p>
+				<br>
+				<div>
+					<form action="#" id="account_form">
+						<label class="label"> Name: </label> <input class="input" type="text" name="name" size=40 ><br>
+						<label class="label"> Surname: </label><input class="input" type="text" name="surname" size=40 ><br>
+						<label class="label"> Street: </label><input class="input" type="text" name="street" size=40 ><br>
+						<label class="label"> Civic Number: </label><input class="input" type="text" name="civicNumber" > <br>
+						<label class="label"> City: </label><input class="input" type="text" name="city" size=40 ><br>
+						<label class="label"> State: </label>
+							<select name="state" class="input">
+							</select> <br>
+						<input class="button" type="submit" value="Save">
+					</form>
+				</div>
+				<br>
+				
+				<div>	
+					<p class="text"> Otherwise: </p>		
+					<button class="button" id="account_logout_button">Logout</button>
+				</div>
+			</div>
 		</div>
 		
 		<!-- DETAILS PAGE ELEMENTS -->
@@ -59,6 +90,16 @@
 					<td class="column bold"> $ items in Cart: </td>
 				</tr>
 			</table>
+			<div id = "popup_area" class="popup">
+				<table id = "popup_table">
+					<tr>
+						<td class="bold"> Id: </td>
+						<td class="bold"> Name: </td>
+						<td class="bold"> Price: </td>
+						<td class="bold"> Quantity: </td>
+					</tr>
+				</table>
+			</div>
 		</div>
 		
 		<!-- RESULTS PAGE ELEMENTS -->
@@ -79,13 +120,11 @@
 			</div>
 			
 			<div id="cart_tables">	
-					
-				<br>
+				
 			</div>
 		</div>
 		
-		<!-- ORDERS PAGE ELEMENTS -->
-		
+		<!-- ORDERS PAGE ELEMENTS -->		
 		<div id="orders_elements">
 			<div class="container">
 				<h1 class="title"> ORDERS </h1>
@@ -94,6 +133,22 @@
 			
 			<div id="orders_tables">		
 				
+			</div>
+		</div>
+		
+		<!-- ERROR PAGE ELEMENTS -->		
+		<div id="error_elements">
+			<div class="container_error">
+				<h1 class="title_error"> ERROR </h1>
+				<p class="text_error"> Sorry, there was an error while handling your request. </p>
+				<p class="text_error" id="error_text"></p>
+				<div id="login_redirect_button">
+					<button class="button_error"> Login page </button>
+				</div>
+				
+				<div id="home_redirect_button">
+					<button class="button_error"> Home page </button>
+				</div>
 			</div>
 		</div>
 	</body>

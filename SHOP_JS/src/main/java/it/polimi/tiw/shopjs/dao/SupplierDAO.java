@@ -42,7 +42,9 @@ public class SupplierDAO {
 		supp.setId(id);
 		supp.setName(result.getString("name"));
 		supp.setRating(result.getInt("rating"));
-		supp.setFreeShippingThreshold(result.getDouble("freeShippingThreshold"));
+		double threshold = result.getDouble("freeShippingThreshold");
+		if(result.wasNull()) threshold = -1;
+		supp.setFreeShippingThreshold(threshold);
 		
 		List<Integer> qts = new ArrayList<>();
 		Map<Integer,Double> prs = new HashMap<>();

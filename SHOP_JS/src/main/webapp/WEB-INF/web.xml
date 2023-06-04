@@ -1,28 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
-  <display-name>SHOP</display-name>
-  <context-param>
-    <param-name>dbUrl</param-name>
-    <param-value>jdbc:mysql://localhost:3306/shop?serverTimezone=UTC</param-value>
-  </context-param>
-  <context-param>
-    <param-name>dbUser</param-name>
-    <param-value>root</param-value>
-  </context-param>
-  <context-param>
-    <param-name>dbPassword</param-name>
-    <param-value>nicole</param-value>
-  </context-param>
-  <context-param>
-    <param-name>dbDriver</param-name>
-    <param-value>com.mysql.cj.jdbc.Driver</param-value>
-  </context-param>
-  <context-param>
-    <param-name>defaultCategory</param-name>
-    <param-value> Clothing </param-value>
-  </context-param>
+  	<display-name>SHOP</display-name>
+	  <context-param>
+	  	<param-name>dbUrl</param-name>
+	    <param-value>jdbc:mysql://localhost:3306/shop?serverTimezone=UTC</param-value>
+	  </context-param>
+	  <context-param>
+	    <param-name>dbUser</param-name>
+	    <param-value>root</param-value>
+	  </context-param>
+	  <context-param>
+	    <param-name>dbPassword</param-name>
+	    <param-value>nicole</param-value>
+	  </context-param>
+	  <context-param>
+	    <param-name>dbDriver</param-name>
+	    <param-value>com.mysql.cj.jdbc.Driver</param-value>
+	  </context-param>
+	  <context-param>
+	    <param-name>defaultCategory</param-name>
+	    <param-value> Clothing </param-value>
+	  </context-param>
+	  
+	  <filter>
+	  	<filter-name>LoggedFilter</filter-name>
+	    <filter-class>it.polimi.tiw.shopjs.filters.LoggedFilter</filter-class> 
+	  </filter>
+	  <filter>
+	  	<filter-name>LoggedJSFilter</filter-name>
+	    <filter-class>it.polimi.tiw.shopjs.filters.LoggedJSFilter</filter-class> 
+	  </filter>
+	  <filter> 
+	    <filter-name>NotLoggedFilter</filter-name>
+	    <filter-class>it.polimi.tiw.shopjs.filters.NotLoggedFilter</filter-class> 
+	  </filter>
+	  <filter> 
+	    <filter-name>NotLoggedJSFilter</filter-name>
+	    <filter-class>it.polimi.tiw.shopjs.filters.NotLoggedJSFilter</filter-class> 
+	  </filter> 
+	 
+	  <filter> 
+	    <filter-name>ValidPathFilter</filter-name>
+	    <filter-class>it.polimi.tiw.shopjs.filters.ValidPathFilter</filter-class> 
+	  </filter> 
+	 
+	  <filter-mapping> 
+	    <filter-name>LoggedFilter</filter-name>
+	    
+	    <url-pattern>/home.html</url-pattern>
+	  </filter-mapping>
+	  
+	  <filter-mapping> 
+	    <filter-name>LoggedJSFilter</filter-name>
+	    
+	    <url-pattern>/AddOrder</url-pattern>
+	    <url-pattern>/GetDetails</url-pattern>
+	    <url-pattern>/GetLastVisualized</url-pattern>
+	    <url-pattern>/GetOrders</url-pattern>
+	    <url-pattern>/GetResults</url-pattern>
+	    <url-pattern>/Logout</url-pattern>
+	    <url-pattern>/GetUser</url-pattern>
+	  </filter-mapping>
+ 
+	  <filter-mapping> 
+	    <filter-name>NotLoggedFilter</filter-name>
+	    <url-pattern>/</url-pattern>
+	    <url-pattern>/index.html</url-pattern>
+	  </filter-mapping>
+	  
+	  <filter-mapping> 
+	    <filter-name>NotLoggedJSFilter</filter-name>
+	    <url-pattern>/CheckLogin</url-pattern>
+	    <url-pattern>/Signup</url-pattern>
+	  </filter-mapping>
+ 
+	  <filter-mapping> 
+	    <filter-name>ValidPathFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	  </filter-mapping>
   
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-  </welcome-file-list>
+	  <welcome-file-list>
+	    <welcome-file>index.html</welcome-file>
+	  </welcome-file-list>
 </web-app>

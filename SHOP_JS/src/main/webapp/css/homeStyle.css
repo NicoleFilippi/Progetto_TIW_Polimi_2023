@@ -1,0 +1,214 @@
+@charset "UTF-8";
+
+body {
+  background-color: #edd2e9;		/*colore sfondo*/
+  font-family: Arial, sans-serif;	/*font*/
+}
+
+.container {
+  background-color: #FFF;			/*colore sfondo*/
+  border-radius: 10px;				/*bordo angoli arrotondati*/
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);	/*posizione orizzontale, posizione verticale, dimensione ombra, colore ombra + trasparenza*/
+  margin: 20px auto;				/*distanza dall'alto e centrato*/
+  max-width: 400px;					/*larghezza massima*/
+  padding: 40px;					/*bordi interni*/
+}
+
+.title {
+  color: #333;					/*colore*/
+  font-size: 28px;					/*dimensione font*/
+  font-weight: bold;				/*font grassetto*/
+  text-align: center;				/*centrato*/
+}
+
+
+.label {
+  color: #666;					/*colore*/
+  display: block;					/*occupa un'intera riga*/
+  font-size: 14px;					/*dimensione font*/
+  font-weight: bold;				/*font grassetto*/
+  margin-bottom: 5px;				/*distanza dall'input sottostante*/
+}
+
+.input {
+  border: 1px solid #CCC;			/*bordo: spessore, continuo, colore*/
+  border-radius: 5px;				/*bordo angoli arrotondati*/
+  font-size: 14px;					/*dimensione font*/
+  margin-bottom: 15px;				/*distanza dall'elemento sottostante*/
+  padding: 10px;					/*altezza della casella*/
+  max-width: 400px;					/*larghezza massima*/
+  width: 100%;						/*tutta la larghezza possibile fino alla massima*/
+  box-sizing: border-box;			/*dimensione box*/
+}
+
+.button {
+  background-color: #df3fca;		/*colore bottone*/
+  border-radius: 5px;				/*angoli arrotondati*/
+  color: #FFF;					/*colore font*/
+  cursor: pointer;					/*appare manina al passaggio*/
+  font-size: 16px;					/*dimensione font*/
+  padding: 10px;					/*altezza bottone*/
+  width: 100%;						/*tutta la larghezza possibile dal contenitore*/
+  max-width: 400px;					/*larghezza massima*/
+  border: none;						/*nessun bordo*/
+  box-sizing: border-box;			/*dimensione box*/
+}
+
+.button:hover {
+  background-color: #e977e1;		/*colore al passaggio con mouse*/
+}
+
+.text {
+  color: #666;					/*colore font*/
+  font-size: 16px;					/*dimensione font*/
+  text-align: center;				/*testo centrato*/
+}
+
+.bold {
+  color: #666;					/*colore font*/
+  font-size: 16px;					/*dimensione font*/
+  font-weight: bold;
+}
+
+.menu {
+  white-space: nowrap;				/*tutti i bottoni sulla stessa riga*/
+  margin-top: 20px;					/*distanza dall'alto*/
+  margin-left: 40px;				/*distanza da sinistra*/
+  margin-right: 40px;				/*distanza da destra*/
+}
+
+.menu-button {
+  background-color: #8000ff;		/*colore bottone*/
+  border-radius: 5px;				/*angoli arrotondati*/
+  color: #FFF;						/*colore font*/
+  cursor: pointer;					/*appare manina al passaggio*/
+  font-size: 16px;					/*dimensione font*/
+  padding: 10px;					/*altezza bottone*/
+  width: 33%;						/*larghezza*/
+  border: none;						/*nessun bordo*/
+}
+
+.menu-button:hover {
+  background-color: #8080ff;		/*colore al passaggio con mouse*/
+}
+
+.label-search {
+  color: #666;						/*colore*/
+  font-size: 14px;					/*dimensione font*/
+  font-weight: bold;				/*font grassetto*/
+}
+
+.input-search {
+  border: 1px solid #CCC;			/*bordo: spessore, continuo, colore*/
+  border-radius: 5px;				/*bordo angoli arrotondati*/
+  font-size: 14px;					/*dimensione font*/
+  padding: 10px;					/*altezza della casella*/
+  width: 70%;						/*larghezza 70% del contenitore*/
+}
+
+.button-search {
+  background-color: #df3fca;		/*colore bottone*/
+  border-radius: 5px;				/*angoli arrotondati*/
+  color: #FFF;						/*colore font*/
+  cursor: pointer;					/*appare manina al passaggio*/
+  font-size: 16px;					/*dimensione font*/
+  padding: 10px;					/*altezza bottone*/
+  width: 15%;						/*larghezza 10% del contenitore*/
+  border: none;						/*nessun bordo*/
+}
+
+.button-search:hover {
+  background-color: #e977e1;		/*colore al passaggio con mouse*/
+}
+
+.search {
+  white-space: nowrap;				/*tutti gli elementi sulla stessa riga*/
+  background-color: #FFF;			/*colore sfondo*/
+  border-radius: 10px;				/*bordo angoli arrotondati*/
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);	/*posizione orizzontale, posizione verticale, dimensione ombra, colore ombra + trasparenza*/
+  width: 85%;					    /*larghezza*/
+  padding: 40px;					/*bordi interni*/  
+  margin: 20px auto;				/*disatnza dall'elemento inferiore e centrato*/
+}
+
+.table{
+  background-color: #FFF;			/*colore sfondo*/
+  border-radius: 10px;				/*bordo angoli arrotondati*/
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);	/*posizione orizzontale, posizione verticale, dimensione ombra, colore ombra + trasparenza*/
+  color: #666;					/*colore font*/
+  font-size: 16px;					/*dimensione font*/
+  margin: 20px auto;				/*distanza dall'elemento inferiore e centrato*/
+  width: 60%;						/*larghezza*/
+  padding: 40px;					/*margini interni*/
+  text-align: center;				/*testo centrato*/
+  table-layout: fixed;
+}
+
+.column {
+  border: 1px solid #666;			/*bordi interni*/
+}
+
+.table2{
+  background-color: #FFF;			/*colore sfondo*/
+  border-radius: 10px;				/*bordo angoli arrotondati*/
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);	/*posizione orizzontale, posizione verticale, dimensione ombra, colore ombra + trasparenza*/
+  color: #666;					/*colore font*/
+  font-size: 16px;					/*dimensione font*/
+  margin: 20px auto;				/*distanza dall'elemento inferiore e centrato*/
+  width: 70%;						/*larghezza*/
+  padding: 40px;					/*margini interni*/
+  text-align: center;				/*testo centrato*/
+  table-layout: fixed;
+}
+
+.popup {
+  position: absolute;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f7ccf3;
+  border: 1px solid #666;
+  border-radius: 10px;	
+  padding: 20px;
+  z-index: 1;
+  text-align: center;
+  table-layout: fixed;
+}
+
+.container_error {
+  background-color: #f2dede;		/*colore sfondo*/
+  border-radius: 10px;				/*bordo angoli arrotondati*/
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);	/*posizione orizzontale, posizione verticale, dimensione ombra, colore ombra + trasparenza*/
+  margin: 50px auto;				/*distanza dall'alto e centrato*/
+  max-width: 400px;					/*larghezza massima*/
+  padding: 40px;					/*bordi interni*/
+}
+
+
+.title_error {
+  color: #a94442;					/*colore*/
+  font-size: 28px;					/*dimensione font*/
+  font-weight: bold;				/*font grassetto*/
+  text-align: center;				/*centrato*/
+}
+
+.text_error {
+  color: #a94442;					/*colore font*/
+  font-size: 16px;					/*dimensione font*/
+  text-align: center;				/*testo centrato*/
+}
+
+.button_error {
+  background-color: #a94442;		/*colore bottone*/
+  border-radius: 5px;				/*angoli arrotondati*/
+  color: #FFF;						/*colore font*/
+  cursor: pointer;					/*appare manina al passaggio*/
+  font-size: 16px;					/*dimensione font*/
+  padding: 10px;					/*altezza bottone*/
+  width: 100%;						/*tutta la larghezza possibile dal contenitore*/
+  max-width: 400px;					/*larghezza massima*/
+  border: none;						/*nessun bordo*/
+  box-sizing: border-box;			/*dimensione box*/
+}
+
+.button_error:hover {
+  background-color: #d18b89;		/*colore al passaggio con mouse*/
+}

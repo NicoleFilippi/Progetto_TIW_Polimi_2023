@@ -65,12 +65,6 @@ body {
   text-align: center;				/*testo centrato*/
 }
 
-.bold {
-  color: #666;					/*colore font*/
-  font-size: 16px;					/*dimensione font*/
-  font-weight: bold;				/*grassetto*/
-}
-
 .error {
   background-color: #f2dede;		/*colore sfondo area*/
   border: 1px solid #ebccd1;		/*bordo: spessore, continuo, colore*/

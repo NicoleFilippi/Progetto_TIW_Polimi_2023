@@ -3,27 +3,79 @@
 	<head>
 		<script src="loginManager.js" charset="utf-8" defer></script>	
 		<script src="utils.js" charset="utf-8" defer></script>
+		<script src="cart.js" charset="utf-8" defer></script>		
+		<link rel="stylesheet" type="text/css" href="css/indexStyle.css">
 		<title> SHOP </title>
 	</head>
 	<body>
-		<div class="container">
-			<h1 class="title"> SHOP </h1>
-			
-			<p class="text"> Welcome to our shop! Insert email and password: </p>
-			
-			<br>
-			
-			<div>
-				<form id="login_form" action="#">
-					<label class="label" for="email"> Email: </label><input class="input" placeholder="Insert here your email" id="email" type="email" name="email" size=40 required><br><br>
-					<label class="label" for="password"> Password: </label><input class="input" placeholder="Insert here your password" id="password" type="password" name="password" required><br><br>
-					<input class="button" name="Submit" type="button" value="Login">
-				</form>
+		<div id="login_elements">
+			<div class="container">
+				<h1 class="title"> SHOP </h1>
+				
+				<p class="text"> Welcome to our shop! Insert email and password: </p>
+				
+				<br>
+				
+				<div>
+					<form id="login_form" action="#">
+						<label class="label"> Email: </label><input class="input" placeholder="Insert here your email" type="email" name="email" size=40 required><br><br>
+						<label class="label"> Password: </label><input class="input" placeholder="Insert here your password" type="password" name="password" required><br><br>
+						<input class="button" name="Submit" type="submit" value="Login">
+					</form>
+				</div>
+				
+				<p class="error" id="login_alert"></p>
+				<br>
+				
+				<div>
+					<p class="text"> Don't have an account yet? </p>
+					<button class="button" id="login_signup_button"> Sign Up </button>
+				</div>
+				
 			</div>
-			
-			<p id="alert"></p>
-			
-			<br>
-		</div>	
+		</div>
+		
+		<div id="signup_elements">
+			<div class="container">		
+				<h1 class="title"> SIGN UP </h1>
+				<p class="text"> Insert all the required (*) information: </p>
+				
+				<br>
+				
+				<div>
+					<form action="#" id="signup_form">
+						<div id="signup_w1">
+							<label class="label"> *Name: </label><input class="input" type="text" name="name" required><br>
+							<label class="label"> *Surname: </label><input class="input" type="text" name="surname" required><br>
+							<label class="label"> *Email: </label><input class="input" type="email" name="email" required><br>
+							<label class="label"> *Password: </label><input class="input" type="password" name="password" required><br>
+							<label class="label"> *Confirm Password: </label><input class="input" type="password" name="confpwd" required><br>
+						</div>
+						<div id="signup_w2">
+							<label class="label"> *Street: </label><input class="input" type="text" name="street" required><br>
+							<label class="label"> *Civic Number: </label><input class="input" type="text" name="civicNumber" required><br>
+							<label class="label"> *City: </label><input class="input" type="text" name="city" required><br>
+							<label class="label"> *State: </label>				
+							<select name="state" class="input">
+							</select><br>
+						</div>
+					</form>
+					
+					<button class="button" id="signup_previous_button">Previous</button><br>
+					<button class="button" id="signup_next_button">Next</button><br>
+					<button class="button" id="signup_button">Sign Up</button>
+				</div>
+				
+				<p class="error" id="signup_alert"></p>
+				
+				<br>
+				
+				<div>
+					<p class="text"> Already have an account? </p>
+					<button class="button" id="signup_login_button"> Login </button>
+				</div>
+				
+			</div>
+		</div>
 	</body>
 </html>

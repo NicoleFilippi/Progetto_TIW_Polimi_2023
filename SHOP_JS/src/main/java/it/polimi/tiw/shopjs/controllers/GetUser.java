@@ -3,32 +3,26 @@ package it.polimi.tiw.shopjs.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 import com.google.gson.GsonBuilder;
 
-import it.polimi.tiw.shopjs.beans.Product;
-import it.polimi.tiw.shopjs.dao.ProductDAO;
+import it.polimi.tiw.shopjs.beans.User;
+import it.polimi.tiw.shopjs.dao.UserDAO;
 import it.polimi.tiw.shopjs.utils.ConnectionHandler;
 
-@WebServlet("/GetLastVisualized")
-@MultipartConfig
+@WebServlet("/GetUser")
 
-public class GetLastVisualized extends HttpServlet {
-	
-	//Servlet che prende gli ultimi prodotti visualizzati dal database
-	
+public class GetUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
-       
-    public GetLastVisualized() {
+	
+    public GetUser() {
         super();
     }
     
@@ -47,28 +41,27 @@ public class GetLastVisualized extends HttpServlet {
 			return;
     	}
 		
-		HttpSession session = request.getSession();		
-				
-		List<Product> prodList = null;
-		ProductDAO pdao = new ProductDAO(connection);	
-		
-		String user = (String)session.getAttribute("user");
+		UserDAO uDAO = new UserDAO(connection);
+		User result=null;
 		
 		try {
-			prodList = pdao.lastVisualized(user, getServletContext().getInitParameter("defaultCategory"));
-		}catch(SQLException e){
+			result = uDAO.getByEmail((String) request.getSession().getAttribute("user") );
+		}catch(SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 		
-		response.setStatus(HttpServletResponse.SC_OK);
-		String listJson = new GsonBuilder().create().toJson(prodList);
+		if(result == null) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 		
+		String userJson = new GsonBuilder().create().toJson(result);
+		
+		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().println(listJson);
-			
-		return;
+		response.getWriter().println(userJson);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

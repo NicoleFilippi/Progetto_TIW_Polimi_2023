@@ -371,12 +371,12 @@ INSERT INTO Supplier(Name,Rating,FreeShippingThreshold) VALUES
 ( "AW Lab" , 3 , 500 ),
 ( "FootLocker" , 4 , 500 ),
 ( "PittaRed" , 4 , 400 ),
-( "Zalando" , 5 , 300 ),
+( "Zalando" , 5 , NULL ),
 ( "Clothes For Everyone" , 2 , 150 ),
 
 ( "IKEA" , 5 , 350 ),
 ( "FeelAtHome" , 3 , 200 ),
-( "Maisons Du Monde" , 4 , 500 );
+( "Maisons Du Monde" , 4 , NULL );
 
 INSERT INTO Product_Supplier VALUES
 (1,1,15),

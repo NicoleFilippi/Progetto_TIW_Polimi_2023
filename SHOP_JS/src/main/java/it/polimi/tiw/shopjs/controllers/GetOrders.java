@@ -14,22 +14,20 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.GsonBuilder;
 
-import it.polimi.tiw.shopjs.beans.Product;
-import it.polimi.tiw.shopjs.beans.ProductSupplier;
-import it.polimi.tiw.shopjs.dao.ProductDAO;
-import it.polimi.tiw.shopjs.dao.ProductSupplierDAO;
+import it.polimi.tiw.shopjs.beans.Order;
+import it.polimi.tiw.shopjs.dao.PurchaseDAO;
 import it.polimi.tiw.shopjs.utils.ConnectionHandler;
 
-@WebServlet("/GetDetails")
+@WebServlet("/GetOrders")
 
-public class GetDetails extends HttpServlet {
+public class GetOrders extends HttpServlet {
 	
-	//Servlet che prende i dettagli del prodotto interessato
+	//Servlet che invia l'elenco di ordini
 	
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
        
-    public GetDetails() {
+    public GetOrders() {
         super();
     }
     
@@ -49,63 +47,24 @@ public class GetDetails extends HttpServlet {
     	}
 		
 		HttpSession session = request.getSession();
+		//prende gli ordini dell'utente dal DB
 		
-		//prendo id del prodotto di cui voglio vedere i dettagli
-		
-		int productId = -1;
+		PurchaseDAO puDAO = new PurchaseDAO(connection);
+		List<Order> orders;
 		try {
-			productId = Integer.parseInt(request.getParameter("id"));
+			orders=puDAO.getByUser((String)session.getAttribute("user"));
 		}catch(Exception e) {
-			productId = -1;
-		}
-		
-		//id non valido o non presente
-		
-		if(productId <= 0) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("Invalid product.");
-			return;			
-		}
-		
-		List<ProductSupplier> ps = null;
-		Product prodDet = null;
-		ProductDAO pdao = new ProductDAO(connection);
-		
-		try{
-			prodDet = pdao.getById(productId);
-		} catch(SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 		
-		//se non esiste un prodotto con quell'id
-		
-		if(prodDet == null) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("Invalid product.");
-			return;
-		}
-		
-		//il prodotto dettagliato è ora posto negli ultimi visualizzati
-		
-		ProductSupplierDAO psDAO = new ProductSupplierDAO(connection);
-		
-		try {
-			ps = psDAO.getByProduct(prodDet);
-			psDAO.visualizedProduct((String)session.getAttribute("user"), prodDet);
-		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			return;
-		}
+		String ordJson = new GsonBuilder().create().toJson(orders);
 		
 		response.setStatus(HttpServletResponse.SC_OK);
-		
-		String listJson = new GsonBuilder().create().toJson(ps);
-		
 		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().println(listJson);
-		return;		
+		response.getWriter().println(ordJson);
+		return;
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,9 +1,12 @@
 package it.polimi.tiw.shop.beans;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import it.polimi.tiw.shop.dao.ProductSupplierDAO;
 
 public class Cart {
 	
@@ -78,6 +81,26 @@ public class Cart {
 	 * @param s è il fornitore
 	 */
 	
+	public void reloadDBPrices(Connection connection) {
+		
+		ProductSupplierDAO psDAO = new ProductSupplierDAO(connection);
+		
+		for(Supplier sc : suppliers) {
+			for(int i=0; i < items.get(sc.getId()).size(); i++) {
+				try {
+					ProductSupplier newps = psDAO.getByIds(items.get(sc.getId()).get(i).getProduct().getId(),sc.getId());
+					if(newps!=null) items.get(sc.getId()).set(i, newps);
+					else {
+						items.get(sc.getId()).remove(i);
+						i--;
+					}
+				}catch(Exception e) {}
+			}
+			updateCost(sc);
+		}
+		
+	}
+	
 	private void updateCost(Supplier s) {
 		double totalCost = 0;
 		double shippingCost = 0;
@@ -98,7 +121,7 @@ public class Cart {
 			cost += quantities.get(ps.getId()) * ps.getPrice();		//e il costo totale dei prodotti
 		}
 		
-		if(cost >= s.getFreeShippingThreshold()) {					//se il prezzo rientra nella spedizione gratuita
+		if(cost >= s.getFreeShippingThreshold() && s.getFreeShippingThreshold()>=0) {					//se il prezzo rientra nella spedizione gratuita
 			shippingCost = 0;
 		}else {														//altrimenti calcolo in base al numero di pezzi il costo corretto
 			int min = 1;											//a seconda delle fasce definite

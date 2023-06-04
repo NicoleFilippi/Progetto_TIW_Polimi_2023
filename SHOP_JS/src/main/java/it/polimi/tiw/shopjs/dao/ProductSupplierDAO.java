@@ -11,7 +11,6 @@ import java.util.List;
 import it.polimi.tiw.shopjs.beans.Product;
 import it.polimi.tiw.shopjs.beans.ProductSupplier;
 import it.polimi.tiw.shopjs.beans.Supplier;
-import it.polimi.tiw.shopjs.beans.User;
 
 public class ProductSupplierDAO {
 	
@@ -70,12 +69,12 @@ public class ProductSupplierDAO {
 	 * @param p prodotto visualizzato
 	 */
 	
-	public void visualizedProduct(User u, Product p) throws SQLException {
+	public void visualizedProduct(String u, Product p) throws SQLException {
 		String query = "SELECT * FROM user_product WHERE productid = ? AND useremail = ?";
 		PreparedStatement pstatement = con.prepareStatement(query);
 		
 		pstatement.setInt(1, p.getId());
-		pstatement.setString(2, u.getEmail());
+		pstatement.setString(2, u);
 		
 		ResultSet result = pstatement.executeQuery();
 		
@@ -86,7 +85,7 @@ public class ProductSupplierDAO {
 			pstatement = con.prepareStatement(update);
 			pstatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
 			pstatement.setInt(2, p.getId());
-			pstatement.setString(3, u.getEmail());
+			pstatement.setString(3, u);
 			pstatement.executeUpdate();
 			return;
 		}
@@ -94,7 +93,7 @@ public class ProductSupplierDAO {
 		
 		query = "SELECT COUNT(*) FROM user_product WHERE useremail = ?";
 		pstatement = con.prepareStatement(query);
-		pstatement.setString(1, u.getEmail());
+		pstatement.setString(1, u);
 		result = pstatement.executeQuery();
 		
 		//se ci sono 5 (o più, per sicurezza) prodotti visualizzati, rimuovo quelli con timestamp più vecchio fino a che ne rimangono 4
@@ -106,7 +105,7 @@ public class ProductSupplierDAO {
 			
 			query="SELECT timestamp FROM user_product WHERE UserEmail = ? ORDER BY timestamp DESC LIMIT 5";
 			pstatement = con.prepareStatement(query);
-			pstatement.setString(1, u.getEmail());
+			pstatement.setString(1, u);
 			result = pstatement.executeQuery();
 			
 			Timestamp ts;
@@ -122,14 +121,14 @@ public class ProductSupplierDAO {
 			try{
 				query="DELETE FROM user_product WHERE UserEmail = ? AND timestamp <= ?";			
 				pstatement = con.prepareStatement(query);
-				pstatement.setString(1, u.getEmail());
+				pstatement.setString(1, u);
 				pstatement.setTimestamp(2, ts);
 				pstatement.executeUpdate();
 				
 				pstatement.close();
 				query="INSERT INTO user_product VALUES(?,?,?)";
 				pstatement = con.prepareStatement(query);
-				pstatement.setString(1,u.getEmail());
+				pstatement.setString(1,u);
 				pstatement.setInt(2,p.getId());
 				pstatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 				pstatement.executeUpdate();
@@ -150,7 +149,7 @@ public class ProductSupplierDAO {
 			pstatement.close();
 			query="INSERT INTO User_product VALUES(?,?,?)";
 			pstatement = con.prepareStatement(query);
-			pstatement.setString(1,u.getEmail());
+			pstatement.setString(1,u);
 			pstatement.setInt(2,p.getId());
 			pstatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 			pstatement.executeUpdate();

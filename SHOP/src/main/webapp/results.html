@@ -49,7 +49,8 @@
 					<td class="column" th:text="${supp.supplier.name}"> Name </td>
 					<td class="column" th:text="${supp.price+ ' $'}"> 0 </td>
 					<td class="column" th:text="${supp.supplier.rating +'/5 stars'}"> rating </td>
-					<td class="column" th:text="${supp.supplier.freeShippingThreshold}+' $'" > 0 $ </td>
+					<td class="column" th:if="${supp.supplier.freeShippingThreshold>=0}" th:text="${supp.supplier.freeShippingThreshold}+' $'" > 0 $ </td>
+					<td class="column" th:if="${supp.supplier.freeShippingThreshold<0}" th:text="'N.D.'" > 0 $ </td>
 					<td class="column">
 						<ul>
 							<li th:each="minq : ${supp.supplier.minQuantities}"

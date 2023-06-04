@@ -1,4 +1,4 @@
-package it.polimi.tiw.shop.filters;
+package it.polimi.tiw.shopjs.filters;
 
 import java.io.IOException;
 import javax.servlet.Filter;

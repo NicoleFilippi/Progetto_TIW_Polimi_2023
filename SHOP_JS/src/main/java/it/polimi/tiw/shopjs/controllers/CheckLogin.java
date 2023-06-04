@@ -41,11 +41,10 @@ public class CheckLogin extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (connection == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Server error, please try again later");
+			response.getWriter().println("Server error, please try again later.");
 			return;
 		}
 
@@ -60,7 +59,7 @@ public class CheckLogin extends HttpServlet {
 
 		if (email == null || psw == null || email.isEmpty() || psw.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("Empty credentials");
+			response.getWriter().println("Empty credentials.");
 			return;
 		}
 
@@ -71,24 +70,23 @@ public class CheckLogin extends HttpServlet {
 			user = userDao.checkCredentials(email, psw);
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Server error, please try again later");
+			response.getWriter().println("Server error, please try again later.");
 			return;
 		}
 
 		if (user == null) {
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.getWriter().println("Incorrect credentials");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Incorrect credentials.");
 			return;
 
 		} else {
-			response.setStatus(HttpServletResponse.SC_OK);
-			session.setAttribute("user", user);
+
+			session.setAttribute("user", user.getEmail());
 			String userJson = new GsonBuilder().create().toJson(user);
 			
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().println(userJson);
-			
 		}
 	}
 

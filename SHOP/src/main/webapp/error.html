@@ -10,7 +10,7 @@
 			<h1 class="title"> ERROR </h1>
 			<p class="text"> Sorry, there was an error while handling your request. </p>
 			<p class="text" th:if="${error!=null}" th:text="${'Error: ' + error}"></p>
-			<p class="text" th:if="${error==nul}" th:text="${'Please try again later'}"></p>
+			<p class="text" th:if="${error==null}" th:text="${'Please try again later'}"></p>
 			
 			<div th:if="${logout}">
 				<a href="index.html"><button class="button"> Login page </button></a>

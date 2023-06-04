@@ -1,4 +1,4 @@
-package it.polimi.tiw.shop.filters;
+package it.polimi.tiw.shopjs.filters;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class LoggedFilter implements Filter {
+public class LoggedJSFilter implements Filter {
 	
-	//filtro che controlla se l'utente che vuole entrare nell'area riservata è loggato 
+	//filtro che controlla se l'utente che vuole accedere a risorse nell'area riservata è loggato 
 	
-	public LoggedFilter() {}
+	public LoggedJSFilter() {}
 	
 	public void init(FilterConfig config) throws ServletException {}
 
@@ -25,13 +25,11 @@ public class LoggedFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		
-		//manda a pagina di login
+		//invia errores
 		
-		String loginpath = req.getServletContext().getContextPath() + "/index.html";
-
 		HttpSession s = req.getSession();
 		if (s.isNew() || s.getAttribute("user") == null) {
-			res.sendRedirect(loginpath);
+			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
 		

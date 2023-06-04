@@ -46,7 +46,6 @@ public class GetResults extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(connection == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    		//TODO HANDLE ERROR
 			return;
     	}
 				
@@ -60,7 +59,7 @@ public class GetResults extends HttpServlet {
 		
 		if(keyword==null || keyword.equals("")) {			
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			//TODO handle error
+			response.getWriter().println("Missing keyword.");
 			return;
 		}
 		
@@ -73,7 +72,6 @@ public class GetResults extends HttpServlet {
 			prodList = pdao.keywordSearch(keyword);
 		} catch(SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			//TODO handle error
 			return;
 		}
 		response.setStatus(HttpServletResponse.SC_OK);

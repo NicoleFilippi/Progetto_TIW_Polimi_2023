@@ -1,4 +1,4 @@
-package it.polimi.tiw.shop.filters;
+package it.polimi.tiw.shopjs.filters;
 
 import java.io.IOException;
 
@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class ValidPathFilter implements Filter {
 	
@@ -21,7 +22,8 @@ public class ValidPathFilter implements Filter {
 	public void destroy() {}
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{		
-		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletRequest req = (HttpServletRequest) request;	
+		HttpServletResponse resp = (HttpServletResponse) response;	
 		boolean valid = false;
 		
 		//cerca tra le servlet registrate una che corrisponda al percorso della richiesta
@@ -33,11 +35,10 @@ public class ValidPathFilter implements Filter {
 			}	
 		}
 		
-		if(!valid && !"/index.html".equals(req.getServletPath()) && !"/".equals(req.getServletPath())
-				&& !req.getServletPath().startsWith("/css") && !req.getServletPath().startsWith("/images")) {
-			request.setAttribute("logout",false);
-			request.setAttribute("error","The server cannot find a resource that matches your request: " + req.getServletPath());
-			request.getRequestDispatcher("Error").forward(request, response);
+		if(!valid && !"/index.html".equals(req.getServletPath()) && !"/".equals(req.getServletPath()) && !req.getServletPath().endsWith(".js")
+				&& !req.getServletPath().startsWith("/css")  && !"/home.html".equals(req.getServletPath()) && !req.getServletPath().startsWith("/images")) {
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			resp.getWriter().println("The server cannot find a resource that matches your request: " + req.getServletPath());
 			return;
 		}
 		
