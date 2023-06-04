@@ -62,6 +62,9 @@ public class GetLastVisualized extends HttpServlet {
 		}
 		
 		response.setStatus(HttpServletResponse.SC_OK);
+		
+		//allego, se presente, la lista di prodotti come json alla risposta
+		
 		String listJson = new GsonBuilder().create().toJson(prodList);
 		
 		response.setContentType("application/json");

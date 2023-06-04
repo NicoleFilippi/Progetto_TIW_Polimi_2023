@@ -22,7 +22,7 @@ import it.polimi.tiw.shopjs.utils.ConnectionHandler;
 
 public class GetOrders extends HttpServlet {
 	
-	//Servlet che invia l'elenco di ordini
+	//Servlet che preleva l'elenco di ordini
 	
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
@@ -47,16 +47,20 @@ public class GetOrders extends HttpServlet {
     	}
 		
 		HttpSession session = request.getSession();
+		
 		//prende gli ordini dell'utente dal DB
 		
 		PurchaseDAO puDAO = new PurchaseDAO(connection);
 		List<Order> orders;
+		
 		try {
 			orders=puDAO.getByUser((String)session.getAttribute("user"));
 		}catch(Exception e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
+		
+		//allega nella risposta il json con la lista di orders
 		
 		String ordJson = new GsonBuilder().create().toJson(orders);
 		

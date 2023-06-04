@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import it.polimi.tiw.shopjs.beans.State;
 
 
@@ -56,33 +54,5 @@ public class StateDAO {
 		pstatement.setString(1, iso3);
 		ResultSet result = pstatement.executeQuery();
 		return result.next();
-	}
-	
-	/**
-	 * metodo che data una richiesta Http cerca di dedurne lo stato di provenienza 
-	 * @param request
-	 * @return stringa rappresentante l'ISO3
-	 */
-	
-	public String getClientState(HttpServletRequest request){
-		String result;
-		try {
-			String reqState = request.getLocale().getISO3Country().toUpperCase();
-			
-			//se non lo trova mette "ITA"
-			
-			if(reqState == null || reqState.equals("")) 
-				result="ITA";
-			
-			//se è valido okay, altrimente mette "ITA"
-			
-			else 
-				result = isValid(reqState) ? reqState : "ITA";
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			result = "ITA";
-		}
-		return result;
 	}
 }

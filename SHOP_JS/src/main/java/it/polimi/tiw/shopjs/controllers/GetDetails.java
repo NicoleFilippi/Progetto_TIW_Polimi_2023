@@ -100,6 +100,8 @@ public class GetDetails extends HttpServlet {
 		
 		response.setStatus(HttpServletResponse.SC_OK);
 		
+		//mando al client la lista dei product-supplier che di quel prodotto
+		
 		String listJson = new GsonBuilder().create().toJson(ps);
 		
 		response.setContentType("application/json");

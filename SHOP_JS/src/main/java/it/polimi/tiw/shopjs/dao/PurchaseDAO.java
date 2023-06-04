@@ -29,6 +29,7 @@ public class PurchaseDAO {
 	/**
 	 * metodo che costruisce un Ordine dai parametri inviati da client
 	 * @param order oggetto ClientOrder inviato da client
+	 * @return oggetto Order
 	 */
 	
 	public Order generateOrder(ClientOrder order) throws SQLException{
@@ -37,31 +38,49 @@ public class PurchaseDAO {
 		SupplierDAO sDAO = new SupplierDAO(con);
 		ProductSupplierDAO psDAO = new ProductSupplierDAO(con);
 		
-		if(order.getQuantities().size()!=order.getProductIds().size() || order.getQuantities().size()==0);
+		//se ci sono incongruenze o attributi non validi
 		
-		Supplier supp=null;
+		if(order.getQuantities().size()!=order.getProductIds().size() || order.getQuantities().size()==0)
+			return null;
+		
+		Supplier supp = null;
 		List<ProductSupplier> prodSuppList = new ArrayList<>();
 		Map<Integer,Integer> prodQuantities = new HashMap<>();
 		double prodCost = 0;
 		double shippingCost;
 		int prodNum = 0;
 		
+		//prelevo supplier dall'id
+		
 		supp = sDAO.getById(order.getSupplierId());
-		if(supp==null) return null;
+		if(supp==null)
+			return null;
+		
+		//per ogni prodotti controllo se quel supplier lo vende, se sì aggiungo in lista il product-supplier
 		
 		for(int i=0; i<order.getProductIds().size(); i++) {
-			ProductSupplier ps = psDAO.getByIds(order.getProductIds().get(i),supp.getId());
+			ProductSupplier ps = psDAO.getByIds(order.getProductIds().get(i), supp.getId());
 			
-			if(ps==null) return null;
+			if(ps==null)
+				return null;
+			
 			prodSuppList.add(ps);
 			
-			if(order.getQuantities().get(i)<=0) return null;
-			prodQuantities.put(ps.getProduct().getId(),order.getQuantities().get(i));
+			//controllo quantità corrispondente
+			
+			if(order.getQuantities().get(i)<=0)
+				return null;
+			
+			prodQuantities.put(ps.getProduct().getId(), order.getQuantities().get(i));
 			prodCost += order.getQuantities().get(i) * ps.getPrice();
 			prodNum += order.getQuantities().get(i);
 		}
 		
-		if(supp.getFreeShippingThreshold()>=0 && prodCost>=supp.getFreeShippingThreshold()) shippingCost = 0;
+		//calcolo spesa di spedizione
+		
+		if(supp.getFreeShippingThreshold()>=0 && prodCost>=supp.getFreeShippingThreshold())
+			shippingCost = 0;
+		
 		else {
 			int min = 1;
 			for(int i=0; i<supp.getMinQuantities().size(); i++) {
@@ -82,8 +101,12 @@ public class PurchaseDAO {
 	
 	/**
 	 * metodo per aggiungere un ordine
-	 * @param supplier
-	 * @param session oggetto sessione passato dalla servlet
+	 * @param order oggetto ordine da aggiungere
+	 * @param user email utente dalla session
+	 * @param state
+	 * @param city
+	 * @param street
+	 * @param civicNumber
 	 */
 	
 	public void addPurchase(Order order, String user, String state, String city, String street, String civicNumber) throws SQLException {
@@ -129,11 +152,9 @@ public class PurchaseDAO {
 			
 			con.commit();
 			
-		}catch(Exception e) {
-			
+		}catch(Exception e) {			
 			con.rollback();
 			e.printStackTrace();
-			
 		}
 
 		con.setAutoCommit(true);		
@@ -141,7 +162,7 @@ public class PurchaseDAO {
 	
 	/**
 	 * metodo che, dato l'utente, ritorna la lista ordini con data decrescente
-	 * @param user utente
+	 * @param user email utente
 	 * @return lista di ordini
 	 */
 	

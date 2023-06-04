@@ -31,7 +31,7 @@ public class NotLoggedJSFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		
-		//invia errore
+		//invia stato unauthorized
 		
 		HttpSession s = req.getSession();
 		if (!s.isNew() && s.getAttribute("user") != null) {

@@ -1,5 +1,5 @@
 /**
- * manda parametri login al server e gestisce la risposta
+ * elementi login
  */
 
 function LoginScreen(orch){
@@ -11,6 +11,9 @@ function LoginScreen(orch){
 	this.elements = document.getElementById("login_elements");
 	
 	let self = this;
+	
+	//bottone login
+	
  	this.loginForm.addEventListener("submit", function(e) {
 		e.preventDefault();
 		if (self.loginForm.checkValidity()) {				
@@ -48,13 +51,19 @@ function LoginScreen(orch){
   		}
 	});
 	
+	//bottone signup
+	
 	this.button.addEventListener("click", function(e){
 		self.orchestrator.goToSignup();
 	});
 	
+	//caricamento
+	
 	this.load = function(){
 		this.elements.hidden = false;
 	}
+	
+	//reset
 	
 	this.clear = function(){
 		this.elements.hidden = true;
@@ -65,6 +74,11 @@ function LoginScreen(orch){
 	
 	this.clear();
 }
+
+
+/**
+ * elementi signup
+ */
 
 function SignupScreen(orch){
 	this.orchestrator = orch;
@@ -83,17 +97,26 @@ function SignupScreen(orch){
 	this.states = null;
 	
 	let self = this;
+	
+	//bottone precedente
+	
 	this.previousButton.addEventListener("click", function(e){
 		self.updateWizard(self.wizardPos-1);
 	});
+	
+	//bottone successivo
 	
 	this.nextButton.addEventListener("click", function(e){
 		self.updateWizard(self.wizardPos+1);
 	});
 	
+	//bottone login
+	
 	this.logbutton.addEventListener("click", function(e){
 		self.orchestrator.goToLogin();
 	});
+	
+	//bottone signup
 	
 	this.button.addEventListener("click", function(e){
 		if(self.form.checkValidity()){
@@ -128,6 +151,8 @@ function SignupScreen(orch){
 		}
 	});
 	
+	//aggiorna wizard
+	
 	this.updateWizard = function(next){
 		self.wizard[self.wizardPos].hidden = true;
 		self.wizardPos = next;
@@ -148,6 +173,8 @@ function SignupScreen(orch){
 		}
 	}
 	
+	//carica stati in option
+	
 	this.loadStates = function(array){
 		for(let i=0; i<array.length; i++){
 			let opt = document.createElement("option");
@@ -156,6 +183,8 @@ function SignupScreen(orch){
 			this.form.state.appendChild(opt);
 		}
 	}
+	
+	//caricamento
 	
 	this.load = function(){
 		this.elements.hidden = false;
@@ -184,6 +213,8 @@ function SignupScreen(orch){
 		}
 	}
 	
+	//reset
+	
 	this.clear = function(){
 		this.elements.hidden = true;
 		for(let i=0; i<this.wizard.length; i++){
@@ -200,6 +231,10 @@ function SignupScreen(orch){
 	
 	this.clear();
 }
+
+/**
+ * orchestratore che memorizza pagina corrente e ha i metodi per passare ad una certa schermata
+ */
 
 function Orchestrator(){
 	this.loginPage = new LoginScreen(this);
@@ -223,6 +258,8 @@ function Orchestrator(){
 		this.currentPage.load();
 	}
 }
+
+//alla partenza
 
 {
 	new Orchestrator().start();

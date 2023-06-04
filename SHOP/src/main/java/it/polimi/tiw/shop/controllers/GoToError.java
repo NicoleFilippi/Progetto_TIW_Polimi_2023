@@ -43,6 +43,7 @@ public class GoToError extends HttpServlet {
 		
 		if(request.getAttribute("logout") == null)
 			request.setAttribute("logout", true);
+		
 		if((Boolean)request.getAttribute("logout")) {
 			session.invalidate();
 			context.setVariable("logout", true);

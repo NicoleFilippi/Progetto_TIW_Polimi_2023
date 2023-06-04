@@ -80,6 +80,12 @@ public class UserDAO {
 		}
 	}
 	
+	/**
+	 * metodo che ritorna l'oggetto utente data la mail
+	 * @param email mail dell'utente
+	 * @return oggetto User corrispondente
+	 */
+	
 	public User getByEmail(String email) throws SQLException {
 		User user = new User();
 		String pwQuery = "SELECT * FROM User WHERE Email = ?";		
@@ -188,7 +194,7 @@ public class UserDAO {
 	 * @param city
 	 * @param street
 	 * @param civicNumber
-	 * @param session è l'oggetto sessione passato dalla servlet
+	 * @param email è l'email utente salvata nella session
 	 */
 	
 	public void updateUser(String name, String surname, String iso3, String city, String street, String civicNumber, String email) throws SQLException {

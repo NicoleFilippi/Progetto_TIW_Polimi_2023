@@ -76,6 +76,8 @@ public class UpdateUser extends HttpServlet {
 			return;
 		}
 		
+		//prelevo i parametri
+		
 		String name = request.getParameter("name");
 		if(name != null)
 			name = StringEscapeUtils.escapeJava(name);

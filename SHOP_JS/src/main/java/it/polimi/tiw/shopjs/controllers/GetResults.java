@@ -74,7 +74,11 @@ public class GetResults extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
+		
 		response.setStatus(HttpServletResponse.SC_OK);
+		
+		//allego nella risposta la lista json di prodotti
+		
 		String listJson = new GsonBuilder().create().toJson(prodList);
 		
 		response.setContentType("application/json");

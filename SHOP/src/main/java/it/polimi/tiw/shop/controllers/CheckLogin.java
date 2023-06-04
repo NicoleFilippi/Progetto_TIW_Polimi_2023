@@ -105,6 +105,9 @@ public class CheckLogin extends HttpServlet {
 			return;
 			
 		}
+		
+		//creazione nuova sessione
+		
 		else {
 			session.setAttribute("user", user);
 			session.setAttribute("cart", new Cart());

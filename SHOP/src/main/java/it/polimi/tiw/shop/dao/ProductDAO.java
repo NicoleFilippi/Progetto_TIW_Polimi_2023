@@ -66,7 +66,7 @@ public class ProductDAO {
 			while(defResult.next() && prodList.size() < 5) {
 				boolean found = false;
 				
-				//evito il prodotto se già presenti
+				//evito il prodotto se già presente
 				
 				for(int i = 0; i < prodList.size() && !found; i++)
 					found = (defResult.getInt("id") == prodList.get(i).getId());
@@ -94,7 +94,7 @@ public class ProductDAO {
 	}
 	
 	/**
-	 * Metodo che cerca nel db i prodotti contenenti, nel nome o nella descrizione, la parola chiave
+	 * Metodo che cerca nel db i prodotti che contengono, nel nome o nella descrizione, la parola chiave
 	 * @param keyword parola chiave da cercare
 	 * @return ritorna la lista di prodotti contenenti la parola chiave nel nome o nella descrizione
 	 */

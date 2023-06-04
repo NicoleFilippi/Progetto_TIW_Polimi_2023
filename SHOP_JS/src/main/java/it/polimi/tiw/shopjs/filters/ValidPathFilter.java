@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 public class ValidPathFilter implements Filter {
 	
-	//filtro che controlla se il percorso richiesto corrisponde ad una servlet
+	//filtro che controlla se il percorso richiesto corrisponde ad un elemento dell'applicazione
 	
 	public ValidPathFilter() {}
 	
@@ -35,6 +35,8 @@ public class ValidPathFilter implements Filter {
 				break;
 			}	
 		}
+		
+		//cerca tra elementi che corrispondano al percorso della richiesta
 		
 		if(!valid && !"/index.html".equals(req.getServletPath()) && !"/".equals(req.getServletPath()) && !req.getServletPath().endsWith(".js")
 				&& !req.getServletPath().startsWith("/css")  && !"/home.html".equals(req.getServletPath()) && !req.getServletPath().startsWith("/images")) {

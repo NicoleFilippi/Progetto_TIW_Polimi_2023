@@ -3,6 +3,9 @@ package it.polimi.tiw.shopjs.beans;
 import java.util.List;
 
 public class ClientOrder{
+	
+	//Bean Cliente-Ordine
+	
 	private int supplierId;
 	private List<Integer> productIds;
 	private List<Integer> quantities;

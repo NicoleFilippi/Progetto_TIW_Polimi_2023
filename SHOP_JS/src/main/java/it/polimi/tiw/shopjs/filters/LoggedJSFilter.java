@@ -25,7 +25,7 @@ public class LoggedJSFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		
-		//invia errores
+		//invia stato unauthorized
 		
 		HttpSession s = req.getSession();
 		if (s.isNew() || s.getAttribute("user") == null) {

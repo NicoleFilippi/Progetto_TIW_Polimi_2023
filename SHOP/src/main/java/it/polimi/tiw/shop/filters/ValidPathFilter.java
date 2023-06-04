@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ValidPathFilter implements Filter {
 	
-	//filtro che controlla se il percorso richiesto corrisponde ad una servlet
+	//filtro che controlla se il percorso richiesto corrisponde ad una servlet o altri elementi dell'applicazioni
 	
 	public ValidPathFilter() {}
 	
@@ -32,6 +32,8 @@ public class ValidPathFilter implements Filter {
 				break;
 			}	
 		}
+		
+		//controllo se fa parte degli altri elementi
 		
 		if(!valid && !"/index.html".equals(req.getServletPath()) && !"/".equals(req.getServletPath())
 				&& !req.getServletPath().startsWith("/css") && !req.getServletPath().startsWith("/images")) {

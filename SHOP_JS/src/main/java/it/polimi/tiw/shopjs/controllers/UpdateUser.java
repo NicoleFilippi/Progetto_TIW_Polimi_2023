@@ -109,7 +109,7 @@ public class UpdateUser extends HttpServlet {
 			state=user.getState();
 		}
 		
-		//se nessun parametro è variato rispetto agli originali avvisiamo l'utente senza accedere al DB inutilmente
+		//se nessun parametro è variato rispetto agli originali evitiamo di accedere al DB inutilmente
 		
 		if(name.equals(user.getName()) &&
 			surname.equals(user.getSurname()) &&
@@ -121,6 +121,8 @@ public class UpdateUser extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_OK);
 			return;
 		}
+		
+		//controllo che lo stato sia valido
 		
 		if(!state.equals(user.getState())) {
 			StateDAO sDAO = new StateDAO(connection);
@@ -144,12 +146,17 @@ public class UpdateUser extends HttpServlet {
 		
 		UserDAO udao = new UserDAO(connection);	
 		try {
+			//modifico i dati
 			udao.updateUser(name, surname, state, city, street, civicNumber, user.getEmail());
+			
+			//poi li prelevo dall'email memorizzata nella sessione server			
 			user = new UserDAO(connection).getByEmail((String)request.getSession().getAttribute("user"));
 		}catch(SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
+		
+		//creo json con utente completo e lo mando nella risposta così che venga aggiornato nella session client
 		
 		String userJson = new GsonBuilder().create().toJson(user);
 		response.setContentType("application/json");

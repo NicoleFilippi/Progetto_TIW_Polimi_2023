@@ -31,7 +31,7 @@ public class NotLoggedFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		
-		//manda alla home
+		//manda a pagina home con redirect
 		
 		String homepath = req.getServletContext().getContextPath() + "/home.html";
 		HttpSession s = req.getSession();

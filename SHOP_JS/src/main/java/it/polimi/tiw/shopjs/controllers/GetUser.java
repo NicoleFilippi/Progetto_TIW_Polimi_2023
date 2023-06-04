@@ -19,6 +19,9 @@ import it.polimi.tiw.shopjs.utils.ConnectionHandler;
 @WebServlet("/GetUser")
 
 public class GetUser extends HttpServlet {
+	
+	//Session che preleva l'utente, chiamata dalla home se non ha i dati utente nella sessione client
+	
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	
@@ -44,6 +47,8 @@ public class GetUser extends HttpServlet {
 		UserDAO uDAO = new UserDAO(connection);
 		User result=null;
 		
+		//prelevo dati utente dalla email memorizzata in sessione server
+		
 		try {
 			result = uDAO.getByEmail((String) request.getSession().getAttribute("user") );
 		}catch(SQLException e) {
@@ -55,6 +60,8 @@ public class GetUser extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
+		
+		//mando l'utente con i dettagli sotto forma di json nella risposta
 		
 		String userJson = new GsonBuilder().create().toJson(result);
 		

@@ -1,5 +1,5 @@
 /**
- * AJAX call management
+ *	metodo che crea richiesta http da mandare ad una servlet (url) con metodo method
  */
 
 function makeCall(method, url, formElement, cback, reset = false) {

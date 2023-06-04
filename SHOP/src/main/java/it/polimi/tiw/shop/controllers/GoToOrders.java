@@ -68,7 +68,7 @@ public class GoToOrders extends HttpServlet {
 		PurchaseDAO puDAO = new PurchaseDAO(connection);
 		List<Order> orders;
 		try {
-			orders=puDAO.getByUser((User)session.getAttribute("user"));
+			orders = puDAO.getByUser((User)session.getAttribute("user"));
 		}catch(Exception e) {
 			request.setAttribute("logout",true);
 			request.setAttribute("error",null);

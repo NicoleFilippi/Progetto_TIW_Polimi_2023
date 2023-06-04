@@ -61,6 +61,8 @@ public class AddOrder extends HttpServlet {
 		HttpSession session = request.getSession();		
 		int supplierId=0;
 		
+		//controllo che sia un numero
+		
 		try {
 			supplierId = Integer.parseInt(request.getParameter("supplierId"));
 		}catch(Exception e) {

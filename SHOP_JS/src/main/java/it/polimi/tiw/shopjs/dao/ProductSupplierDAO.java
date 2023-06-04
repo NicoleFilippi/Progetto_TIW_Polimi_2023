@@ -23,7 +23,6 @@ public class ProductSupplierDAO {
 	/**
 	 * metodo che preleva la lista di prodotto-fornitore di un certo prodotto, in ordine di prezzo
 	 * @param prod il prodotto
-	 * @param cart il carrello
 	 * @return lista di prodotto-fornitore
 	 */
 	

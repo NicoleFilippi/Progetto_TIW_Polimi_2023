@@ -1,5 +1,5 @@
 /**
- * COMPONENTS
+ * elementi home
  */
 
  function HomeScreen(orch){
@@ -15,6 +15,9 @@
 	this.searchButton = document.getElementById("home_submit");
 	
 	let self = this;
+	
+	//bottone search
+	
 	document.getElementById("search_form").addEventListener("submit", function(e) {
 		let searchForm = document.getElementById("search_form");
 		e.preventDefault();
@@ -37,13 +40,19 @@
   		}
 	});
 	
+	//bottone menu home
+	
 	this.homeButton.addEventListener("click", function(e) {
 		self.orchestrator.goToHome();
 	});
 	
+	//bottone menu account
+	
 	this.accountButton.addEventListener("click", function(e) {
 		self.orchestrator.goToAccount();
 	});
+	
+	//caricamento ultimi visualizzati
 	
 	this.loadLastVisualized = function(array){
 		let table = document.getElementById("home_table");
@@ -87,6 +96,8 @@
 		}
 	}
 	
+	//aggiornamento locale dei visualizzati
+	
 	this.updateVisualized = function(product){
 		if(product != null){
 			let found = 4;
@@ -103,6 +114,8 @@
 			}
 		}			
 	}
+	
+	//caricamento
 	
 	this.load = function(){
 		
@@ -148,6 +161,8 @@
 		}
 	}
 	
+	//reset
+	
 	this.clear = function(){
 		this.homeButton.hidden = false;
 		this.elements.hidden = true;
@@ -161,6 +176,11 @@
 	this.clear();
 }
 
+
+/**
+ * elementi account
+ */
+
 function AccountScreen(orch){
 	this.orchestrator = orch;
 	
@@ -171,6 +191,9 @@ function AccountScreen(orch){
 	this.states = null;
 	
 	let self = this;
+	
+	//bottone save
+	
 	this.form.addEventListener("submit", function(e){
 		e.preventDefault();
 		makeCall("POST", "UpdateUser", self.form, function(req){
@@ -185,6 +208,8 @@ function AccountScreen(orch){
       		}
 		});
 	});
+	
+	//bottone logout
 	
 	this.logout.addEventListener("click", function(e){
 		makeCall("POST", "Logout", null, function(req){
@@ -201,6 +226,8 @@ function AccountScreen(orch){
 		});
 	});
 	
+	//caricamento stati
+	
 	this.loadStates = function(array,userState){
 		for(let i=0; i<array.length; i++){
 			let opt = document.createElement("option");
@@ -210,6 +237,8 @@ function AccountScreen(orch){
 			this.form.state.appendChild(opt);
 		}
 	}
+	
+	//caricamento
 	
 	this.load = function(){
 		let user = JSON.parse(sessionStorage.getItem("user"));
@@ -238,6 +267,8 @@ function AccountScreen(orch){
 		}
 	}
 	
+	//reset
+	
 	this.clear = function(){
 		this.elements.hidden = true;
 		this.text.innerHTML = "";
@@ -255,6 +286,11 @@ function AccountScreen(orch){
 	this.clear();
 }
 
+
+/**
+ * elementi results
+ */
+
 function ResultsScreen(orch){
 	this.orchestrator = orch; 
 	
@@ -266,7 +302,9 @@ function ResultsScreen(orch){
 	this.resultsList = null;
 	this.productSuppliersList = null;
 	
-	this.load = function(array,keyword){
+	//caricamento che prende array prodotti risultato e parola chiave
+	
+	this.load = function(array, keyword){
 		
 		this.resultsList = array;
 		this.resultElements.hidden = false;
@@ -300,6 +338,9 @@ function ResultsScreen(orch){
 				let colButton = document.createElement("td");
 				let detailsButton = document.createElement("button");
 				detailsButton.innerHTML="Details";
+				
+				//bottone dettaglio 
+				 
 				detailsButton.addEventListener("click", function(e){
 					
 					makeCall("GET", "GetDetails?id="+array[i].id, null, function(req){
@@ -329,6 +370,8 @@ function ResultsScreen(orch){
 		}
 	}
 	
+	//reset
+	
 	this.clear = function(){		
 		while(this.resultTable.rows.length>0){
 			this.resultTable.removeChild(this.resultTable.rows.item(0));
@@ -341,6 +384,11 @@ function ResultsScreen(orch){
 	this.clear();
 }
 
+
+/**
+ * elementi details
+ */
+
 function DetailsScreen(orch){
 	this.orchestrator = orch;
 
@@ -351,6 +399,9 @@ function DetailsScreen(orch){
 	this.popupTable = document.getElementById("popup_table");
 	
 	let self = this;
+	
+	//caricamento che prende l'array di product-supplier
+	
 	this.load = function(ps){
 		self.popup.hidden = true;
 		self.detailsElements.hidden = false;
@@ -388,6 +439,8 @@ function DetailsScreen(orch){
 	    row.appendChild(colDescription);
 		self.detailsTable.appendChild(row);
 	
+		//elenco fornitori
+	
 		for(let i=0; i<ps.length; i++){
 			let row = document.createElement("tr");
 		    let colName = document.createElement("td");
@@ -421,6 +474,9 @@ function DetailsScreen(orch){
 			row.appendChild(colSPR);
 			let colItemsNum = document.createElement("td");
 			colItemsNum.textContent = getProductsNumberFromCart(ps[i].supplier);
+			
+			//funzioni popup
+			
 			colItemsNum.addEventListener("mouseenter", function(e){
 				if(getCartItems()[ps[i].supplier.id]!=undefined){
 					for(let j=0; j<getCartItems()[ps[i].supplier.id].length; j++){
@@ -440,10 +496,14 @@ function DetailsScreen(orch){
 					    popupRow.appendChild(popupColQuantity);
 						self.popupTable.appendChild(popupRow);
 					}
+					
+					//preleva coordinate mouse rispetto dimensione pagina
+					
 					let mouseX = e.pageX;
 					let mouseY = e.pageY;
 					
 					// Posiziona il popup in corrispondenza delle coordinate del mouse
+					
 					self.popup.style.left = mouseX + "px";
 					self.popup.style.top = mouseY + "px";				
 					self.popup.hidden = false;
@@ -465,6 +525,7 @@ function DetailsScreen(orch){
 					self.popupTable.removeChild(self.popupTable.rows.item(1));
 				}
 			});
+			
 			colItemsNum.className="column";
 			row.appendChild(colItemsNum);
 			let colItemsCost = document.createElement("td");
@@ -487,6 +548,9 @@ function DetailsScreen(orch){
 			inputButton.type = "button";
 			inputButton.value = "Add to cart";
 			inputButton.className="button";
+			
+			//bottone aggiungi al carrello
+			
 			inputButton.addEventListener("click", function(e){
 				e.preventDefault();
 				if (inputQuantity.checkValidity() && inputQuantity.valueAsNumber > 0) {
@@ -508,6 +572,8 @@ function DetailsScreen(orch){
 		}
 	}
 	
+	//reset
+	
 	this.clear = function(){
 		while(this.detailsTable.rows.length>1){
 			this.detailsTable.removeChild(this.detailsTable.rows.item(1));
@@ -521,6 +587,11 @@ function DetailsScreen(orch){
 	}
 }
 
+
+/**
+ * elementi cart
+ */
+
 function CartScreen(orch){
 	this.orchestrator = orch; 
 	
@@ -530,9 +601,14 @@ function CartScreen(orch){
 	this.cartText = document.getElementById("cart_text");
 	
 	let self = this;
+	
+	//bottone menu carrello
+	
 	this.cartButton.addEventListener("click", function(e) {
 		self.orchestrator.goToCart();
 	});
+	
+	//caricamento
 	
 	this.load = function(){
 		this.cartButton.hidden = true;
@@ -543,6 +619,8 @@ function CartScreen(orch){
 			this.tables.hidden = true;
 		}else{
 			this.cartText.textContent = "Your cart:";
+			
+			//per ogni fornitore una tabella
 			
 			for(let i=0; i<getCartSuppliers().length; i++){
 				let supplier = getCartSuppliers()[i];
@@ -573,6 +651,9 @@ function CartScreen(orch){
 				rowDesc.appendChild(colDescQuantity);
 				rowDesc.appendChild(colDescTotal);
 				suppTable.appendChild(rowDesc);
+				
+				//per ogni prodotto una riga
+				
 				for(let j=0; j<getCartItems()[supplier.id].length; j++){
 					let prodSupp = getCartItems()[supplier.id][j];
 					let rowItem = document.createElement("tr");
@@ -622,10 +703,15 @@ function CartScreen(orch){
 				let colButton = document.createElement("td");
 				let button = document.createElement("button");
 				button.innerHTML="Order";
+				
+				//bottone order
+				
 				button.addEventListener("click", function(e){
 					e.preventDefault();
 					let order = createClientOrder(supplier);
 					if(order != null){
+						
+						//preleva dati indirizzo dall'user nella sessione client
 						
 						let form = document.createElement("form");
 						let user = JSON.parse(sessionStorage.getItem("user"));
@@ -667,12 +753,12 @@ function CartScreen(orch){
 									removeSupplierFromCart(supplier);							
 									self.orchestrator.goToOrders(JSON.parse(response));
 				        		} else {
-				           			self.orchestrator.handleError(req.status,response);
+				           			self.orchestrator.handleError(req.status, response);
 				          		}
 				      		}
 						});
 					}else{
-						self.orchestrator.handleError(req.status,response);
+						self.orchestrator.handleError(req.status, response);
 					}
 				});
 				button.className = "button";
@@ -682,6 +768,9 @@ function CartScreen(orch){
 				let colButton2 = document.createElement("td");
 				let button2 = document.createElement("button");
 				button2.innerHTML="Remove from cart";
+				
+				//bottone rimuovi dal carrello
+				
 				button2.addEventListener("click", function(e){
 					e.preventDefault();
 					removeSupplierFromCart(supplier);
@@ -706,6 +795,8 @@ function CartScreen(orch){
 		}
 	}
 	
+	//reset
+	
 	this.clear = function(){
 		this.cartButton.hidden = false;
 		this.elements.hidden = true;
@@ -718,6 +809,11 @@ function CartScreen(orch){
 	this.clear();
 }
 
+
+/**
+ * elementi orders
+ */
+
 function OrdersScreen(orch){
 	this.orchestrator = orch; 
 	
@@ -727,6 +823,9 @@ function OrdersScreen(orch){
 	this.ordersText = document.getElementById("orders_text");
 	
 	let self = this;
+	
+	//bottone menu orders
+	
 	this.ordersButton.addEventListener("click", function(e) {
 		makeCall("GET", "GetOrders", null, function(req){
 			if(req.readyState == XMLHttpRequest.DONE){
@@ -740,6 +839,8 @@ function OrdersScreen(orch){
 		});
 	});
 	
+	//Caricamento che prende lista di orders
+	
 	this.load = function(ordersList){
 		this.ordersButton.hidden = true;
 		this.elements.hidden = false;
@@ -749,6 +850,8 @@ function OrdersScreen(orch){
 			this.tables.hidden = true;
 		}else{
 			this.ordersText.textContent = "Your orders:";
+			
+			//per ogni ordine una tabella
 			
 			for(let i=0; i<ordersList.length; i++){
 				let orderTable = document.createElement("table");
@@ -783,6 +886,9 @@ function OrdersScreen(orch){
 				rowDesc.appendChild(colDescQuantity);
 				rowDesc.appendChild(colDescTotal);
 				orderTable.appendChild(rowDesc);
+				
+				//per ogni prodotto una riga
+				
 				for(let j=0; j<ordersList[i].products.length; j++){
 					let prod = ordersList[i].products[j];
 					let rowItem = document.createElement("tr");
@@ -861,6 +967,8 @@ function OrdersScreen(orch){
 		}
 	}
 	
+	//reset
+	
 	this.clear = function(){
 		this.ordersButton.hidden = false;
 		this.elements.hidden = true;
@@ -873,6 +981,10 @@ function OrdersScreen(orch){
 	this.clear();
 }
 
+/**
+ * elementi error
+ */
+
 function ErrorScreen(orch){
 	this.orchestrator = orch; 
 	
@@ -883,13 +995,20 @@ function ErrorScreen(orch){
 	this.home_rb = document.getElementById("home_redirect_button");
 	
 	let self = this;
+	
+	//bottone login redirect	
+	
 	this.login_rb.addEventListener("click", function(e) {
 		window.location.href="index.html";
 	});
 	
+	//bottone home redirect	
+	
 	this.home_rb.addEventListener("click", function(e) {
 		self.orchestrator.goToHome();
 	});
+	
+	//caricamento
 	
 	this.load = function(text, logout){
 		document.body.style.backgroundColor="#ebccd1";
@@ -911,6 +1030,8 @@ function ErrorScreen(orch){
 		}
 	}
 	
+	//reset
+	
 	this.clear = function(){
 		document.body.style.backgroundColor="#edd2e9";
 		this.menuButtons.hidden = false;
@@ -923,6 +1044,11 @@ function ErrorScreen(orch){
 	
 	this.clear();
 }
+
+
+/**
+ * orchestratore che memorizza pagina corrente e ha i metodi per passare ad una certa schermata
+ */
 
 function Orchestrator(){
 	this.currentPage = null;
@@ -977,7 +1103,9 @@ function Orchestrator(){
 		this.errorPage.load(text, logout);
 	}
 	
-	this.handleError = function(status,text){
+	//gestisce l'errore dato status e messaggio
+	
+	this.handleError = function(status, text){
 		if(status == 500){
 			this.goToError(undefined,true);
 			return;
@@ -996,6 +1124,8 @@ function Orchestrator(){
 		this.homePage.load();
 	}
 }
+
+//alla partenza
 
 {
 	new Orchestrator().start();

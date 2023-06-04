@@ -11,15 +11,13 @@
 			<a href="Cart"><button class="menu-button"> Cart </button></a>
 			<a href="Orders"><button class="menu-button"> Orders </button></a>
 			<a href="Account"><button class="menu-button"> Account </button></a>
-		</div>	
-		
+		</div>		
 		<br>
 		
 		<div class="container">
 			<h1 class="title"> HOME </h1>			
 			<p class="text" th:text="${'Welcome back, ' + session.user.name + ' ' + session.user.surname + '!'}" > </p>
-		</div>
-		
+		</div>		
 		<br>
 		
 		<div class="search">		
@@ -30,8 +28,7 @@
 			</form>
 		</div>
 		
-		<p th:if="${error!=null}" th:class="${'error'}" th:text="${error}"></p>
-		
+		<p th:if="${error!=null}" th:class="${'error'}" th:text="${error}"></p>		
 		<br>
 		
 		<table class="table">

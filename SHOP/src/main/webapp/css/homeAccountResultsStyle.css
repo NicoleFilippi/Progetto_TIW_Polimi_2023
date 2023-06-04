@@ -10,7 +10,7 @@
 .menu-button {
   background-color: #8000ff;		/*colore bottone*/
   border-radius: 5px;				/*angoli arrotondati*/
-  color: #FFF;						/*colore font*/
+  color: #FFF;					/*colore font*/
   cursor: pointer;					/*appare manina al passaggio*/
   font-size: 16px;					/*dimensione font*/
   padding: 10px;					/*altezza bottone*/
@@ -23,7 +23,7 @@
 }
 
 .label-search {
-  color: #666;						/*colore*/
+  color: #666;					/*colore*/
   font-size: 14px;					/*dimensione font*/
   font-weight: bold;				/*font grassetto*/
 }
@@ -39,7 +39,7 @@
 .button-search {
   background-color: #df3fca;		/*colore bottone*/
   border-radius: 5px;				/*angoli arrotondati*/
-  color: #FFF;						/*colore font*/
+  color: #FFF;					/*colore font*/
   cursor: pointer;					/*appare manina al passaggio*/
   font-size: 16px;					/*dimensione font*/
   padding: 10px;					/*altezza bottone*/
@@ -72,7 +72,7 @@
   width: 60%;						/*larghezza*/
   padding: 40px;					/*margini interni*/
   text-align: center;				/*testo centrato*/
-  table-layout: fixed;
+  table-layout: fixed;				/*colonne larghe uguali*/
 }
 
 .column {
@@ -89,5 +89,5 @@
   width: 70%;						/*larghezza*/
   padding: 40px;					/*margini interni*/
   text-align: center;				/*testo centrato*/
-  table-layout: fixed;
+  table-layout: fixed;				/*colonne larghe uguali*/
 }

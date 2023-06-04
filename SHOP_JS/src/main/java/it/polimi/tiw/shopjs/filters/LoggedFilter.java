@@ -25,7 +25,7 @@ public class LoggedFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		
-		//manda a pagina di login
+		//manda a pagina di login con redirect
 		
 		String loginpath = req.getServletContext().getContextPath() + "/index.html";
 

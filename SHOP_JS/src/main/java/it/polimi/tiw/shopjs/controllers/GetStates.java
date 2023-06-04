@@ -20,6 +20,9 @@ import it.polimi.tiw.shopjs.utils.ConnectionHandler;
 @WebServlet("/GetStates")
 
 public class GetStates extends HttpServlet {
+	
+	//Servlet che preleva gli stati
+	
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	
@@ -51,6 +54,8 @@ public class GetStates extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
+		
+		//allego nella richiesta come json la lista degli stati
 		
 		String listJson = new GsonBuilder().create().toJson(result);
 		

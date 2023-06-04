@@ -65,7 +65,7 @@ public class GoToSignUp extends HttpServlet {
 		List<State> states;
 		StateDAO sdao = new StateDAO(connection);
 		try {
-			states=sdao.getStates();
+			states = sdao.getStates();
 		} catch (SQLException e) {
 			request.setAttribute("logout",true);
 			request.setAttribute("error",null);

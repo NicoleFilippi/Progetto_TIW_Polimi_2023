@@ -24,6 +24,8 @@ import it.polimi.tiw.shopjs.utils.ConnectionHandler;
 @MultipartConfig
 
 public class CheckLogin extends HttpServlet {
+	
+	//servlet che controlla effettua il login dell'utente
 
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
@@ -51,11 +53,16 @@ public class CheckLogin extends HttpServlet {
 		HttpSession session = request.getSession();
 		String email = request.getParameter("email");
 		String psw = request.getParameter("password");
+		
+		//prelevo parametri dalla richiesta
+		
 		if(email != null)
 			email = StringEscapeUtils.escapeJava(email);
 		
 		if(psw != null)
 			psw = StringEscapeUtils.escapeJava(psw);
+		
+		//controllo se sono nulli o vuoti e mando errore
 
 		if (email == null || psw == null || email.isEmpty() || psw.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -66,6 +73,8 @@ public class CheckLogin extends HttpServlet {
 		UserDAO userDao = new UserDAO(connection);
 		User user = null;
 
+		//Controllo se l'utente esiste
+		
 		try {
 			user = userDao.checkCredentials(email, psw);
 		} catch (SQLException e) {
@@ -79,8 +88,11 @@ public class CheckLogin extends HttpServlet {
 			response.getWriter().println("Incorrect credentials.");
 			return;
 
-		} else {
-
+		}
+		
+		//se esiste memorizzo nella sessione lato server la mail dell'utente e mando al client l'intero utente
+		
+		else {
 			session.setAttribute("user", user.getEmail());
 			String userJson = new GsonBuilder().create().toJson(user);
 			

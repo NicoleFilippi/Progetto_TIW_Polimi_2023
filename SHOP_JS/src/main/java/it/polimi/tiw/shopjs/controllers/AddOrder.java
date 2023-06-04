@@ -50,6 +50,8 @@ public class AddOrder extends HttpServlet {
 			return;
     	}
 		
+		//prendo email utente da sessione server e parametro client-order da richiesta 
+		
 		String user = (String)request.getSession().getAttribute("user");
 		String json = request.getParameter("order");
 
@@ -95,6 +97,8 @@ public class AddOrder extends HttpServlet {
 			return;
 		}
 		
+		//Controllo che lo stato sia valido
+		
 		boolean valid=false;
 		try {
 			valid = new StateDAO(connection).isValid(state);
@@ -109,6 +113,8 @@ public class AddOrder extends HttpServlet {
 			return;
 		}
 		
+		//creo oggetto client-order
+		
 		ClientOrder corder = null;
 		try {
 			corder = new Gson().fromJson(json, ClientOrder.class);
@@ -118,7 +124,7 @@ public class AddOrder extends HttpServlet {
 			return;
 		}
 		
-		//Crea oggetto Ordine da ClientOrder
+		//Crea oggetto order da client-order
 		
 		PurchaseDAO puDAO = new PurchaseDAO(connection);
 		Order order = null;
@@ -135,7 +141,8 @@ public class AddOrder extends HttpServlet {
 			return;
 		}
 		
-		//inserimento ordine		
+		//inserimento ordine
+		
 		try {
 			puDAO.addPurchase(order,user,state,city,street,civicNumber);
 		} catch (SQLException e) {
