@@ -16,7 +16,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.tiw.shop.beans.Cart;
+import it.polimi.tiw.shop.utils.Cart;
 import it.polimi.tiw.shop.beans.ProductSupplier;
 import it.polimi.tiw.shop.dao.ProductSupplierDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;

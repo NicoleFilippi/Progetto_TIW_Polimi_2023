@@ -58,7 +58,7 @@
 						</ul>
 					</td>
 					<td class="column" th:text="${supp.supplier.productsInCartNum}"></td>
-					<td class="column" th:text="${supp.supplier.productsInCartCost}"></td>
+					<td class="column" th:text="${supp.supplier.productsInCartCost} + ' $'"></td>
 					<td class="column"> 
 						<form action="AddToCart" method="post">
 					 		<label class="label"> Quantity: </label><input class="input" type="number" name="quantity" min="1" value="1" required><br>

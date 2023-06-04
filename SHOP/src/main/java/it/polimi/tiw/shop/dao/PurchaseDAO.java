@@ -13,7 +13,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import it.polimi.tiw.shop.beans.Cart;
+import it.polimi.tiw.shop.utils.Cart;
 import it.polimi.tiw.shop.beans.Order;
 import it.polimi.tiw.shop.beans.Product;
 import it.polimi.tiw.shop.beans.ProductSupplier;

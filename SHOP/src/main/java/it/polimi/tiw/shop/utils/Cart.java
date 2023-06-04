@@ -1,4 +1,4 @@
-package it.polimi.tiw.shop.beans;
+package it.polimi.tiw.shop.utils;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.tiw.shop.beans.ProductSupplier;
+import it.polimi.tiw.shop.beans.Supplier;
 import it.polimi.tiw.shop.dao.ProductSupplierDAO;
 
 public class Cart {

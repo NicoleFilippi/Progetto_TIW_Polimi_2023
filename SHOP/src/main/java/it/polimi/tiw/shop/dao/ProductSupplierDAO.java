@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.tiw.shop.beans.Cart;
+import it.polimi.tiw.shop.utils.Cart;
 import it.polimi.tiw.shop.beans.Product;
 import it.polimi.tiw.shop.beans.ProductSupplier;
 import it.polimi.tiw.shop.beans.Supplier;

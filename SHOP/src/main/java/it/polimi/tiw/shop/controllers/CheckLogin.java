@@ -18,7 +18,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.tiw.shop.beans.Cart;
+import it.polimi.tiw.shop.utils.Cart;
 import it.polimi.tiw.shop.beans.User;
 import it.polimi.tiw.shop.dao.UserDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
