@@ -10,6 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class ValidPathFilter implements Filter {
 	
@@ -37,9 +38,15 @@ public class ValidPathFilter implements Filter {
 		
 		if(!valid && !"/index.html".equals(req.getServletPath()) && !"/".equals(req.getServletPath()) && !req.getServletPath().endsWith(".js")
 				&& !req.getServletPath().startsWith("/css")  && !"/home.html".equals(req.getServletPath()) && !req.getServletPath().startsWith("/images")) {
-			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			resp.getWriter().println("The server cannot find a resource that matches your request: " + req.getServletPath());
+
+			HttpSession s = req.getSession();
+			if (s.isNew() || s.getAttribute("user") == null) {
+				resp.sendRedirect(req.getServletContext().getContextPath()+"/index.html");
+				return;
+			}
+			resp.sendRedirect(req.getServletContext().getContextPath()+"/home.html");
 			return;
+			
 		}
 		
 		chain.doFilter(request, response);		

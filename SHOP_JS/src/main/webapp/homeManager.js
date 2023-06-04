@@ -63,7 +63,7 @@
 		    colName.textContent = array[i].name;
 		    row.appendChild(colName);
 		    let colMinPrice = document.createElement("td");
-		    colMinPrice.textContent = array[i].minPrice;
+		    colMinPrice.textContent = array[i].minPrice + "$";
 		    row.appendChild(colMinPrice);
 			let colDetails = document.createElement("td");
 			let buttonDetails = document.createElement("button");
@@ -745,7 +745,7 @@ function OrdersScreen(orch){
 		this.elements.hidden = false;
 		
 		if(ordersList.length <= 0){
-			this.ordersText.textContent = "You have no ordered yet";
+			this.ordersText.textContent = "You have no orders yet";
 			this.tables.hidden = true;
 		}else{
 			this.ordersText.textContent = "Your orders:";
