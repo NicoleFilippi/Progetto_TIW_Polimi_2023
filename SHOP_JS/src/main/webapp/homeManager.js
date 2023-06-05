@@ -72,7 +72,7 @@
 		    colName.textContent = array[i].name;
 		    row.appendChild(colName);
 		    let colMinPrice = document.createElement("td");
-		    colMinPrice.textContent = array[i].minPrice + "$";
+		    colMinPrice.textContent = "from "+ array[i].minPrice + " $";
 		    row.appendChild(colMinPrice);
 			let colDetails = document.createElement("td");
 			let buttonDetails = document.createElement("button");
@@ -333,7 +333,7 @@ function ResultsScreen(orch){
 			    colName.textContent = array[i].name;
 			    row.appendChild(colName);
 			    let colMinPrice = document.createElement("td");
-			    colMinPrice.textContent = array[i].minPrice + "$";
+			    colMinPrice.textContent = "from "+ array[i].minPrice + " $";
 			    row.appendChild(colMinPrice);
 				let colButton = document.createElement("td");
 				let detailsButton = document.createElement("button");
@@ -448,7 +448,7 @@ function DetailsScreen(orch){
 		    colName.className="column";
 		    row.appendChild(colName);
 		    let colPrice = document.createElement("td");
-			colPrice.textContent = ps[i].price + "$";
+			colPrice.textContent = ps[i].price + " $";
 			colPrice.className="column";
 		    row.appendChild(colPrice);
 		    let colRating = document.createElement("td");
@@ -457,7 +457,7 @@ function DetailsScreen(orch){
 		    row.appendChild(colRating);
 		    let colFST = document.createElement("td");
 		    if(ps[i].supplier.freeShippingThreshold>=0)
-		    	colFST.textContent = ps[i].supplier.freeShippingThreshold+"$";
+		    	colFST.textContent = ps[i].supplier.freeShippingThreshold + " $";
 		    else
 		    	colFST.textContent = "N.D.";
 		    colFST.className="column";
@@ -489,7 +489,7 @@ function DetailsScreen(orch){
 					    popupColName.textContent = popupPs.product.name;
 					    popupRow.appendChild(popupColName);
 					    let popupColPrice = document.createElement("td");
-					    popupColPrice.textContent = popupPs.price + "$";
+					    popupColPrice.textContent = popupPs.price + " $";
 					    popupRow.appendChild(popupColPrice);
 					    let popupColQuantity = document.createElement("td");
 					    popupColQuantity.textContent = getCartQuantities()[popupPs.id];
@@ -529,7 +529,7 @@ function DetailsScreen(orch){
 			colItemsNum.className="column";
 			row.appendChild(colItemsNum);
 			let colItemsCost = document.createElement("td");
-			colItemsCost.textContent = getProductsCostFromCart(ps[i].supplier)+"$";
+			colItemsCost.textContent = getProductsCostFromCart(ps[i].supplier)+" $";
 			colItemsCost.className="column";
 			row.appendChild(colItemsCost);
 			
@@ -661,13 +661,13 @@ function CartScreen(orch){
 					colName.className = "column";
 					colName.textContent = prodSupp.product.name;
 					let colPrice = document.createElement("td");
-					colPrice.textContent = prodSupp.price+"$";
+					colPrice.textContent = prodSupp.price+" $";
 					colPrice.className = "column";
 					let colQuantity = document.createElement("td");
 					colQuantity.textContent = getCartQuantities()[prodSupp.id];
 					colQuantity.className = "column";
 					let colTotal = document.createElement("td");
-					colTotal.textContent = getCartQuantities()[prodSupp.id]*prodSupp.price+"$";
+					colTotal.textContent = getCartQuantities()[prodSupp.id]*prodSupp.price+" $";
 					colTotal.className = "column";
 					rowItem.appendChild(colName);
 					rowItem.appendChild(colPrice);
@@ -681,7 +681,7 @@ function CartScreen(orch){
 				colShippingCostDesc.className = "column bold";
 				colShippingCostDesc.colSpan = 1;
 				let colShippingCostValue = document.createElement("td");
-				colShippingCostValue.textContent = getShippingCostFromCart(supplier)+"$";
+				colShippingCostValue.textContent = getShippingCostFromCart(supplier) + " $";
 				colShippingCostValue.className = "column";
 				colShippingCostValue.colSpan = 3;
 				rowShippingCost.appendChild(colShippingCostDesc);
@@ -693,7 +693,7 @@ function CartScreen(orch){
 				colTotalCostDesc.className = "column bold";
 				colTotalCostDesc.colSpan = 1;
 				let colTotalCostValue = document.createElement("td");
-				colTotalCostValue.textContent = getTotalCostFromCart(supplier)+"$";
+				colTotalCostValue.textContent = getTotalCostFromCart(supplier)+" $";
 				colTotalCostValue.className="column";
 				colTotalCostValue.colSpan = 3;
 				rowTotalCost.appendChild(colTotalCostDesc);
@@ -896,13 +896,13 @@ function OrdersScreen(orch){
 					colName.textContent = prod.product.name;
 					colName.className = "column";
 					let colPrice = document.createElement("td");
-					colPrice.textContent = prod.price+"$";
+					colPrice.textContent = prod.price+" $";
 					colPrice.className = "column";
 					let colQuantity = document.createElement("td");
 					colQuantity.textContent = ordersList[i].quantities[prod.product.id];
 					colQuantity.className = "column";
 					let colTotal = document.createElement("td");
-					colTotal.textContent = ordersList[i].quantities[prod.product.id]*prod.price+"$";
+					colTotal.textContent = ordersList[i].quantities[prod.product.id]*prod.price+" $";
 					colTotal.className = "column";
 					rowItem.appendChild(colName);
 					rowItem.appendChild(colPrice);
@@ -916,7 +916,7 @@ function OrdersScreen(orch){
 				colShippingCostDesc.className = "column bold";
 				colShippingCostDesc.colSpan=1;
 				let colShippingCostValue = document.createElement("td");
-				colShippingCostValue.textContent = ordersList[i].shippingPrice+"$";
+				colShippingCostValue.textContent = ordersList[i].shippingPrice + " $";
 				colShippingCostValue.className = "column";
 				colShippingCostValue.colSpan=3;
 				rowShippingCost.appendChild(colShippingCostDesc);
@@ -928,7 +928,7 @@ function OrdersScreen(orch){
 				colTotalCostDesc.className = "column bold";
 				colTotalCostDesc.colSpan=1;
 				let colTotalCostValue = document.createElement("td");
-				colTotalCostValue.textContent = ordersList[i].total+"$";
+				colTotalCostValue.textContent = ordersList[i].total+" $";
 				colTotalCostValue.className = "column";
 				colTotalCostValue.colSpan=3;
 				rowTotalCost.appendChild(colTotalCostDesc);

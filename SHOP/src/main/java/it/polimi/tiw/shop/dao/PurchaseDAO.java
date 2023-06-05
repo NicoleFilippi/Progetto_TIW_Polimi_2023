@@ -36,7 +36,10 @@ public class PurchaseDAO {
 	
 	public void addPurchase(Supplier supplier, HttpSession session) throws SQLException {
 		Cart cart = (Cart)session.getAttribute("cart");
-		User user = (User)session.getAttribute("user");
+		User user;
+		user = new UserDAO(con).getByEmail((String)session.getAttribute("user"));
+		
+		//aggiorno i prezzi dal db
 		
 		cart.reloadDBPrices(con);
 		
@@ -104,17 +107,17 @@ public class PurchaseDAO {
 	
 	/**
 	 * metodo che, dato l'utente, ritorna la lista ordini con data decrescente
-	 * @param user utente
+	 * @param user mail dell'utente
 	 * @return lista di ordini
 	 */
 	
-	public List<Order> getByUser(User user) throws SQLException{
+	public List<Order> getByUser(String user) throws SQLException{
 		List<Order> orders = new ArrayList<>();
 		
 		String query = " SELECT * FROM Purchase WHERE userEmail = ? ORDER BY date DESC,id DESC";		
 		PreparedStatement pstatement = con.prepareStatement(query);
 		
-		pstatement.setString(1, user.getEmail());		
+		pstatement.setString(1, user);		
 		ResultSet result = pstatement.executeQuery();
 				
 		String query2="SELECT * FROM purchase_product WHERE Purchaseid = ? ";

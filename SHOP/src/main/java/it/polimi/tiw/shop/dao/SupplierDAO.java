@@ -47,13 +47,13 @@ public class SupplierDAO {
 		supp.setFreeShippingThreshold(threshold);
 		
 		List<Integer> qts = new ArrayList<>();
-		Map<Integer,Double> prs = new HashMap<>();
+		Map<Integer, Double> prs = new HashMap<>();
 		
 		//aggiungo tutte le fasce di spesa
 		
 		do{
 			qts.add(result.getInt("minQuantity"));
-			prs.put(result.getInt("minQuantity"),result.getDouble("shippingPrice"));
+			prs.put(result.getInt("minQuantity"), result.getDouble("shippingPrice"));
 		}while(result.next());
 		
 		supp.setMinQuantities(qts);

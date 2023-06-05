@@ -61,7 +61,8 @@ public class Cart {
 		}
 	}
 	
-	/**metodo per rimuovere un prodotto
+	/**
+	 * metodo per rimuovere un prodotto
 	 * @param ps è il prodotto associato al fornitore
 	 */
 	
@@ -79,8 +80,8 @@ public class Cart {
 	}
 	
 	/**
-	 * metodo per aggiornare il costo totale per un certo fornitore
-	 * @param s è il fornitore
+	 * metodo per ricaricare tutti i prezzi prendendoli dal db
+	 * @param connection 
 	 */
 	
 	public void reloadDBPrices(Connection connection) {

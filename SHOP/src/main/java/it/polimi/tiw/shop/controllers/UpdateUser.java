@@ -103,7 +103,15 @@ public class UpdateUser extends HttpServlet {
 			state = StringEscapeUtils.escapeJava(state);
 		
 		HttpSession session = request.getSession();
-		User user = (User)session.getAttribute("user");
+		User user;
+		try {
+			user = new UserDAO(connection).getByEmail((String)session.getAttribute("user"));
+		}catch(SQLException e) {
+			request.setAttribute("logout",true);
+			request.setAttribute("error",null);
+			request.getRequestDispatcher("Error").forward(request, response);
+			return;
+		}
 		
 		//se uno dei parametri che l'utente può modificare è vuoto o nullo viene sostituito con quello già presente
 		
@@ -140,9 +148,7 @@ public class UpdateUser extends HttpServlet {
 			city.equals(user.getCity()) &&
 			civicNumber.equals(user.getCivicNumber())){
 			
-			context.setVariable("error", "No parameters have changed.");
-			context.setVariable("states", states);
-			templateEngine.process("/account.html", context, response.getWriter());
+			response.sendRedirect("Home");
 			return;
 		}
 		
@@ -161,6 +167,14 @@ public class UpdateUser extends HttpServlet {
 			
 			if(!valid){
 				context.setVariable("error", "Invalid iso3 state.");
+				try {
+					context.setVariable("user", new UserDAO(connection).getByEmail((String)request.getSession().getAttribute("user")));
+				}catch(SQLException e) {
+					request.setAttribute("logout",true);
+					request.setAttribute("error",null);
+					request.getRequestDispatcher("Error").forward(request, response);
+					return;
+				}
 				context.setVariable("states", states);
 				templateEngine.process("/account.html", context, response.getWriter());
 				return;

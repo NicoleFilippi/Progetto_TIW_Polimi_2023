@@ -22,7 +22,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import it.polimi.tiw.shop.utils.Cart;
 import it.polimi.tiw.shop.beans.Product;
 import it.polimi.tiw.shop.beans.ProductSupplier;
-import it.polimi.tiw.shop.beans.User;
 import it.polimi.tiw.shop.dao.ProductDAO;
 import it.polimi.tiw.shop.dao.ProductSupplierDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
@@ -157,7 +156,7 @@ public class GoToResults extends HttpServlet {
 			
 			try {
 				ps = psDAO.getByProduct(prodDet,(Cart)session.getAttribute("cart"));
-				psDAO.visualizedProduct((User)session.getAttribute("user"), prodDet);
+				psDAO.visualizedProduct((String)session.getAttribute("user"), prodDet);
 			} catch (SQLException e) {
 				request.setAttribute("logout",true);
 				request.setAttribute("error",null);

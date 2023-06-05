@@ -21,6 +21,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import it.polimi.tiw.shop.beans.Product;
 import it.polimi.tiw.shop.beans.User;
 import it.polimi.tiw.shop.dao.ProductDAO;
+import it.polimi.tiw.shop.dao.UserDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
 
 @WebServlet("/Home")
@@ -62,14 +63,16 @@ public class GoToHome extends HttpServlet {
     	
 		HttpSession session = request.getSession();		
 		ServletContext servletContext = getServletContext();
-		User user = (User) session.getAttribute("user");
+		User user;
+		UserDAO udao = new UserDAO(connection);
 		ProductDAO pdao = new ProductDAO(connection);
 		List<Product> prodList = null;
 		
 		//Carica gli ultimi prodotti 5 visualizzati (o quelli di default)
 		
 		try {
-			prodList = pdao.lastVisualized(user.getEmail(), servletContext.getInitParameter("defaultCategory"));
+			prodList = pdao.lastVisualized((String)session.getAttribute("user"), servletContext.getInitParameter("defaultCategory"));
+			user = udao.getByEmail((String)session.getAttribute("user"));
 		} catch(Exception e) {
 			request.setAttribute("logout",true);
 			request.setAttribute("error",null);
@@ -80,7 +83,8 @@ public class GoToHome extends HttpServlet {
 		// Carica la Home page
 		
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());		
-		context.setVariable("productList", prodList);		
+		context.setVariable("productList", prodList);	
+		context.setVariable("user", user);
 		templateEngine.process("/home.html", context, response.getWriter());
 	}
 

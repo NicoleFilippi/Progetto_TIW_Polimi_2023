@@ -19,7 +19,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.shop.beans.Order;
-import it.polimi.tiw.shop.beans.User;
 import it.polimi.tiw.shop.dao.PurchaseDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
 
@@ -68,7 +67,7 @@ public class GoToOrders extends HttpServlet {
 		PurchaseDAO puDAO = new PurchaseDAO(connection);
 		List<Order> orders;
 		try {
-			orders = puDAO.getByUser((User)session.getAttribute("user"));
+			orders = puDAO.getByUser((String)session.getAttribute("user"));
 		}catch(Exception e) {
 			request.setAttribute("logout",true);
 			request.setAttribute("error",null);

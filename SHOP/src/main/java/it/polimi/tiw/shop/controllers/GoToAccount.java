@@ -18,7 +18,9 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.shop.beans.State;
+import it.polimi.tiw.shop.beans.User;
 import it.polimi.tiw.shop.dao.StateDAO;
+import it.polimi.tiw.shop.dao.UserDAO;
 import it.polimi.tiw.shop.utils.ConnectionHandler;
 
 @WebServlet("/Account")
@@ -60,9 +62,11 @@ public class GoToAccount extends HttpServlet {
 		
 		final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());		
 		List<State> states;
+		User user;
 		
 		try {
-			states=new StateDAO(connection).getStates();			//prendo gli stati per il select-option
+			states = new StateDAO(connection).getStates();			//prendo gli stati per il select-option
+			user = new UserDAO(connection).getByEmail((String)request.getSession().getAttribute("user"));
 		} catch (SQLException e) {
 			request.setAttribute("logout",true);
 			request.setAttribute("error",null);
@@ -71,6 +75,7 @@ public class GoToAccount extends HttpServlet {
 		}
 		
 		context.setVariable("states", states);
+		context.setVariable("user", user);
 		templateEngine.process("/account.html", context, response.getWriter());
 		return;
 	}

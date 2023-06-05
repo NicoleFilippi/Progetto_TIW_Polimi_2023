@@ -166,8 +166,6 @@ public class UserDAO {
 	
 	public void updateUser(String name, String surname, String iso3, String city, String street, String civicNumber, HttpSession session) throws SQLException {
 		
-		User u = (User)session.getAttribute("user");
-		
 		String query = "UPDATE user SET name=?, surname=?, stateiso3=?, city=?, street=?, civicnumber=? WHERE email=?";
 		PreparedStatement pstatement = con.prepareStatement(query);
 		pstatement.setString(1, name);
@@ -176,17 +174,43 @@ public class UserDAO {
 		pstatement.setString(4, city);
 		pstatement.setString(5, street);
 		pstatement.setString(6, civicNumber);	
-		pstatement.setString(7, u.getEmail());
+		pstatement.setString(7, (String)session.getAttribute("user"));
 		
-		pstatement.executeUpdate();
+		pstatement.executeUpdate();			
+	}
+	
+	/**
+	 * metodo che ritorna l'oggetto utente data la mail
+	 * @param email mail dell'utente
+	 * @return oggetto User corrispondente
+	 */
+	
+	public User getByEmail(String email) throws SQLException {
+		User user = new User();
+		String pwQuery = "SELECT * FROM User WHERE Email = ?";		
+		PreparedStatement pstatement = con.prepareStatement(pwQuery);
+		pstatement.setString(1, email);
+		ResultSet result = pstatement.executeQuery();		
 		
-		//modifica anche i parametri nella sessione
+		// non ci sono user con questa email
 		
-		u.setName(name);
-		u.setSurname(surname);
-		u.setState(iso3);
-		u.setCity(city);
-		u.setStreet(street);
-		u.setCivicNumber(civicNumber);				
+		if (!result.isBeforeFirst()) {
+			return null;
+		}
+			
+		else {
+			result.next();
+			
+			//setta i parametri utente			
+			
+			user.setEmail(result.getString("email"));
+			user.setName(result.getString("name"));
+			user.setSurname(result.getString("surname"));
+			user.setState(result.getString("stateIso3"));
+			user.setCity(result.getString("city"));
+			user.setStreet(result.getString("street"));
+			user.setCivicNumber(result.getString("civicNumber"));
+			return user;
+		}
 	}
 }
